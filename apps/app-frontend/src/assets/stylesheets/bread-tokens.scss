@@ -1,0 +1,59 @@
+/*
+ * Bread Client design tokens ported from the Electron prototype.
+ *
+ * This is an isolated token layer: existing components and screens do not
+ * consume these values yet. Later phases can opt into the --bread-* namespace
+ * without changing the fork's current design system.
+ */
+:root {
+	/* Colours */
+	--bread-color-bg: #111411;
+	--bread-color-surface: #151814;
+	--bread-color-surface-muted: #101310;
+	--bread-color-surface-subtle: #1a1e1a;
+	--bread-color-surface-panel: #1d211d;
+	--bread-color-surface-raised: #202420;
+	--bread-color-surface-elevated: #242924;
+	--bread-color-border: #303630;
+	--bread-color-border-subtle: #343b33;
+	--bread-color-border-strong: #3a4239;
+	--bread-color-text: #eceee9;
+	--bread-color-text-muted: #929c90;
+	--bread-color-text-subtle: #7f897e;
+	--bread-color-brand: #cbed57;
+	--bread-color-brand-bright: #d9fc58;
+	--bread-color-brand-hover: #ddfb70;
+	--bread-color-brand-contrast: #1c2910;
+	--bread-color-danger: #ecaaa6;
+
+	/* Typography */
+	--bread-font-body: 'DM Sans', sans-serif;
+	--bread-font-display: 'Space Grotesk', sans-serif;
+	--bread-font-weight-regular: 400;
+	--bread-font-weight-medium: 500;
+	--bread-font-weight-semibold: 600;
+	--bread-font-weight-bold: 700;
+
+	/* Spacing scale (1 unit = 4px) */
+	--bread-space-0: 0;
+	--bread-space-1: 0.25rem;
+	--bread-space-2: 0.5rem;
+	--bread-space-3: 0.75rem;
+	--bread-space-4: 1rem;
+	--bread-space-5: 1.25rem;
+	--bread-space-6: 1.5rem;
+	--bread-space-7: 1.75rem;
+	--bread-space-8: 2rem;
+	--bread-space-9: 2.5rem;
+	--bread-space-10: 3rem;
+	--bread-space-11: 4rem;
+	--bread-space-12: 5rem;
+
+	/* Border radii */
+	--bread-radius-sm: 0.375rem;
+	--bread-radius-md: 0.5rem;
+	--bread-radius-lg: 0.75rem;
+	--bread-radius-xl: 0.875rem;
+	--bread-radius-2xl: 0.9375rem;
+	--bread-radius-pill: 9999px;
+}
