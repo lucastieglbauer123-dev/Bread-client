@@ -4,7 +4,7 @@ CREATE TABLE settings (
     max_concurrent_downloads INTEGER NOT NULL DEFAULT 10,
     max_concurrent_writes INTEGER NOT NULL DEFAULT 10,
 
-    theme TEXT NOT NULL DEFAULT 'bread',
+    theme TEXT NOT NULL DEFAULT 'dark',
     default_page TEXT NOT NULL DEFAULT 'home',
     collapsed_navigation INTEGER NOT NULL DEFAULT TRUE,
     advanced_rendering INTEGER NOT NULL DEFAULT TRUE,
