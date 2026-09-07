@@ -25,6 +25,7 @@
 					:class="getSSRFallbackClasses(index)"
 					@mouseenter="link.onHover?.()"
 					@focus="link.onHover?.()"
+					@click="link.onClick?.($event)"
 				>
 					<component
 						:is="link.icon"
@@ -77,7 +78,7 @@
 <script setup lang="ts">
 import type { Component } from 'vue'
 import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
-import { RouterLink, useRoute } from 'vue-router'
+import { RouterLink, type RouteLocationNormalizedLoaded, useRoute } from 'vue-router'
 
 const route = useRoute()
 
@@ -90,6 +91,8 @@ interface Tab {
 	icon?: Component
 	subpages?: string[]
 	onHover?: () => void
+	onClick?: (event: MouseEvent) => void
+	isActive?: (route: RouteLocationNormalizedLoaded) => boolean
 }
 
 const props = withDefaults(
@@ -186,6 +189,10 @@ function computeActiveIndex(): { index: number; isSubpage: boolean } {
 		const link = filteredLinks.value[i]
 		const decodedPath = decodeURIComponent(route.path)
 		const decodedHref = decodeURIComponent(link.href.split('?')[0])
+
+		if (link.isActive?.(route)) {
+			return { index: i, isSubpage: false }
+		}
 
 		if (props.query) {
 			const queryValue = route.query[props.query]

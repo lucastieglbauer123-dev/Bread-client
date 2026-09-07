@@ -1,7 +1,7 @@
 <template>
-	<div v-if="instance" :class="{ 'flex h-full flex-col': isFixedRender }">
+	<div v-if="instance" class="bread-instance-page" :class="{ 'flex h-full flex-col': isFixedRender }">
 		<div
-			:class="['p-6 pr-2 pb-4', { 'shrink-0': isFixedRender }]"
+			:class="['bread-instance-header-wrap p-6 pr-2 pb-4', { 'shrink-0': isFixedRender }]"
 			@contextmenu.prevent.stop="(event) => handleRightClick(event)"
 		>
 			<ExportModal v-if="!instance.quarantined" ref="exportModal" :instance="instance" />
@@ -13,6 +13,7 @@
 			<InstanceSettingsModal
 				:key="instance.id"
 				ref="settingsModal"
+				class="bread-instance-settings-modal"
 				:instance="instance"
 				:offline="offline"
 				@unlinked="refreshInstance"
@@ -46,6 +47,7 @@
 				@repair="() => repairInstance()"
 				@stop="() => stopInstance('InstancePage')"
 				@play="() => startInstance('InstancePage')"
+				@delete="requestInstanceDeletion"
 				@play-server="() => handlePlayServer()"
 				@settings="() => settingsModal?.show()"
 				@open-folder="() => instance && showInstanceInFolder(instance.id)"
@@ -54,7 +56,7 @@
 				@report="reportSharedInstance"
 			/>
 		</div>
-		<div :class="['px-6', { 'shrink-0': isFixedRender }]">
+		<div :class="['bread-instance-tab-wrap px-6', { 'shrink-0': isFixedRender }]">
 			<NavTabs :links="tabs" />
 			<InstanceAdmonitions
 				class="mt-4"
@@ -69,7 +71,7 @@
 				@delete="requestInstanceDeletion"
 			/>
 		</div>
-		<div :class="['p-6 pt-4', { 'min-h-0 flex-1 overflow-y-auto': isFixedRender }]">
+		<div :class="['bread-instance-body p-6 pt-4', { 'min-h-0 flex-1 overflow-y-auto': isFixedRender }]">
 			<RouterView v-slot="{ Component }">
 				<template v-if="Component">
 					<Suspense
@@ -95,6 +97,7 @@ import {
 	ImagesIcon,
 	PlayIcon,
 	PlusIcon,
+	SettingsIcon,
 	StopCircleIcon,
 	TerminalSquareIcon,
 	UserPlusIcon,
@@ -112,8 +115,13 @@ import { useQuery, useQueryClient } from '@tanstack/vue-query'
 import { useOnline } from '@vueuse/core'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
-import { computed, type ComputedRef, onUnmounted, ref, shallowRef, watch } from 'vue'
-import { onBeforeRouteUpdate, useRoute, useRouter } from 'vue-router'
+import { computed, type Component, type ComputedRef, onUnmounted, ref, shallowRef, watch } from 'vue'
+import {
+	onBeforeRouteUpdate,
+	type RouteLocationNormalizedLoaded,
+	useRoute,
+	useRouter,
+} from 'vue-router'
 
 import ExportModal from '@/components/ui/ExportModal.vue'
 import ConfirmDeleteInstanceModal from '@/components/ui/modal/ConfirmDeleteInstanceModal.vue'
@@ -187,12 +195,16 @@ const messages = defineMessages({
 		id: 'app.instance.actions.label',
 		defaultMessage: 'Instance actions',
 	},
-	contentTab: { id: 'app.instance.tab.content', defaultMessage: 'Content' },
+	contentTab: { id: 'app.instance.tab.content', defaultMessage: 'Mods' },
+	resourcePacksTab: { id: 'app.instance.tab.resource-packs', defaultMessage: 'Resource Packs' },
+	shadersTab: { id: 'app.instance.tab.shaders', defaultMessage: 'Shaders' },
+	datapacksTab: { id: 'app.instance.tab.datapacks', defaultMessage: 'Datapacks' },
 	filesTab: { id: 'app.instance.tab.files', defaultMessage: 'Files' },
 	screenshotsTab: { id: 'app.instance.tab.screenshots', defaultMessage: 'Screenshots' },
 	worldsTab: { id: 'app.instance.tab.worlds', defaultMessage: 'Worlds' },
 	logsTab: { id: 'app.instance.tab.logs', defaultMessage: 'Logs' },
 	shareTab: { id: 'app.instance.tab.share', defaultMessage: 'Share' },
+	settingsTab: { id: 'app.instance.tab.settings', defaultMessage: 'Settings' },
 	shortcutCreated: {
 		id: 'app.instance.shortcut.created',
 		defaultMessage: 'Shortcut created',
@@ -479,13 +491,43 @@ const showShareTab = computed(() => {
 })
 
 const tabs = computed(() => {
-	const instanceTabs = [
+	const instanceTabs: {
+		label: string
+		href: string
+		icon?: Component
+		isActive?: (route: RouteLocationNormalizedLoaded) => boolean
+		onClick?: (event: MouseEvent) => void
+	}[] = [
 		{
 			label: formatMessage(messages.contentTab),
 			href: `${basePath.value}`,
 			icon: BoxesIcon,
 		},
 	]
+
+	instanceTabs.push(
+		{
+			label: formatMessage(messages.resourcePacksTab),
+			href: `${basePath.value}#resource-packs`,
+			icon: BoxesIcon,
+			isActive: (currentRoute) =>
+				currentRoute.path === basePath.value && currentRoute.hash === '#resource-packs',
+		},
+		{
+			label: formatMessage(messages.shadersTab),
+			href: `${basePath.value}#shaders`,
+			icon: BoxesIcon,
+			isActive: (currentRoute) =>
+				currentRoute.path === basePath.value && currentRoute.hash === '#shaders',
+		},
+		{
+			label: formatMessage(messages.datapacksTab),
+			href: `${basePath.value}#datapacks`,
+			icon: BoxesIcon,
+			isActive: (currentRoute) =>
+				currentRoute.path === basePath.value && currentRoute.hash === '#datapacks',
+		},
+	)
 
 	if (instance.value?.visible_tabs.files !== false) {
 		instanceTabs.push({
@@ -525,6 +567,15 @@ const tabs = computed(() => {
 			icon: UserPlusIcon,
 		})
 	}
+
+	instanceTabs.push({
+		label: formatMessage(messages.settingsTab),
+		href: `${basePath.value}#settings`,
+		icon: SettingsIcon,
+		isActive: (currentRoute) =>
+			currentRoute.path === basePath.value && currentRoute.hash === '#settings',
+		onClick: () => settingsModal.value?.show(),
+	})
 
 	return instanceTabs
 })
@@ -901,3 +952,119 @@ onUnmounted(() => {
 	}
 })
 </script>
+
+<style scoped lang="scss">
+.bread-instance-page {
+	min-height: 100%;
+	background: var(--bread-color-surface);
+	color: var(--bread-color-text);
+}
+
+.bread-instance-header-wrap {
+	background: var(--bread-color-bg);
+	border-bottom: 1px solid var(--bread-color-border-subtle);
+}
+
+.bread-instance-header-wrap :deep(.bread-instance-header) {
+	padding-bottom: var(--bread-space-5);
+	border-bottom-color: transparent;
+}
+
+.bread-instance-header-wrap :deep(.bread-instance-header__row) {
+	align-items: center;
+}
+
+.bread-instance-header-wrap :deep(.bread-instance-header__main) {
+	align-items: center;
+}
+
+.bread-instance-header-wrap :deep(.bread-instance-header__title) {
+	font-family: var(--bread-font-display);
+	font-size: clamp(1.75rem, 3vw, 2.4rem);
+	letter-spacing: -0.045em;
+}
+
+.bread-instance-header-wrap :deep(.page-header-metadata) {
+	color: var(--bread-color-text-muted);
+}
+
+.bread-instance-header-wrap :deep([data-page-header-metadata-item]) {
+	color: var(--bread-color-text-muted);
+}
+
+.bread-instance-header-wrap :deep([data-page-header-metadata-item] svg) {
+	color: var(--bread-color-text-subtle);
+}
+
+.bread-instance-header-wrap :deep([data-button]) {
+	min-height: 2.75rem;
+}
+
+.bread-instance-header-wrap :deep([data-button][data-color='red']) {
+	border-color: color-mix(in srgb, var(--bread-color-danger) 55%, transparent);
+	background: transparent;
+	color: var(--bread-color-danger);
+}
+
+.bread-instance-tab-wrap {
+	padding-top: var(--bread-space-4);
+	padding-bottom: var(--bread-space-2);
+}
+
+.bread-instance-tab-wrap :deep(nav) {
+	width: 100%;
+	max-width: 100%;
+	justify-content: flex-start;
+	gap: 0.15rem;
+	overflow-x: auto;
+	border: 1px solid var(--bread-color-border-subtle);
+	border-radius: var(--bread-radius-lg);
+	background: var(--bread-color-surface-subtle);
+	box-shadow: none;
+	scrollbar-width: none;
+}
+
+.bread-instance-tab-wrap :deep(nav::-webkit-scrollbar) {
+	display: none;
+}
+
+.bread-instance-tab-wrap :deep(nav .button-animation) {
+	min-height: 2.5rem;
+	border-radius: var(--bread-radius-md);
+	color: var(--bread-color-text-muted);
+	font-size: 0.82rem;
+	white-space: nowrap;
+}
+
+.bread-instance-tab-wrap :deep(nav .button-animation:hover) {
+	background: var(--bread-color-surface-raised);
+	color: var(--bread-color-text);
+}
+
+.bread-instance-tab-wrap :deep(nav > .bg-button-bgSelected) {
+	background: var(--bread-color-brand);
+}
+
+.bread-instance-tab-wrap :deep(nav > .bg-button-bgSelected ~ .button-animation) {
+	color: var(--bread-color-text-muted);
+}
+
+.bread-instance-tab-wrap :deep(nav .text-button-textSelected) {
+	color: var(--bread-color-brand-contrast) !important;
+}
+
+.bread-instance-body {
+	padding-bottom: var(--bread-space-12);
+}
+
+.bread-instance-body :deep(.content-table),
+.bread-instance-body :deep(.content-list) {
+	border-color: var(--bread-color-border-subtle);
+	background: var(--bread-color-surface-subtle);
+}
+
+.bread-instance-settings-modal :deep(.modal-content),
+.bread-instance-settings-modal :deep(.settings-content) {
+	background: var(--bread-color-surface);
+}
+</style>

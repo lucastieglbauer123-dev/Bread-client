@@ -1,5 +1,11 @@
 <template>
-	<PageHeader :title="instance.name">
+	<PageHeader
+		:title="instance.name"
+		header-class="bread-instance-header"
+		row-class="bread-instance-header__row"
+		main-class="bread-instance-header__main"
+		title-class="bread-instance-header__title"
+	>
 		<template #leading>
 			<Avatar
 				:src="iconSrc"
@@ -70,6 +76,16 @@
 
 		<template #actions>
 			<PageHeaderActions>
+				<Button
+					type="outlined"
+					color="red"
+					size="xl"
+					native-type="button"
+					@click="emit('delete')"
+				>
+					<TrashIcon />
+					{{ formatMessage(messages.deleteInstance) }}
+				</Button>
 				<Button
 					v-if="isInstalling"
 					type="colored"
@@ -182,6 +198,7 @@ import {
 	SettingsIcon,
 	StopCircleIcon,
 	TimerIcon,
+	TrashIcon,
 	UnknownIcon,
 } from '@modrinth/assets'
 import { Button, IconButton, SplitButton, TeleportOverflowMenu } from '@modrinth/ui'
@@ -248,6 +265,10 @@ const messages = defineMessages({
 		id: 'instance.locked.play-tooltip',
 		defaultMessage: 'This instance has been locked',
 	},
+	deleteInstance: {
+		id: 'instance.action.delete-instance',
+		defaultMessage: 'Delete instance',
+	},
 	starting: {
 		id: 'instance.action.starting',
 		defaultMessage: 'Starting...',
@@ -302,6 +323,7 @@ const emit = defineEmits<{
 	repair: []
 	stop: []
 	play: []
+	delete: []
 	playServer: []
 	settings: []
 	openFolder: []
