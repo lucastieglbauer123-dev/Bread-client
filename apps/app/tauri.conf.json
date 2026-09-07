@@ -58,7 +58,7 @@
 	"productName": "Bread Client",
 	"version": "../app-frontend/package.json",
 	"mainBinaryName": "Bread Client",
-	"identifier": "ModrinthApp",
+	"identifier": "BreadClient",
 	"plugins": {
 		"deep-link": {
 			"desktop": {
