@@ -6,6 +6,7 @@ import {
 	injectAuth,
 	injectUserPreferences,
 	provideAppearanceSettings,
+	useVIntl,
 	useSavable,
 } from '@modrinth/ui'
 import { computed, inject, onBeforeUnmount, onMounted, ref, watch } from 'vue'
@@ -16,6 +17,7 @@ import { getOS } from '@/helpers/utils'
 import { appSettingsModalContextKey } from '@/providers/app-settings-modal'
 
 const theme = useTheme()
+const { formatMessage } = useVIntl()
 const auth = injectAuth()
 const { updatePreferences } = injectUserPreferences()
 const settingsModal = inject(appSettingsModalContextKey, null)
