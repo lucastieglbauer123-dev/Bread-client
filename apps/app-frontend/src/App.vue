@@ -2135,10 +2135,13 @@ provideAppUpdateDownloadProgress(appUpdateDownload)
 				<ServerStackIcon />
 			</NavButton>
 			</div>
-			<suspense>
-				<QuickInstanceSwitcher />
-			</suspense>
+			<div class="bread-quick-switcher">
+				<suspense>
+					<QuickInstanceSwitcher />
+				</suspense>
+			</div>
 			<NavButton
+				class="bread-sidebar-create-button"
 				v-tooltip.right="formatMessage(messages.createNewInstance)"
 				:to="() => installationModal?.show()"
 				:disabled="offline"
@@ -2510,9 +2513,15 @@ provideAppUpdateDownloadProgress(appUpdateDownload)
 }
 
 .bread-nav-secondary {
+	display: none;
 	margin-top: var(--bread-space-4);
 	padding-top: var(--bread-space-3);
 	border-top: 1px solid var(--bread-color-border-subtle);
+}
+
+.bread-quick-switcher,
+.bread-sidebar-create-button {
+	display: none;
 }
 
 .bread-sidebar-footer {
