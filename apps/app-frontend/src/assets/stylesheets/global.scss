@@ -263,3 +263,133 @@ textarea {
 	border-color: var(--bread-color-brand) !important;
 	box-shadow: 0 0 0 0.2rem var(--bread-color-brand-shadow);
 }
+
+/* Bread create-instance flow. The underlying stages and event handlers remain
+ * the same; these rules only bring the existing modal into the prototype's
+ * compact, warm card treatment. */
+.bread-creation-flow {
+	width: min(32rem, calc(100vw - 2rem)) !important;
+	max-height: min(42rem, calc(100vh - 2rem));
+	padding: 0 !important;
+	background: var(--bread-color-surface) !important;
+	border: 1px solid var(--bread-color-border) !important;
+	border-radius: var(--bread-radius-xl) !important;
+	color: var(--bread-color-text);
+	overflow: hidden;
+}
+
+.bread-creation-flow [data-modal-content] {
+	padding: var(--bread-space-6) !important;
+	background: var(--bread-color-surface) !important;
+}
+
+.bread-creation-flow [data-modal-content] > .flex.flex-col {
+	gap: var(--bread-space-3) !important;
+}
+
+.bread-creation-flow .bread-known-project-prompt,
+.bread-creation-flow .bread-known-project-search,
+.bread-creation-flow .bread-create-divider {
+	display: none;
+}
+
+.bread-creation-flow .bread-create-subtitle {
+	margin: calc(var(--bread-space-1) * -1) 0 var(--bread-space-2);
+	color: var(--bread-color-text-muted);
+	font-size: 0.8125rem;
+	line-height: 1.4;
+}
+
+.bread-creation-flow .bread-setup-options {
+	gap: var(--bread-space-2) !important;
+}
+
+.bread-creation-flow .bread-setup-option {
+	min-height: 3.5rem;
+	padding: var(--bread-space-2) var(--bread-space-3) !important;
+	border: 1px solid var(--bread-color-border-subtle) !important;
+	border-radius: var(--bread-radius-md) !important;
+	background: var(--bread-color-surface-muted) !important;
+	box-shadow: none !important;
+}
+
+.bread-creation-flow .bread-setup-option:hover {
+	border-color: var(--bread-color-border-strong) !important;
+	background: var(--bread-color-surface-subtle) !important;
+}
+
+.bread-creation-flow .bread-setup-option--clean {
+	border-color: var(--bread-color-brand) !important;
+	background: var(--bread-color-surface-raised) !important;
+}
+
+.bread-creation-flow .bread-setup-option--launcher {
+	display: none;
+}
+
+.bread-creation-flow .bread-setup-option > div:first-child {
+	height: 2rem !important;
+	width: 2rem !important;
+	border: 0 !important;
+	border-radius: var(--bread-radius-sm) !important;
+	background: var(--bread-color-surface-panel) !important;
+}
+
+.bread-creation-flow .bread-setup-option > div:first-child svg {
+	height: 1rem !important;
+	width: 1rem !important;
+	color: var(--bread-color-brand) !important;
+}
+
+.bread-creation-flow .bread-setup-option > div:nth-child(2) {
+	gap: 0.125rem !important;
+}
+
+.bread-creation-flow .bread-setup-option > div:nth-child(2) > span:first-child {
+	font-size: 0.875rem !important;
+	line-height: 1.2;
+}
+
+.bread-creation-flow .bread-setup-option > div:nth-child(2) > span:last-child {
+	font-size: 0.75rem !important;
+	line-height: 1.25;
+	color: var(--bread-color-text-muted) !important;
+}
+
+.bread-creation-flow .bread-setup-option > svg:last-child {
+	display: none;
+}
+
+.bread-creation-flow [data-modal-content] input {
+	min-height: 2.75rem;
+	border: 1px solid var(--bread-color-border-subtle);
+	border-radius: var(--bread-radius-md);
+	background: var(--bread-color-surface-muted);
+}
+
+.bread-creation-flow [data-button] {
+	min-height: 2.75rem;
+}
+
+.bread-creation-flow > div:last-child {
+	padding: 0 var(--bread-space-6) var(--bread-space-6) !important;
+	border-top: 0 !important;
+}
+
+.bread-creation-flow > div:last-child [data-button] {
+	width: 100%;
+	justify-content: center;
+	background: var(--bread-color-brand) !important;
+	color: var(--bread-color-brand-contrast) !important;
+	border-color: var(--bread-color-brand) !important;
+}
+
+.bread-creation-flow .bread-custom-setup-stage {
+	gap: var(--bread-space-5) !important;
+}
+
+.bread-creation-flow .bread-custom-setup-stage input,
+.bread-creation-flow .bread-custom-setup-stage [class~='group/input'] {
+	border-radius: var(--bread-radius-md) !important;
+	background: var(--bread-color-surface-muted) !important;
+}

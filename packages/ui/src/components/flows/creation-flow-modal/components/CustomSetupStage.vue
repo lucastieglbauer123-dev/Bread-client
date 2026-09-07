@@ -1,5 +1,5 @@
 <template>
-	<div class="space-y-6">
+	<div class="bread-custom-setup-stage space-y-6">
 		<div
 			v-if="ctx.projectInstall.value"
 			class="flex items-center gap-2.5 rounded-[20px] bg-surface-2 p-3"

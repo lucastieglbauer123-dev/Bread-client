@@ -1,44 +1,46 @@
 <template>
 	<div class="flex flex-col gap-4">
-		<span class="font-semibold text-contrast">
+		<span class="bread-known-project-prompt font-semibold text-contrast">
 			{{ formatMessage(messages.knownProjectPrompt) }}
 		</span>
-		<Combobox
-			ref="projectSearchCombobox"
-			v-model="ctx.projectSearchProjectId.value"
-			v-tooltip="ctx.finishDisabled.value ? ctx.finishDisabledTooltip.value : undefined"
-			:options="ctx.projectSearchOptions.value"
-			searchable
-			show-search-icon
-			:show-chevron="false"
-			:disabled="ctx.finishDisabled.value"
-			:search-placeholder="formatMessage(messages.searchProjectPlaceholder)"
-			:no-options-message="
-				searchLoading
-					? formatMessage(commonMessages.loadingLabel)
-					: formatMessage(messages.noResultsFound)
-			"
-			:disable-search-filter="true"
-			@search-input="handleSearch"
-		>
-			<template #option-suffix="{ item }">
-				<div
-					class="flex shrink-0 items-center gap-1.5 text-sm font-semibold text-secondary opacity-0 transition-opacity group-hover/option:opacity-100 group-data-[focused=true]/option:opacity-100"
-				>
-					<span>
-						{{
-							formatMessage(
-								isModpackOption(item.value) ? messages.installModpack : messages.createInstance,
-							)
-						}}
-					</span>
-					<DownloadIcon v-if="isModpackOption(item.value)" class="size-5 shrink-0" />
-					<RightArrowIcon v-else class="size-5 shrink-0" />
-				</div>
-			</template>
-		</Combobox>
+		<div class="bread-known-project-search">
+			<Combobox
+				ref="projectSearchCombobox"
+				v-model="ctx.projectSearchProjectId.value"
+				v-tooltip="ctx.finishDisabled.value ? ctx.finishDisabledTooltip.value : undefined"
+				:options="ctx.projectSearchOptions.value"
+				searchable
+				show-search-icon
+				:show-chevron="false"
+				:disabled="ctx.finishDisabled.value"
+				:search-placeholder="formatMessage(messages.searchProjectPlaceholder)"
+				:no-options-message="
+					searchLoading
+						? formatMessage(commonMessages.loadingLabel)
+						: formatMessage(messages.noResultsFound)
+				"
+				:disable-search-filter="true"
+				@search-input="handleSearch"
+			>
+				<template #option-suffix="{ item }">
+					<div
+						class="flex shrink-0 items-center gap-1.5 text-sm font-semibold text-secondary opacity-0 transition-opacity group-hover/option:opacity-100 group-data-[focused=true]/option:opacity-100"
+					>
+						<span>
+							{{
+								formatMessage(
+									isModpackOption(item.value) ? messages.installModpack : messages.createInstance,
+								)
+							}}
+						</span>
+						<DownloadIcon v-if="isModpackOption(item.value)" class="size-5 shrink-0" />
+						<RightArrowIcon v-else class="size-5 shrink-0" />
+					</div>
+				</template>
+			</Combobox>
+		</div>
 
-		<div class="flex items-center gap-3">
+		<div class="bread-create-divider flex items-center gap-3">
 			<div class="h-[1px] w-full flex-1 bg-surface-5" />
 			<span class="text-sm text-secondary">{{ formatMessage(commonMessages.orLabel) }}</span>
 			<div class="h-[1px] w-full flex-1 bg-surface-5" />
@@ -47,28 +49,35 @@
 		<span class="font-semibold text-contrast">
 			{{ setupTypeTitle }}
 		</span>
+		<p v-if="ctx.flowType === 'instance'" class="bread-create-subtitle">
+			{{ formatMessage(messages.instanceFlowSubtitle) }}
+		</p>
 
 		<template v-if="ctx.flowType === 'instance'">
-			<div class="flex flex-col gap-3">
+			<div class="flex flex-col gap-3 bread-setup-options">
 				<BigOptionButton
+					class="bread-setup-option bread-setup-option--clean"
 					:icon="BoxesIcon"
-					:title="formatMessage(messages.customSetupTitle)"
-					:description="formatMessage(messages.customSetupDescription)"
+					:title="formatMessage(messages.cleanInstanceTitle)"
+					:description="formatMessage(messages.cleanInstanceDescription)"
 					@click="setSetupType('custom')"
 				/>
 				<BigOptionButton
+					class="bread-setup-option bread-setup-option--modpack"
 					:icon="CompassIcon"
-					:title="formatMessage(messages.modpackBaseTitle)"
-					:description="formatMessage(messages.modpackBaseDescription)"
+					:title="formatMessage(messages.premadeInstanceTitle)"
+					:description="formatMessage(messages.premadeInstanceDescription)"
 					@click="browseModpacks"
 				/>
 				<BigOptionButton
+					class="bread-setup-option bread-setup-option--import"
 					:icon="UploadIcon"
-					:title="formatMessage(messages.uploadModpackTitle)"
-					:description="formatMessage(messages.uploadModpackDescription)"
+					:title="formatMessage(messages.importOwnTitle)"
+					:description="formatMessage(messages.importOwnDescription)"
 					@click="triggerFileInput"
 				/>
 				<BigOptionButton
+					class="bread-setup-option bread-setup-option--launcher"
 					:icon="BoxImportIcon"
 					:title="formatMessage(messages.importInstanceTitle)"
 					:description="formatMessage(messages.importInstanceDescription)"
@@ -161,6 +170,34 @@ const messages = defineMessages({
 	instanceTypeTitle: {
 		id: 'creation-flow.modal.setup-type.title.instance',
 		defaultMessage: 'Choose instance type',
+	},
+	instanceFlowSubtitle: {
+		id: 'creation-flow.modal.setup-type.subtitle.instance',
+		defaultMessage: 'Every option creates a separate, manageable Minecraft instance.',
+	},
+	cleanInstanceTitle: {
+		id: 'creation-flow.modal.setup-type.option.clean-instance.title',
+		defaultMessage: 'Start clean',
+	},
+	cleanInstanceDescription: {
+		id: 'creation-flow.modal.setup-type.option.clean-instance.description',
+		defaultMessage: 'Vanilla Minecraft, ready for mods.',
+	},
+	premadeInstanceTitle: {
+		id: 'creation-flow.modal.setup-type.option.premade-instance.title',
+		defaultMessage: 'Use a premade modpack',
+	},
+	premadeInstanceDescription: {
+		id: 'creation-flow.modal.setup-type.option.premade-instance.description',
+		defaultMessage: 'Browse curated Modrinth modpacks.',
+	},
+	importOwnTitle: {
+		id: 'creation-flow.modal.setup-type.option.import-own.title',
+		defaultMessage: 'Import your own',
+	},
+	importOwnDescription: {
+		id: 'creation-flow.modal.setup-type.option.import-own.description',
+		defaultMessage: 'Bring an existing .mrpack file.',
 	},
 	installationTypeTitle: {
 		id: 'creation-flow.modal.setup-type.title.installation',

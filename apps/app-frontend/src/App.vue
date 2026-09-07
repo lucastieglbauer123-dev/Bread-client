@@ -2050,6 +2050,7 @@ provideAppUpdateDownloadProgress(appUpdateDownload)
 		</Suspense>
 		<CreationFlowModal
 			ref="installationModal"
+			class="bread-creation-flow"
 			type="instance"
 			show-snapshot-toggle
 			:fetch-existing-instance-names="fetchExistingInstanceNames"
