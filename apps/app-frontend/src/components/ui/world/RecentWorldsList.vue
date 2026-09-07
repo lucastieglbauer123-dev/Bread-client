@@ -49,9 +49,11 @@ const props = withDefaults(
 	defineProps<{
 		recentInstances: GameInstance[]
 		sectionTitle?: string
+		sectionSubtitle?: string
 	}>(),
 	{
 		sectionTitle: undefined,
+		sectionSubtitle: undefined,
 	},
 )
 
@@ -397,7 +399,16 @@ onUnmounted(() => {
 		button-class="group mt-1 mb-3 flex w-fit cursor-pointer items-center border-0 bg-transparent p-0 text-left"
 	>
 		<template #title>
-			<span class="flex items-center gap-1 text-2xl font-semibold leading-none text-contrast mr-1">
+			<span
+				v-if="props.sectionSubtitle"
+				class="bread-world-section-heading flex flex-col items-start gap-1 text-left"
+			>
+				<span class="text-2xl font-semibold leading-none text-contrast mr-1">
+					{{ props.sectionTitle ?? formatMessage(messages.jumpIn) }}
+				</span>
+				<span class="bread-world-section-subtitle">{{ props.sectionSubtitle }}</span>
+			</span>
+			<span v-else class="flex items-center gap-1 text-2xl font-semibold leading-none text-contrast mr-1">
 				{{ props.sectionTitle ?? formatMessage(messages.jumpIn) }}
 			</span>
 		</template>
@@ -536,6 +547,13 @@ onUnmounted(() => {
 	opacity: 0;
 	transform: scale(0.98);
 	height: 0;
+}
+
+.bread-world-section-subtitle {
+	color: var(--bread-color-text-muted);
+	font-size: 0.82rem;
+	font-weight: 400;
+	line-height: 1.35;
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -126,13 +126,11 @@ function openPageContextMenu(event: MouseEvent) {
 			v-if="recentInstances?.length > 0 && appSettings.getFeatureFlag('worlds_in_home')"
 			class="bread-next-worlds"
 		>
-			<div class="bread-next-worlds__heading">
-				<div>
-					<h2>{{ formatMessage(messages.findNextWorld) }}</h2>
-					<p>Hand-picked adventures from the community.</p>
-				</div>
-			</div>
-			<RecentWorldsList :recent-instances="recentInstances" section-title="Find your next world" />
+			<RecentWorldsList
+				:recent-instances="recentInstances"
+				:section-title="formatMessage(messages.findNextWorld)"
+				section-subtitle="Hand-picked adventures from the community."
+			/>
 		</section>
 		<ContextMenu ref="pageOptions" :label="formatMessage(messages.libraryActionsLabel)" />
 	</div>
@@ -197,27 +195,8 @@ function openPageContextMenu(event: MouseEvent) {
 	margin-top: 0.5rem;
 }
 
-.bread-next-worlds__heading {
-	display: flex;
-	align-items: flex-end;
-	justify-content: space-between;
-	margin-bottom: 0.25rem;
-}
-
-.bread-next-worlds__heading h2 {
-	margin: 0;
+.bread-next-worlds :deep(.bread-world-section-heading .text-2xl) {
 	font-family: var(--bread-font-display);
-	font-size: 1.4rem;
 	letter-spacing: -0.035em;
-}
-
-.bread-next-worlds__heading p {
-	margin: 0.25rem 0 0;
-	color: var(--bread-color-text-muted);
-	font-size: 0.82rem;
-}
-
-.bread-next-worlds :deep(.text-2xl) {
-	display: none;
 }
 </style>
