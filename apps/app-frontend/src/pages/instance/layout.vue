@@ -494,6 +494,7 @@ const tabs = computed(() => {
 	const instanceTabs: {
 		label: string
 		href: string
+		shown?: boolean
 		icon?: Component
 		isActive?: (route: RouteLocationNormalizedLoaded) => boolean
 		onClick?: (event: MouseEvent) => void
@@ -542,6 +543,7 @@ const tabs = computed(() => {
 		instanceTabs.push({
 			label: formatMessage(messages.screenshotsTab),
 			href: `${basePath.value}/screenshots`,
+			shown: route.path.startsWith(`${basePath.value}/screenshots`),
 			icon: ImagesIcon,
 		})
 	}
@@ -564,6 +566,7 @@ const tabs = computed(() => {
 		instanceTabs.push({
 			label: formatMessage(messages.shareTab),
 			href: `${basePath.value}/share`,
+			shown: route.path.startsWith(`${basePath.value}/share`),
 			icon: UserPlusIcon,
 		})
 	}
