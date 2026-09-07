@@ -2440,9 +2440,9 @@ provideAppUpdateDownloadProgress(appUpdateDownload)
 <style lang="scss" scoped>
 .app-grid-layout,
 .app-contents {
-	--top-bar-height: 3rem;
-	--left-bar-width: 4rem;
-	--right-bar-width: 300px;
+	--top-bar-height: 3.25rem;
+	--left-bar-width: 4.5rem;
+	--right-bar-width: 18rem;
 }
 
 .app-grid-layout {
@@ -2452,7 +2452,7 @@ provideAppUpdateDownloadProgress(appUpdateDownload)
 	grid-template-rows: auto 1fr;
 	position: relative;
 	//z-index: 0;
-	background-color: var(--color-raised-bg);
+	background-color: var(--bread-color-surface-muted);
 	height: 100vh;
 }
 
@@ -2460,6 +2460,8 @@ provideAppUpdateDownloadProgress(appUpdateDownload)
 	grid-area: nav;
 	position: relative;
 	z-index: 2;
+	border-right: 1px solid var(--bread-color-border-subtle);
+	background-color: var(--bread-color-surface-muted);
 }
 
 .app-grid-statusbar {
@@ -2467,6 +2469,8 @@ provideAppUpdateDownloadProgress(appUpdateDownload)
 	padding-right: var(--window-controls-width, 0px);
 	position: relative;
 	z-index: 2;
+	border-bottom: 1px solid var(--bread-color-border-subtle);
+	background-color: var(--bread-color-surface-muted);
 }
 
 [data-tauri-drag-region-exclude] {
@@ -2481,26 +2485,26 @@ provideAppUpdateDownloadProgress(appUpdateDownload)
 	right: 0;
 	bottom: 0;
 	height: calc(100vh - var(--top-bar-height));
-	background-color: var(--color-bg);
-	border-top-left-radius: var(--radius-xl);
+	background-color: var(--bread-color-surface);
+	border-top-left-radius: 0;
 
 	display: grid;
 	grid-template-columns: 1fr 0px;
 	// transition: grid-template-columns 0.4s ease-in-out;
 
 	&.sidebar-enabled {
-		grid-template-columns: 1fr 300px;
+		grid-template-columns: 1fr var(--right-bar-width);
 	}
 }
 
 .loading-indicator-container {
-	border-top-left-radius: var(--radius-xl);
+	border-top-left-radius: 0;
 	overflow: hidden;
 }
 
 .app-sidebar {
 	overflow: visible;
-	width: 300px;
+	width: var(--right-bar-width);
 	position: relative;
 	height: calc(100vh - var(--top-bar-height));
 	background: var(--brand-gradient-bg);
@@ -2571,9 +2575,9 @@ provideAppUpdateDownloadProgress(appUpdateDownload)
 	top: var(--top-bar-height);
 	right: calc(-1 * var(--left-bar-width));
 	bottom: calc(-1 * var(--left-bar-width));
-	border-radius: var(--radius-xl);
-	box-shadow: 1px 1px 15px rgba(0, 0, 0, 0.1) inset;
-	border-color: var(--surface-5);
+	border-radius: 0;
+	box-shadow: inset 0 1px 0 rgb(255 239 218 / 2%);
+	border-color: var(--bread-color-border-subtle);
 	border-width: 1px;
 	border-style: solid;
 	pointer-events: none;

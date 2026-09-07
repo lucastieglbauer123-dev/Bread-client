@@ -3,7 +3,6 @@
 @tailwind utilities;
 
 @import '@modrinth/ui/src/styles/tailwind-utilities.css';
-@import './bread-tokens';
 
 @font-face {
 	font-family: 'bundled-minecraft-font-mrapp';
@@ -186,6 +185,7 @@ img {
 }
 
 @import '@modrinth/assets/omorphia.scss';
+@import './bread-tokens';
 
 input {
 	border-radius: var(--size-rounded-sm);
