@@ -1,8 +1,18 @@
 import { prepareThemeColorTransition } from '@modrinth/ui'
 import { computed, reactive, ref, watch } from 'vue'
 
-export const THEME_OPTIONS = ['dark', 'light', 'oled', 'retro', 'system'] as const
-export const DARK_THEMES = ['dark', 'oled', 'retro'] as const
+export const THEME_OPTIONS = [
+	'dark',
+	'standard',
+	'bread',
+	'purple',
+	'amber',
+	'light',
+	'oled',
+	'retro',
+	'system',
+] as const
+export const DARK_THEMES = ['dark', 'standard', 'bread', 'purple', 'amber', 'oled', 'retro'] as const
 
 export type ColorTheme = (typeof THEME_OPTIONS)[number]
 export type DarkTheme = (typeof DARK_THEMES)[number]
@@ -32,7 +42,7 @@ function loadPreferredTheme(): ColorTheme {
 		}
 	}
 
-	return 'dark'
+	return 'bread'
 }
 
 function loadPreferredDarkTheme(): DarkTheme {
@@ -45,7 +55,7 @@ function loadPreferredDarkTheme(): DarkTheme {
 		// storage blocked or full
 	}
 
-	return 'dark'
+	return 'bread'
 }
 
 const preferred = ref<ColorTheme>(loadPreferredTheme())

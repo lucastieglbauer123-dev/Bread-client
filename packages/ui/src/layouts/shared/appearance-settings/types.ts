@@ -1,7 +1,9 @@
 import type { Labrinth } from '@modrinth/api-client'
 import type { ComputedRef, Ref } from 'vue'
 
-export type AppearanceTheme = Labrinth.Users.v3.Theme
+export const BREAD_THEME_OPTIONS = ['standard', 'bread', 'purple', 'amber'] as const
+export type BreadTheme = (typeof BREAD_THEME_OPTIONS)[number]
+export type AppearanceTheme = Labrinth.Users.v3.Theme | BreadTheme
 export type AppearanceThemeSelection = AppearanceTheme | 'system'
 export type ProjectLayout = Labrinth.Users.v3.LayoutOption
 export type SidebarPreferences = Labrinth.Users.v3.SidebarPreferences

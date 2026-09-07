@@ -393,3 +393,56 @@ textarea {
 	border-radius: var(--bread-radius-md) !important;
 	background: var(--bread-color-surface-muted) !important;
 }
+
+/* Appearance opens in the existing settings modal, but the modal surface and
+ * navigation use the same shell language as the Bread sidebar. */
+.bread-settings-modal {
+	width: min(72rem, calc(100vw - 2rem)) !important;
+	max-width: none !important;
+	background: var(--bread-color-surface) !important;
+	border: 1px solid var(--bread-color-border-subtle) !important;
+	border-radius: var(--bread-radius-xl) !important;
+}
+
+.bread-settings-modal > [data-modal-content] {
+	background: var(--bread-color-surface) !important;
+}
+
+.bread-settings-modal > [data-modal-content] > .grid {
+	grid-template-columns: minmax(12rem, 16rem) minmax(0, 1fr) !important;
+	gap: var(--bread-space-6);
+	padding: var(--bread-space-6) !important;
+}
+
+.bread-settings-modal > [data-modal-content] > .grid > div:first-child {
+	padding-right: var(--bread-space-5) !important;
+	border-color: var(--bread-color-border-subtle) !important;
+}
+
+.bread-settings-modal > [data-modal-content] > .grid > div:first-child button {
+	border-radius: var(--bread-radius-md) !important;
+	color: var(--bread-color-text-muted) !important;
+}
+
+.bread-settings-modal > [data-modal-content] > .grid > div:first-child button:hover {
+	background: var(--bread-color-surface-subtle) !important;
+	color: var(--bread-color-text) !important;
+}
+
+.bread-settings-modal > [data-modal-content] > .grid > div:first-child button.bg-button-bgSelected {
+	background: var(--bread-color-surface-raised) !important;
+	color: var(--bread-color-brand) !important;
+}
+
+@media (max-width: 52rem) {
+	.bread-settings-modal > [data-modal-content] > .grid {
+		grid-template-columns: 1fr !important;
+	}
+
+	.bread-settings-modal > [data-modal-content] > .grid > div:first-child {
+		max-height: none !important;
+		padding: 0 0 var(--bread-space-4) !important;
+		border-right: 0;
+		border-bottom: 1px solid var(--bread-color-border-subtle);
+	}
+}

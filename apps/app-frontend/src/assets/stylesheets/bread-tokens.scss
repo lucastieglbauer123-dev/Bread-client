@@ -102,3 +102,182 @@
 	--splash-overlay: rgb(31 20 15 / 72%);
 	--font-standard: var(--bread-font-body);
 }
+
+/* Theme variants use the same compatibility variables as the original
+ * launcher, so existing components react to a theme choice without needing
+ * a second data or component path. */
+@mixin bread-theme(
+	$bg,
+	$surface,
+	$surface-muted,
+	$surface-subtle,
+	$surface-panel,
+	$surface-raised,
+	$surface-elevated,
+	$border,
+	$border-subtle,
+	$border-strong,
+	$text,
+	$text-muted,
+	$text-subtle,
+	$brand,
+	$brand-bright,
+	$brand-hover,
+	$brand-contrast
+) {
+	--bread-color-bg: #{$bg};
+	--bread-color-surface: #{$surface};
+	--bread-color-surface-muted: #{$surface-muted};
+	--bread-color-surface-subtle: #{$surface-subtle};
+	--bread-color-surface-panel: #{$surface-panel};
+	--bread-color-surface-raised: #{$surface-raised};
+	--bread-color-surface-elevated: #{$surface-elevated};
+	--bread-color-border: #{$border};
+	--bread-color-border-subtle: #{$border-subtle};
+	--bread-color-border-strong: #{$border-strong};
+	--bread-color-text: #{$text};
+	--bread-color-text-muted: #{$text-muted};
+	--bread-color-text-subtle: #{$text-subtle};
+	--bread-color-brand: #{$brand};
+	--bread-color-brand-bright: #{$brand-bright};
+	--bread-color-brand-hover: #{$brand-hover};
+	--bread-color-brand-contrast: #{$brand-contrast};
+	--bread-color-brand-shadow: #{rgba($brand, 0.42)};
+
+	--surface-1: #{$bg};
+	--surface-1-5: #{$surface-muted};
+	--surface-2: #{$surface-muted};
+	--surface-2-5: #{$surface-subtle};
+	--surface-3: #{$surface};
+	--surface-4: #{$surface-raised};
+	--surface-5: #{$border-subtle};
+	--color-bg: #{$surface};
+	--color-raised-bg: #{$surface-muted};
+	--color-super-raised-bg: #{$surface-raised};
+	--color-button-bg: #{$surface-raised};
+	--color-button-border: #{$border-subtle};
+	--color-scrollbar: #{$border};
+	--color-divider: #{$border-subtle};
+	--color-divider-dark: #{$border-strong};
+	--color-text-primary: #{$text};
+	--color-text-default: #{$text-muted};
+	--color-text-tertiary: #{$text-subtle};
+	--color-base: #{$text-muted};
+	--color-secondary: #{$text-subtle};
+	--color-contrast: #{$text};
+	--color-accent-contrast: #{$brand-contrast};
+	--color-green: #{$brand};
+	--color-green-highlight: #{rgba($brand, 0.22)};
+	--color-green-bg: #{rgba($brand, 0.12)};
+	--color-brand: #{$brand};
+	--color-brand-highlight: #{rgba($brand, 0.22)};
+	--color-brand-shadow: #{rgba($brand, 0.42)};
+	--color-button-bg-selected: #{$brand};
+	--color-button-text-selected: #{$brand-contrast};
+	--brand-gradient-bg: #{linear-gradient(180deg, $surface 0%, $bg 100%)};
+	--brand-gradient-strong-bg: #{linear-gradient(180deg, $surface-panel 0%, $surface-muted 100%)};
+	--brand-gradient-button: #{$surface-panel};
+	--brand-gradient-border: #{$border-subtle};
+	--brand-gradient-fade-out-color: #{linear-gradient(to bottom, rgba($bg, 0), $bg 78%)};
+	--color-gradient-button-bg: #{linear-gradient(180deg, $surface-elevated 0%, $surface-raised 100%)};
+	--loading-bar-gradient: #{linear-gradient(90deg, $brand 0%, $brand-bright 100%)};
+	--color-ad: #{$surface-panel};
+	--color-ad-raised: #{$surface-raised};
+	--color-ad-contrast: #{$text};
+	--color-ad-highlight: #{$brand};
+	--splash-tint-top: #{rgba($brand, 0.18)};
+	--splash-tint-bottom: #{rgba($brand-contrast, 0.58)};
+	--splash-overlay: #{rgba($bg, 0.72)};
+}
+
+html.standard-mode,
+.standard-mode {
+	@include bread-theme(
+		#0e1511,
+		#172019,
+		#111813,
+		#1d2a20,
+		#243228,
+		#2b3b2c,
+		#344a35,
+		#405743,
+		#2d3e30,
+		#58705a,
+		#f2f8ef,
+		#a8b8a9,
+		#809582,
+		#cbed57,
+		#dcff74,
+		#e9ff9c,
+		#16210e
+	);
+}
+
+html.bread-mode,
+.bread-mode {
+	@include bread-theme(
+		#130d0b,
+		#211713,
+		#19110e,
+		#281b16,
+		#302019,
+		#38251d,
+		#432c21,
+		#5c3a28,
+		#422b20,
+		#7a4b2b,
+		#fff6e9,
+		#c4aea0,
+		#927d71,
+		#f3a936,
+		#ffc45a,
+		#ffd071,
+		#2b190b
+	);
+}
+
+html.purple-mode,
+.purple-mode {
+	@include bread-theme(
+		#0f0b16,
+		#1a1324,
+		#140e1c,
+		#251832,
+		#302042,
+		#3d2851,
+		#4d3165,
+		#68467f,
+		#4b315f,
+		#845ca0,
+		#fbf3ff,
+		#c9b6d8,
+		#9580a7,
+		#c287ff,
+		#d9adff,
+		#e8ccff,
+		#21112d
+	);
+}
+
+html.amber-mode,
+.amber-mode {
+	@include bread-theme(
+		#17100b,
+		#251711,
+		#1d130d,
+		#332016,
+		#3f2a1a,
+		#51351f,
+		#624329,
+		#7a542e,
+		#593b24,
+		#966a3e,
+		#fff4e4,
+		#cbb29b,
+		#967d69,
+		#52d3c3,
+		#86eee0,
+		#a8fff2,
+		#092622
+	);
+}

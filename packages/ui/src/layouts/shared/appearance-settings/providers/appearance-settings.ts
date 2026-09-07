@@ -15,6 +15,10 @@ import type {
 	WritableAppearanceSetting,
 } from '../types'
 
+function isRemoteAppearanceTheme(theme: AppearanceTheme): theme is Labrinth.Users.v3.Theme {
+	return theme === 'light' || theme === 'dark' || theme === 'oled' || theme === 'retro'
+}
+
 interface AppearanceSetting<T> {
 	value: AppearanceRef<T>
 	update: AppearanceSetter<T>
@@ -109,6 +113,8 @@ export function provideAppearanceSettings(
 	const sidebarPreferences = options.sidebarPreferences
 
 	async function syncThemePreference(theme: AppearanceThemeSelection): Promise<void> {
+		if (theme !== 'system' && !isRemoteAppearanceTheme(theme)) return
+
 		await options.updatePreferences({
 			appearance:
 				theme === 'system'

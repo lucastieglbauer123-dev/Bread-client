@@ -297,6 +297,7 @@ const messages = defineMessages({
 <template>
 	<TabbedModal
 		ref="modal"
+		class="bread-settings-modal"
 		:tabs="availableTabs"
 		:width="'min(928px, calc(95vw - 10rem))'"
 		:before-hide="canLeaveCurrentTab"

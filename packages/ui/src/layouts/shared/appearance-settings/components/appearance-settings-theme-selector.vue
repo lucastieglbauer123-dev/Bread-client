@@ -30,6 +30,22 @@ const themeLabels = defineMessages({
 		id: 'settings.display.theme.dark',
 		defaultMessage: 'Dark',
 	},
+	standard: {
+		id: 'settings.display.theme.standard',
+		defaultMessage: 'Standard',
+	},
+	bread: {
+		id: 'settings.display.theme.bread',
+		defaultMessage: 'Bread',
+	},
+	purple: {
+		id: 'settings.display.theme.purple',
+		defaultMessage: 'Purple and black',
+	},
+	amber: {
+		id: 'settings.display.theme.amber',
+		defaultMessage: 'Amber and turquoise',
+	},
 	oled: {
 		id: 'settings.display.theme.oled',
 		defaultMessage: 'OLED',
@@ -126,6 +142,13 @@ function getPreviewClass(option: T): string {
 
 		&.retro-mode {
 			@extend .retro-mode;
+		}
+
+		&.standard-mode,
+		&.bread-mode,
+		&.purple-mode,
+		&.amber-mode {
+			border-color: var(--bread-color-border-subtle);
 		}
 	}
 

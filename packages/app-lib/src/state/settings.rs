@@ -337,6 +337,10 @@ impl Settings {
 #[serde(rename_all = "snake_case")]
 pub enum Theme {
     Dark,
+    Standard,
+    Bread,
+    Purple,
+    Amber,
     Light,
     Oled,
     Retro,
@@ -347,6 +351,10 @@ impl Theme {
     pub fn as_str(&self) -> &'static str {
         match self {
             Theme::Dark => "dark",
+            Theme::Standard => "standard",
+            Theme::Bread => "bread",
+            Theme::Purple => "purple",
+            Theme::Amber => "amber",
             Theme::Light => "light",
             Theme::Oled => "oled",
             Theme::Retro => "retro",
@@ -357,6 +365,10 @@ impl Theme {
     pub fn from_string(string: &str) -> Theme {
         match string {
             "dark" => Theme::Dark,
+            "standard" => Theme::Standard,
+            "bread" => Theme::Bread,
+            "purple" => Theme::Purple,
+            "amber" => Theme::Amber,
             "light" => Theme::Light,
             "oled" => Theme::Oled,
             "retro" => Theme::Retro,
