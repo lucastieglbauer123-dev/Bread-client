@@ -9,18 +9,20 @@
 			'subpage-active': isSubpage && isSubpage(route),
 			disabled: disabled,
 		}"
-		class="w-11 h-11 text-primary rounded-[var(--bread-radius-md)] flex items-center justify-center text-2xl transition-all bg-transparent hover:bg-button-bg hover:text-contrast"
+		class="bread-nav-button w-11 h-11 text-primary rounded-[var(--bread-radius-md)] flex items-center justify-center text-2xl transition-all bg-transparent hover:bg-button-bg hover:text-contrast"
 	>
 		<slot />
+		<span v-if="label" class="bread-nav-button__label">{{ label }}</span>
 	</RouterLink>
 	<button
 		v-else
 		v-bind="$attrs"
-		class="button-animation border-none text-primary cursor-pointer w-11 h-11 rounded-[var(--bread-radius-md)] flex items-center justify-center text-2xl transition-all bg-transparent hover:bg-button-bg hover:text-contrast"
+		class="bread-nav-button button-animation border-none text-primary cursor-pointer w-11 h-11 rounded-[var(--bread-radius-md)] flex items-center justify-center text-2xl transition-all bg-transparent hover:bg-button-bg hover:text-contrast"
 		:disabled="disabled"
 		@click="to"
 	>
 		<slot />
+		<span v-if="label" class="bread-nav-button__label">{{ label }}</span>
 	</button>
 </template>
 
@@ -39,9 +41,11 @@ withDefaults(
 		isSubpage?: RouteFunction
 		highlightOverride?: boolean
 		disabled?: boolean
+		label?: string
 	}>(),
 	{
 		disabled: false,
+		label: undefined,
 	},
 )
 
@@ -67,5 +71,20 @@ defineOptions({
 .subpage-active {
 	color: var(--bread-color-brand) !important;
 	background-color: var(--bread-color-surface-panel) !important;
+}
+
+.bread-nav-button:has(.bread-nav-button__label) {
+	width: 100%;
+	justify-content: flex-start;
+	gap: 0.75rem;
+	padding: 0 0.75rem;
+	font-size: 1rem;
+	font-weight: 600;
+	text-align: left;
+}
+
+.bread-nav-button__label {
+	font-size: 0.9375rem;
+	letter-spacing: 0;
 }
 </style>

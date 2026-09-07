@@ -12,7 +12,7 @@
 <script setup lang="ts">
 withDefaults(
 	defineProps<{
-		variant?: 'header' | 'splash'
+		variant?: 'header' | 'sidebar' | 'splash'
 	}>(),
 	{
 		variant: 'header',
@@ -71,6 +71,21 @@ withDefaults(
 .bread-logo--splash {
 	gap: 0.75rem;
 	font-size: 2rem;
+}
+
+.bread-logo--sidebar {
+	align-self: flex-start;
+	margin: 1.25rem 0.5rem 1.5rem;
+	font-size: 1.35rem;
+}
+
+.bread-logo--sidebar .bread-logo__wordmark {
+	font-size: 0;
+}
+
+.bread-logo--sidebar .bread-logo__wordmark::after {
+	content: 'bread';
+	font-size: 1.35rem;
 }
 
 .bread-logo--splash .bread-logo__mark {

@@ -564,5 +564,7 @@ onMounted(startInstanceGridResizeObserver)
 
 .bread-instance-grid {
 	padding-top: var(--bread-space-1);
+	grid-template-columns: repeat(auto-fit, minmax(min(17rem, 100%), 1fr)) !important;
+	gap: var(--bread-space-4) !important;
 }
 </style>

@@ -25,7 +25,11 @@ const props = defineProps<{
 
 const { formatMessage } = useVIntl()
 const messages = defineMessages({
-	library: { id: 'app.library.title', defaultMessage: 'Library' },
+	library: { id: 'app.library.title', defaultMessage: 'Your instances' },
+	libraryDescription: {
+		id: 'app.library.description',
+		defaultMessage: 'Your own worlds, exactly how you want them.',
+	},
 	noSearchResults: {
 		id: 'app.library.search.no-results.title',
 		defaultMessage: 'No instances match your search.',
@@ -246,9 +250,16 @@ watch(selectedLibraryInstances, (selectedInstances) => {
 <template>
 	<InstanceGroupDnd :instances="instances">
 		<section data-library-page-background class="bread-library flex flex-col gap-4 pb-16 min-h-[500px]">
-			<h2 class="m-0 text-3xl font-semibold text-contrast">
-				{{ formatMessage(messages.library) }}
-			</h2>
+			<div class="bread-library-heading">
+				<div>
+					<h2 class="m-0 text-3xl font-semibold text-contrast">
+						{{ formatMessage(messages.library) }}
+						<span class="bread-library-count">{{ instances.length }}</span>
+					</h2>
+					<p>{{ formatMessage(messages.libraryDescription) }}</p>
+				</div>
+				<span class="bread-library-view-all">View all <span aria-hidden="true">→</span></span>
+			</div>
 			<LibraryToolbar />
 			<div
 				v-if="libraryGroupsLoaded && isSearching && visibleInstanceGroups.length === 0"
@@ -383,6 +394,47 @@ watch(selectedLibraryInstances, (selectedInstances) => {
 .bread-library h2 {
 	font-family: var(--bread-font-display);
 	letter-spacing: -0.04em;
+}
+
+.bread-library-heading {
+	display: flex;
+	align-items: flex-end;
+	justify-content: space-between;
+	gap: 1rem;
+}
+
+.bread-library-heading h2 {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+}
+
+.bread-library-heading p {
+	margin: 0.2rem 0 0;
+	color: var(--bread-color-text-muted);
+	font-size: 0.82rem;
+}
+
+.bread-library-count {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 1.35rem;
+	height: 1.35rem;
+	padding: 0 0.35rem;
+	border-radius: var(--bread-radius-pill);
+	background: var(--bread-color-surface-raised);
+	color: var(--bread-color-text-muted);
+	font-family: var(--bread-font-body);
+	font-size: 0.72rem;
+	letter-spacing: 0;
+	vertical-align: middle;
+}
+
+.bread-library-view-all {
+	color: var(--bread-color-brand-bright);
+	font-size: 0.82rem;
+	font-weight: 700;
 }
 
 :global(.instance-group-reorder-ghost) {

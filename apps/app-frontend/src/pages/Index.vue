@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { PlayIcon, PlusIcon } from '@modrinth/assets'
-import { ContextMenu, defineMessages, injectNotificationManager, useVIntl } from '@modrinth/ui'
+import { FolderOpenIcon, PlayIcon, PlusIcon } from '@modrinth/assets'
+import { Button, ContextMenu, defineMessages, injectNotificationManager, useVIntl } from '@modrinth/ui'
 import { useQuery } from '@tanstack/vue-query'
 import dayjs from 'dayjs'
 import { computed, inject, onActivated, ref } from 'vue'
@@ -36,6 +36,22 @@ const messages = defineMessages({
 	libraryActionsLabel: {
 		id: 'app.library.actions.label',
 		defaultMessage: 'Library actions',
+	},
+	installationFound: {
+		id: 'app.library.installation-found',
+		defaultMessage: 'Minecraft installation found',
+	},
+	installationFoundDescription: {
+		id: 'app.library.installation-found.description',
+		defaultMessage: '{count, plural, one {# game folder} other {# game folders}} detected',
+	},
+	refreshInstallation: {
+		id: 'app.library.installation-found.refresh',
+		defaultMessage: 'Refresh',
+	},
+	findNextWorld: {
+		id: 'app.library.find-next-world',
+		defaultMessage: 'Find your next world',
 	},
 })
 
@@ -89,11 +105,35 @@ function openPageContextMenu(event: MouseEvent) {
 		class="bread-library-page flex flex-col gap-4 p-6"
 		@contextmenu="openPageContextMenu"
 	>
-		<RecentWorldsList
-			v-if="recentInstances?.length > 0 && appSettings.getFeatureFlag('worlds_in_home')"
-			:recent-instances="recentInstances"
-		/>
 		<LibrarySection :instances="instances" />
+		<div v-if="instances.length > 0" class="bread-installation-found">
+			<div class="bread-installation-found__icon">
+				<FolderOpenIcon />
+			</div>
+			<div class="bread-installation-found__copy">
+				<strong>{{ formatMessage(messages.installationFound) }}</strong>
+				<span>
+					{{
+						formatMessage(messages.installationFoundDescription, { count: instances.length })
+					}}
+				</span>
+			</div>
+			<Button type="quiet" size="sm" class="bread-installation-found__refresh" @click="instancesQuery.refetch()">
+				{{ formatMessage(messages.refreshInstallation) }}
+			</Button>
+		</div>
+		<section
+			v-if="recentInstances?.length > 0 && appSettings.getFeatureFlag('worlds_in_home')"
+			class="bread-next-worlds"
+		>
+			<div class="bread-next-worlds__heading">
+				<div>
+					<h2>{{ formatMessage(messages.findNextWorld) }}</h2>
+					<p>Hand-picked adventures from the community.</p>
+				</div>
+			</div>
+			<RecentWorldsList :recent-instances="recentInstances" section-title="Find your next world" />
+		</section>
 		<ContextMenu ref="pageOptions" :label="formatMessage(messages.libraryActionsLabel)" />
 	</div>
 </template>
@@ -101,5 +141,83 @@ function openPageContextMenu(event: MouseEvent) {
 <style scoped>
 .bread-library-page {
 	background: var(--bread-color-surface);
+}
+
+.bread-installation-found {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+	margin-top: 0.25rem;
+	padding: 0.9rem 1rem;
+	border: 1px solid var(--bread-color-border-subtle);
+	border-radius: var(--bread-radius-lg);
+	background: var(--bread-color-surface-subtle);
+}
+
+.bread-installation-found__icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 2rem;
+	height: 2rem;
+	flex: 0 0 auto;
+	border-radius: var(--bread-radius-md);
+	background: rgb(243 169 54 / 16%);
+	color: var(--bread-color-brand-bright);
+}
+
+.bread-installation-found__icon svg {
+	width: 1.2rem;
+	height: 1.2rem;
+}
+
+.bread-installation-found__copy {
+	display: flex;
+	flex-direction: column;
+	gap: 0.15rem;
+	min-width: 0;
+}
+
+.bread-installation-found__copy strong {
+	color: var(--bread-color-text);
+	font-size: 0.9rem;
+}
+
+.bread-installation-found__copy span {
+	color: var(--bread-color-text-muted);
+	font-size: 0.78rem;
+}
+
+.bread-installation-found__refresh {
+	margin-left: auto;
+	color: var(--bread-color-brand-bright) !important;
+}
+
+.bread-next-worlds {
+	margin-top: 0.5rem;
+}
+
+.bread-next-worlds__heading {
+	display: flex;
+	align-items: flex-end;
+	justify-content: space-between;
+	margin-bottom: 0.25rem;
+}
+
+.bread-next-worlds__heading h2 {
+	margin: 0;
+	font-family: var(--bread-font-display);
+	font-size: 1.4rem;
+	letter-spacing: -0.035em;
+}
+
+.bread-next-worlds__heading p {
+	margin: 0.25rem 0 0;
+	color: var(--bread-color-text-muted);
+	font-size: 0.82rem;
+}
+
+.bread-next-worlds :deep(.text-2xl) {
+	display: none;
 }
 </style>

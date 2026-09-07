@@ -93,7 +93,6 @@ import UpdateToPlayModal from '@/components/ui/modal/UpdateToPlayModal.vue'
 import NavButton from '@/components/ui/NavButton.vue'
 import NewIconEditorNotification from '@/components/ui/new-icon-editor-notification/index.vue'
 import { shouldShowNewIconEditorNotification } from '@/components/ui/new-icon-editor-notification/show-notification'
-import OnboardingChecklist from '@/components/ui/onboarding-checklist/index.vue'
 import PrideFundraiserBanner from '@/components/ui/PrideFundraiserBanner.vue'
 import QuickInstanceSwitcher from '@/components/ui/QuickInstanceSwitcher.vue'
 import SharedInstanceInviteHandler from '@/components/ui/shared-instances/shared-instance-invite-handler/index.vue'
@@ -391,7 +390,7 @@ const {
 	(iconPath) =>
 		creationGeneratedIcon.value?.path === iconPath ? creationGeneratedIcon.value.config : null,
 )
-const { hasLoggedIntoMinecraft, hasLoggedIntoModrinth, showChecklist } = onboardingChecklist
+const { hasLoggedIntoModrinth, showChecklist } = onboardingChecklist
 const showFriendsList = computed(() => !showChecklist.value || hasLoggedIntoModrinth.value)
 
 async function randomizeCreationIcon() {
@@ -586,7 +585,19 @@ const messages = defineMessages({
 	},
 	home: {
 		id: 'app.nav.home',
-		defaultMessage: 'Home',
+		defaultMessage: 'Play',
+	},
+	downloads: {
+		id: 'app.nav.downloads',
+		defaultMessage: 'Downloads',
+	},
+	files: {
+		id: 'app.nav.files',
+		defaultMessage: 'Files',
+	},
+	notifications: {
+		id: 'app.nav.notifications',
+		defaultMessage: 'Notifications',
 	},
 	modrinthHosting: {
 		id: 'app.nav.modrinth-hosting',
@@ -2060,9 +2071,17 @@ provideAppUpdateDownloadProgress(appUpdateDownload)
 		<div
 			class="app-grid-navbar bg-bg-raised flex flex-col p-[0.5rem] pt-0 gap-[0.25rem] w-[--left-bar-width]"
 		>
+			<BreadLogo variant="sidebar" class="bread-sidebar-logo" />
+			<div class="bread-account-selector">
+				<suspense>
+					<AccountsCard ref="accounts" />
+				</suspense>
+			</div>
+			<div class="bread-nav-links">
 			<NavButton
 				v-tooltip.right="formatMessage(messages.home)"
 				to="/"
+				:label="formatMessage(messages.home)"
 				:is-primary="(route) => route.path === '/'"
 				:is-subpage="
 					() =>
@@ -2074,6 +2093,7 @@ provideAppUpdateDownloadProgress(appUpdateDownload)
 			<NavButton
 				v-tooltip.right="formatMessage(commonMessages.discoverContentLabel)"
 				to="/browse/modpack"
+				:label="formatMessage(commonMessages.discoverContentLabel)"
 				:is-primary="() => route.path.startsWith('/browse') && !route.query.i && !route.query.sid"
 				:is-subpage="
 					(route) => route.path.startsWith('/project') && !route.query.i && !route.query.sid
@@ -2081,6 +2101,16 @@ provideAppUpdateDownloadProgress(appUpdateDownload)
 			>
 				<CompassIcon />
 			</NavButton>
+			<div class="bread-nav-item bread-nav-item--placeholder" aria-disabled="true">
+				<RefreshCwIcon />
+				<span>{{ formatMessage(messages.downloads) }}</span>
+			</div>
+			<div class="bread-nav-item bread-nav-item--placeholder" aria-disabled="true">
+				<ImagesIcon />
+				<span>{{ formatMessage(messages.files) }}</span>
+			</div>
+			</div>
+			<div class="bread-nav-secondary">
 			<NavButton v-tooltip.right="formatMessage(appMessages.skinSelectorLabel)" to="/skins">
 				<ShirtIcon />
 			</NavButton>
@@ -2103,6 +2133,7 @@ provideAppUpdateDownloadProgress(appUpdateDownload)
 			>
 				<ServerStackIcon />
 			</NavButton>
+			</div>
 			<suspense>
 				<QuickInstanceSwitcher />
 			</suspense>
@@ -2114,13 +2145,29 @@ provideAppUpdateDownloadProgress(appUpdateDownload)
 				<PlusIcon />
 			</NavButton>
 			<div class="flex flex-grow"></div>
+			<div class="bread-sidebar-footer">
+				<div class="bread-nav-item bread-nav-item--notifications" aria-label="Notifications">
+					<RefreshCwIcon />
+					<span>{{ formatMessage(messages.notifications) }}</span>
+					<span class="bread-notification-badge">2</span>
+				</div>
 			<NavButton
 				v-tooltip.right="formatMessage(commonMessages.settingsLabel)"
 				:to="() => appSettingsModal?.show()"
+				:label="formatMessage(commonMessages.settingsLabel)"
 			>
 				<SettingsIcon />
 			</NavButton>
-			<span v-tooltip.right="profileButtonTooltip" class="inline-flex">
+				<button type="button" class="bread-make-yours" @click="appSettingsModal?.show()">
+					<span class="bread-make-yours__icon"><PlusIcon /></span>
+					<span class="bread-make-yours__copy">
+						<strong>Make it yours</strong>
+						<small>Customize every instance.</small>
+						<em>Explore themes</em>
+					</span>
+				</button>
+			</div>
+			<span v-tooltip.right="profileButtonTooltip" class="bread-modrinth-account inline-flex">
 				<IconButton
 					v-if="credentials === undefined"
 					type="quiet"
@@ -2186,7 +2233,7 @@ provideAppUpdateDownloadProgress(appUpdateDownload)
 		</div>
 		<div data-tauri-drag-region class="app-grid-statusbar bg-bg-raised h-[--top-bar-height] flex">
 			<div data-tauri-drag-region class="flex min-w-0 flex-1 items-center overflow-hidden p-2">
-				<BreadLogo class="h-7 shrink-0 pointer-events-none" />
+				<BreadLogo class="bread-status-logo h-7 shrink-0 pointer-events-none" />
 				<div data-tauri-drag-region class="ml-2 flex shrink-0 items-center gap-2">
 					<IconButton
 						type="outlined"
@@ -2308,23 +2355,8 @@ provideAppUpdateDownloadProgress(appUpdateDownload)
 				:class="{ 'pb-12': !hasPlus }"
 				data-overlayscrollbars-initialize
 			>
-				<OnboardingChecklist
-					@create-instance="installationModal?.show()"
-					@login-minecraft="accounts?.login()"
-				/>
 				<div id="sidebar-teleport-target" class="sidebar-teleport-content"></div>
 				<div class="sidebar-default-content" :class="{ 'sidebar-enabled': sidebarVisible }">
-					<div
-						v-show="hasLoggedIntoMinecraft"
-						class="p-4 border-0 border-b-[1px] border-[--brand-gradient-border] border-solid"
-					>
-						<h3 class="text-base text-primary font-medium m-0">
-							{{ formatMessage(messages.playingAs) }}
-						</h3>
-						<suspense>
-							<AccountsCard ref="accounts" />
-						</suspense>
-					</div>
 					<div
 						v-show="showFriendsList"
 						class="p-4 border-0 border-b-[1px] border-[--brand-gradient-border] border-solid"
@@ -2428,7 +2460,7 @@ provideAppUpdateDownloadProgress(appUpdateDownload)
 .app-grid-layout,
 .app-contents {
 	--top-bar-height: 3.25rem;
-	--left-bar-width: 4.5rem;
+	--left-bar-width: 15.25rem;
 	--right-bar-width: 18rem;
 }
 
@@ -2447,17 +2479,182 @@ provideAppUpdateDownloadProgress(appUpdateDownload)
 	grid-area: nav;
 	position: relative;
 	z-index: 2;
+	min-width: 0;
+	overflow-y: auto;
+	padding: 0.75rem 1rem 1rem;
 	border-right: 1px solid var(--bread-color-border-subtle);
 	background-color: var(--bread-color-surface-muted);
 }
 
 .app-grid-statusbar {
 	grid-area: status;
+	padding-left: var(--left-bar-width);
 	padding-right: var(--window-controls-width, 0px);
 	position: relative;
 	z-index: 2;
 	border-bottom: 1px solid var(--bread-color-border-subtle);
 	background-color: var(--bread-color-surface-muted);
+}
+
+.bread-status-logo {
+	display: none;
+}
+
+.bread-nav-links,
+.bread-nav-secondary,
+.bread-sidebar-footer {
+	display: flex;
+	flex-direction: column;
+	gap: var(--bread-space-2);
+}
+
+.bread-nav-secondary {
+	margin-top: var(--bread-space-4);
+	padding-top: var(--bread-space-3);
+	border-top: 1px solid var(--bread-color-border-subtle);
+}
+
+.bread-sidebar-footer {
+	gap: var(--bread-space-2);
+}
+
+.bread-nav-item {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+	min-height: 2.75rem;
+	padding: 0 0.75rem;
+	border-radius: var(--bread-radius-md);
+	color: var(--bread-color-text-muted);
+	font-size: 0.9375rem;
+	font-weight: 600;
+}
+
+.bread-nav-item svg {
+	width: 1.25rem;
+	height: 1.25rem;
+	flex: 0 0 auto;
+}
+
+.bread-nav-item--placeholder {
+	color: var(--bread-color-text-subtle);
+	opacity: 0.9;
+}
+
+.bread-nav-item--notifications {
+	position: relative;
+}
+
+.bread-notification-badge {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 1.25rem;
+	height: 1.25rem;
+	margin-left: auto;
+	padding: 0 0.3rem;
+	border-radius: var(--bread-radius-pill);
+	background: var(--bread-color-brand-bright);
+	color: var(--bread-color-brand-contrast);
+	font-size: 0.7rem;
+	font-weight: 800;
+}
+
+.bread-account-selector {
+	margin-bottom: var(--bread-space-4);
+	padding: 0.25rem;
+	border: 1px solid var(--bread-color-border-subtle);
+	border-radius: var(--bread-radius-lg);
+	background: var(--bread-color-surface-panel);
+}
+
+.bread-account-selector :deep(.mt-2) {
+	margin-top: 0;
+}
+
+.bread-account-selector :deep(.bg-button-bg) {
+	background: transparent;
+}
+
+.bread-account-selector :deep(.border-surface-5) {
+	border-color: transparent;
+}
+
+.bread-account-selector :deep(.button-base) {
+	padding: 0.5rem;
+}
+
+.bread-account-selector :deep(.text-secondary) {
+	color: var(--bread-color-text-subtle);
+}
+
+.bread-sidebar-footer .bread-nav-button {
+	margin-top: 0.25rem;
+}
+
+.bread-make-yours {
+	display: flex;
+	align-items: flex-start;
+	gap: 0.7rem;
+	width: 100%;
+	padding: 0.75rem;
+	border: 1px solid var(--bread-color-border);
+	border-radius: var(--bread-radius-lg);
+	background: linear-gradient(135deg, var(--bread-color-surface-elevated), var(--bread-color-surface-panel));
+	color: var(--bread-color-text);
+	text-align: left;
+	cursor: pointer;
+	transition: border-color 0.15s ease, transform 0.15s ease;
+}
+
+.bread-make-yours:hover {
+	border-color: var(--bread-color-brand);
+	transform: translateY(-1px);
+}
+
+.bread-make-yours__icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 2rem;
+	height: 2rem;
+	flex: 0 0 auto;
+	border-radius: var(--bread-radius-md);
+	background: var(--bread-color-brand);
+	color: var(--bread-color-brand-contrast);
+}
+
+.bread-make-yours__icon svg {
+	width: 1.1rem;
+	height: 1.1rem;
+}
+
+.bread-make-yours__copy {
+	display: flex;
+	flex-direction: column;
+	gap: 0.15rem;
+	min-width: 0;
+}
+
+.bread-make-yours__copy strong {
+	font-size: 0.85rem;
+}
+
+.bread-make-yours__copy small {
+	color: var(--bread-color-text-muted);
+	font-size: 0.72rem;
+}
+
+.bread-make-yours__copy em {
+	margin-top: 0.25rem;
+	color: var(--bread-color-brand-bright);
+	font-size: 0.72rem;
+	font-style: normal;
+	font-weight: 700;
+}
+
+.bread-modrinth-account {
+	display: none;
 }
 
 [data-tauri-drag-region-exclude] {
@@ -2476,11 +2673,11 @@ provideAppUpdateDownloadProgress(appUpdateDownload)
 	border-top-left-radius: 0;
 
 	display: grid;
-	grid-template-columns: 1fr 0px;
+	grid-template-columns: 1fr;
 	// transition: grid-template-columns 0.4s ease-in-out;
 
 	&.sidebar-enabled {
-		grid-template-columns: 1fr var(--right-bar-width);
+		grid-template-columns: 1fr;
 	}
 }
 
@@ -2490,6 +2687,7 @@ provideAppUpdateDownloadProgress(appUpdateDownload)
 }
 
 .app-sidebar {
+	display: none;
 	overflow: visible;
 	width: var(--right-bar-width);
 	position: relative;
@@ -2502,6 +2700,14 @@ provideAppUpdateDownloadProgress(appUpdateDownload)
 	--surface-5: var(--brand-gradient-border);
 	--color-divider: var(--brand-gradient-border);
 	--color-divider-dark: var(--brand-gradient-border);
+}
+
+.loading-indicator-container {
+	width: calc(100% - var(--left-bar-width)) !important;
+}
+
+#background-teleport-target {
+	width: 100% !important;
 }
 
 .app-sidebar::after {

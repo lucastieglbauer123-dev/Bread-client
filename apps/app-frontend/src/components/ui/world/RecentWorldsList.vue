@@ -45,9 +45,15 @@ const messages = defineMessages({
 	resize: { id: 'app.home.jump-back-in.resize', defaultMessage: 'Drag to resize' },
 })
 
-const props = defineProps<{
-	recentInstances: GameInstance[]
-}>()
+const props = withDefaults(
+	defineProps<{
+		recentInstances: GameInstance[]
+		sectionTitle?: string
+	}>(),
+	{
+		sectionTitle: undefined,
+	},
+)
 
 const appSettings = useAppSettings()
 
@@ -392,7 +398,7 @@ onUnmounted(() => {
 	>
 		<template #title>
 			<span class="flex items-center gap-1 text-2xl font-semibold leading-none text-contrast mr-1">
-				{{ formatMessage(messages.jumpIn) }}
+				{{ props.sectionTitle ?? formatMessage(messages.jumpIn) }}
 			</span>
 		</template>
 		<div v-if="loading" class="text-center py-4">
