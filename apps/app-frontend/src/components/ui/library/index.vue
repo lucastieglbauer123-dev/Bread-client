@@ -437,6 +437,19 @@ watch(selectedLibraryInstances, (selectedInstances) => {
 	font-weight: 700;
 }
 
+.bread-library :deep(.bread-library-toolbar__secondary-action),
+.bread-library :deep(.bread-library-toolbar__filters) {
+	display: none;
+}
+
+.bread-library :deep(.bread-library-toolbar__primary) {
+	align-items: center;
+}
+
+.bread-library :deep(.bread-library-toolbar__primary > [data-button]:last-child) {
+	margin-left: auto;
+}
+
 :global(.instance-group-reorder-ghost) {
 	opacity: 0.35;
 }

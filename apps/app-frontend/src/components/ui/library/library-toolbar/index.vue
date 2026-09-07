@@ -27,8 +27,8 @@ function openNewGroup() {
 </script>
 
 <template>
-	<div class="flex flex-col gap-2">
-		<div class="flex flex-wrap gap-2">
+	<div class="bread-library-toolbar flex flex-col gap-2">
+		<div class="bread-library-toolbar__primary flex flex-wrap gap-2">
 			<Input
 				v-model="search"
 				:icon="SearchIcon"
@@ -37,7 +37,7 @@ function openNewGroup() {
 				clearable
 				wrapper-class="min-w-[16rem] flex-1"
 			/>
-			<Button @click="openNewGroup">
+			<Button class="bread-library-toolbar__secondary-action" @click="openNewGroup">
 				<SquarePlusIcon />
 				{{ formatMessage(messages.newGroup) }}
 			</Button>
@@ -46,7 +46,7 @@ function openNewGroup() {
 				{{ formatMessage(messages.newInstance) }}
 			</Button>
 		</div>
-		<div class="flex flex-wrap items-center gap-2">
+		<div class="bread-library-toolbar__filters flex flex-wrap items-center gap-2">
 			<SortMenu />
 			<div class="mx-2 h-6 w-px bg-surface-5" />
 			<FilterMenu />
