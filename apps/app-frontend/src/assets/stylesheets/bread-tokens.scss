@@ -18,6 +18,7 @@
 	--bread-color-brand-bright: #ffc45a;
 	--bread-color-brand-hover: #ffd071;
 	--bread-color-brand-contrast: #2b190b;
+	--bread-color-brand-shadow: rgb(243 169 54 / 42%);
 	--bread-color-danger: #f2aaa1;
 
 	/* Typography */
@@ -81,7 +82,7 @@
 	--color-green-bg: rgb(243 169 54 / 12%);
 	--color-brand: var(--bread-color-brand);
 	--color-brand-highlight: rgb(243 169 54 / 22%);
-	--color-brand-shadow: rgb(243 169 54 / 42%);
+	--color-brand-shadow: var(--bread-color-brand-shadow);
 	--color-button-bg-selected: var(--bread-color-brand);
 	--color-button-text-selected: var(--bread-color-brand-contrast);
 
