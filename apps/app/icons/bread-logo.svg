@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" role="img" aria-labelledby="title">
+	<title>Bread Client</title>
+	<rect width="1024" height="1024" rx="224" fill="#111411" />
+	<rect x="24" y="24" width="976" height="976" rx="208" fill="none" stroke="#303630" stroke-width="16" />
+	<g transform="rotate(-3 512 512)">
+		<path
+			d="M176 430c0-111 90-201 201-201h270c111 0 201 90 201 201v264c0 72-58 130-130 130H306c-72 0-130-58-130-130V430Z"
+			fill="#d9fc58"
+		/>
+		<path
+			d="M176 650h672v44c0 72-58 130-130 130H306c-72 0-130-58-130-130v-44Z"
+			fill="#a9cb3a"
+		/>
+		<rect x="302" y="336" width="38" height="126" rx="19" transform="rotate(34 302 336)" fill="#6d8d21" />
+		<rect x="493" y="320" width="38" height="126" rx="19" transform="rotate(34 493 320)" fill="#6d8d21" />
+		<rect x="684" y="336" width="38" height="126" rx="19" transform="rotate(34 684 336)" fill="#6d8d21" />
+	</g>
+</svg>
