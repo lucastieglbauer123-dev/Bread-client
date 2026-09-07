@@ -245,8 +245,8 @@ watch(selectedLibraryInstances, (selectedInstances) => {
 
 <template>
 	<InstanceGroupDnd :instances="instances">
-		<section data-library-page-background class="flex flex-col gap-3 pb-16 min-h-[500px]">
-			<h2 class="m-0 text-2xl font-semibold text-contrast">
+		<section data-library-page-background class="bread-library flex flex-col gap-4 pb-16 min-h-[500px]">
+			<h2 class="m-0 text-3xl font-semibold text-contrast">
 				{{ formatMessage(messages.library) }}
 			</h2>
 			<LibraryToolbar />
@@ -380,6 +380,11 @@ watch(selectedLibraryInstances, (selectedInstances) => {
 </template>
 
 <style scoped>
+.bread-library h2 {
+	font-family: var(--bread-font-display);
+	letter-spacing: -0.04em;
+}
+
 :global(.instance-group-reorder-ghost) {
 	opacity: 0.35;
 }

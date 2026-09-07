@@ -26,10 +26,10 @@ const versionRef = ref<HTMLElement | null>(null)
 
 <template>
 	<div
-		class="relative flex w-full min-w-0 select-none overflow-clip border border-solid bg-surface-3 text-left transition-all"
+		class="bread-instance-card relative flex w-full min-w-0 select-none overflow-clip border border-solid bg-surface-3 text-left transition-all"
 		:class="{
-			'flex-row items-center justify-start gap-2.5 rounded-xl p-2.5': compactMode,
-			'flex-col items-start justify-end gap-3 rounded-[20px] p-3': !compactMode,
+			'flex-row items-center justify-start gap-2.5 rounded-[var(--bread-radius-lg)] p-2.5': compactMode,
+			'flex-col items-start justify-end gap-3 rounded-[var(--bread-radius-xl)] p-3': !compactMode,
 			'[border-color:color-mix(in_srgb,var(--color-text-primary)_40%,transparent)] brightness-110':
 				selected,
 			'border-surface-4': !selected,
@@ -37,11 +37,11 @@ const versionRef = ref<HTMLElement | null>(null)
 	>
 		<div
 			class="relative flex shrink-0 items-center overflow-clip"
-			:class="compactMode ? 'size-10 rounded-lg' : 'aspect-square min-w-full rounded-2xl'"
+			:class="compactMode ? 'size-10 rounded-[var(--bread-radius-md)]' : 'aspect-square min-w-full rounded-[var(--bread-radius-lg)]'"
 		>
 			<Avatar
 				class="pointer-events-none outline-none"
-				:class="compactMode ? '!rounded-lg' : '!rounded-2xl'"
+				:class="compactMode ? '!rounded-[var(--bread-radius-md)]' : '!rounded-[var(--bread-radius-lg)]'"
 				size="100%"
 				:src="iconSrc"
 				:tint-by="instance.id"
@@ -79,3 +79,20 @@ const versionRef = ref<HTMLElement | null>(null)
 		<slot name="overlay" :compact="compactMode" />
 	</div>
 </template>
+
+<style scoped>
+.bread-instance-card {
+	background: var(--bread-color-surface-subtle) !important;
+	border-color: var(--bread-color-border-subtle) !important;
+	box-shadow: 0 2px 0 rgb(0 0 0 / 20%);
+}
+
+.bread-instance-card:hover {
+	border-color: var(--bread-color-border-strong) !important;
+	box-shadow: 0 3px 0 rgb(0 0 0 / 24%);
+}
+
+.bread-instance-card:has([aria-pressed='true']) {
+	border-color: var(--bread-color-brand) !important;
+}
+</style>

@@ -86,7 +86,7 @@ function openPageContextMenu(event: MouseEvent) {
 	<div
 		v-else-if="isReady"
 		data-library-page-background
-		class="flex flex-col gap-3 p-6"
+		class="bread-library-page flex flex-col gap-4 p-6"
 		@contextmenu="openPageContextMenu"
 	>
 		<RecentWorldsList
@@ -97,3 +97,9 @@ function openPageContextMenu(event: MouseEvent) {
 		<ContextMenu ref="pageOptions" :label="formatMessage(messages.libraryActionsLabel)" />
 	</div>
 </template>
+
+<style scoped>
+.bread-library-page {
+	background: var(--bread-color-surface);
+}
+</style>

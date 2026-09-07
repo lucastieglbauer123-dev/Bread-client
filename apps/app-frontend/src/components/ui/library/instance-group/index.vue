@@ -365,7 +365,7 @@ onMounted(startInstanceGridResizeObserver)
 <template>
 	<div
 		ref="groupDropTarget"
-		class="instance-group group/instance-container relative select-none pb-3"
+		class="bread-instance-group instance-group group/instance-container relative select-none pb-3"
 		@contextmenu.prevent.stop="openGroupContextMenu"
 	>
 		<Transition
@@ -387,7 +387,7 @@ onMounted(startInstanceGridResizeObserver)
 		</Transition>
 		<div
 			v-if="!hideHeader"
-			class="group/header h-10 flex w-full items-center gap-2 border-0 border-b border-solid border-b-surface-5"
+			class="bread-group-header group/header h-10 flex w-full items-center gap-2 border-0 border-b border-solid border-b-surface-5"
 			:class="{
 				'instance-group-reorder-handle': isReorderableGroup && canDragReorder,
 			}"
@@ -478,7 +478,7 @@ onMounted(startInstanceGridResizeObserver)
 				<div ref="instanceGridContent">
 					<TransitionGroup
 						tag="section"
-						class="grid min-h-[45px] w-full gap-3 overflow-y-auto scroll-smooth"
+						class="bread-instance-grid grid min-h-[45px] w-full gap-4 overflow-y-auto scroll-smooth"
 						:class="
 							compactMode
 								? 'grid-cols-[repeat(auto-fill,minmax(min(15rem,100%),1fr))]'
@@ -551,3 +551,18 @@ onMounted(startInstanceGridResizeObserver)
 		</template>
 	</NewModal>
 </template>
+
+<style scoped>
+.bread-instance-group {
+	padding-bottom: var(--bread-space-5);
+}
+
+.bread-group-header {
+	border-bottom-color: var(--bread-color-border-subtle);
+	min-height: 2.75rem;
+}
+
+.bread-instance-grid {
+	padding-top: var(--bread-space-1);
+}
+</style>
