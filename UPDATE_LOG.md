@@ -13,3 +13,6 @@ new Bread Client update is committed.
 - Added the Quality of Life pack (`AppleSkin`, `Jade`, `EMI`, `Mouse Tweaks`, `Shulker Box Tooltip`) and replaced the invalid PvP `hitindicator` slug with the verified `redhitindicator` project.
 - Retained the Bread Client taskbar/window icon and the isolated Bread Client data directory.
 
+### Build follow-up
+
+- Fixed the Notifications handler to remain valid in the plain JavaScript Vue script block used by the launcher.

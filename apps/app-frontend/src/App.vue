@@ -280,11 +280,11 @@ const { handleError, addNotification } = notificationManager
 const notificationsOpen = ref(false)
 const notifications = computed(() => notificationManager.getNotifications())
 
-function toggleNotifications(): void {
+function toggleNotifications() {
 	notificationsOpen.value = !notificationsOpen.value
 }
 
-function dismissNotification(id: string | number): void {
+function dismissNotification(id) {
 	notificationManager.removeNotification(id)
 }
 
