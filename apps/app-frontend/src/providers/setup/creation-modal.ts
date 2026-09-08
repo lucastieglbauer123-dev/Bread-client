@@ -29,7 +29,7 @@ export function setupCreationModal(
 	notificationManager: AbstractWebNotificationManager,
 	getGeneratedIconConfig?: (iconPath: string) => InstanceIconConfig | null,
 ) {
-	const { handleError } = notificationManager
+	const { addNotification, handleError } = notificationManager
 	const router = useRouter()
 	const appSettings = useAppSettings()
 
@@ -185,12 +185,23 @@ export function setupCreationModal(
 			const instanceId = installJobInstanceId(job)
 			if (instanceId && config.selectedBreadPack.value.length > 0) {
 				try {
-					await installBreadPack(
+					const packResult = await installBreadPack(
 						instanceId,
 						config.selectedBreadPack.value,
 						config.selectedGameVersion.value!,
 						loader,
 					)
+					if (packResult.skipped.length > 0) {
+						const skippedDetails = packResult.skipped
+							.map(({ slug, reason }) => `• ${slug}: ${reason}`)
+							.join('\n')
+						addNotification({
+							type: 'warning',
+							title: 'Bread pack installed with skipped mods',
+							text: `Installed ${packResult.installed.length} of ${packResult.slugs.length} mods — ${packResult.skipped.length} skipped.\n${skippedDetails}`,
+							autoCloseMs: null,
+						})
+					}
 				} catch (packError) {
 					// Keep the newly-created instance usable even if a live Modrinth lookup fails.
 					handleError(packError as Error)
