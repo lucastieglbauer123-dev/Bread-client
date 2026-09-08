@@ -173,7 +173,10 @@ function openPageContextMenu(event: MouseEvent) {
 
 <style scoped>
 .bread-library-page {
-	background: var(--bread-color-surface);
+	min-height: 100%;
+	background:
+		linear-gradient(180deg, color-mix(in srgb, var(--bread-color-surface-panel) 30%, transparent), transparent 18rem),
+		var(--bread-color-surface);
 }
 
 .bread-installation-found {
@@ -185,6 +188,7 @@ function openPageContextMenu(event: MouseEvent) {
 	border: 1px solid var(--bread-color-border-subtle);
 	border-radius: var(--bread-radius-lg);
 	background: var(--bread-color-surface-subtle);
+	box-shadow: 0 0.75rem 1.5rem rgb(0 0 0 / 12%);
 }
 
 .bread-pack-suggestions {
@@ -232,12 +236,14 @@ function openPageContextMenu(event: MouseEvent) {
 	color: var(--bread-color-text-muted);
 	text-align: left;
 	transition: border-color 120ms ease, transform 120ms ease, background-color 120ms ease;
+	box-shadow: 0 0.35rem 0 rgb(0 0 0 / 16%);
 }
 
 .bread-pack-suggestion:hover {
 	border-color: var(--bread-color-brand);
 	background: var(--bread-color-surface-elevated);
 	transform: translateY(-1px);
+	box-shadow: 0 0.55rem 1rem rgb(0 0 0 / 18%);
 }
 
 .bread-pack-suggestion__topline {

@@ -2556,7 +2556,9 @@ provideAppUpdateDownloadProgress(appUpdateDownload)
 	grid-template-rows: auto 1fr;
 	position: relative;
 	//z-index: 0;
-	background-color: var(--bread-color-surface-muted);
+	background:
+		radial-gradient(circle at 10% 0%, color-mix(in srgb, var(--bread-color-brand) 7%, transparent), transparent 28rem),
+		var(--bread-color-surface-muted);
 	height: 100vh;
 }
 
@@ -2568,7 +2570,8 @@ provideAppUpdateDownloadProgress(appUpdateDownload)
 	overflow-y: auto;
 	padding: 0.75rem 1rem 1rem;
 	border-right: 1px solid var(--bread-color-border-subtle);
-	background-color: var(--bread-color-surface-muted);
+	background: linear-gradient(180deg, var(--bread-color-surface-panel), var(--bread-color-surface-muted));
+	box-shadow: inset -1px 0 rgb(255 239 218 / 3%);
 }
 
 .app-grid-statusbar {
@@ -2578,7 +2581,8 @@ provideAppUpdateDownloadProgress(appUpdateDownload)
 	position: relative;
 	z-index: 2;
 	border-bottom: 1px solid var(--bread-color-border-subtle);
-	background-color: var(--bread-color-surface-muted);
+	background: color-mix(in srgb, var(--bread-color-surface-muted) 92%, transparent);
+	backdrop-filter: blur(14px);
 }
 
 .bread-status-logo {
@@ -2625,6 +2629,19 @@ provideAppUpdateDownloadProgress(appUpdateDownload)
 	font-weight: 600;
 	cursor: pointer;
 	pointer-events: auto;
+	transition: background-color 120ms ease, color 120ms ease, transform 120ms ease;
+}
+
+.bread-nav-item:not(.bread-nav-item--placeholder):hover {
+	background: var(--bread-color-surface-raised);
+	color: var(--bread-color-text-primary);
+	transform: translateX(2px);
+}
+
+.bread-nav-item:focus-visible,
+.bread-make-yours:focus-visible {
+	outline: 2px solid var(--bread-color-brand-bright);
+	outline-offset: 2px;
 }
 
 .bread-nav-item svg {

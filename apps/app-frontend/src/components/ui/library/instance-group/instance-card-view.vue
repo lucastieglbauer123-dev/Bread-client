@@ -88,12 +88,14 @@ const versionRef = ref<HTMLElement | null>(null)
 .bread-instance-card {
 	background: var(--bread-color-surface-subtle) !important;
 	border-color: var(--bread-color-border-subtle) !important;
-	box-shadow: 0 2px 0 rgb(0 0 0 / 20%);
+	border-radius: var(--bread-radius-lg) !important;
+	box-shadow: 0 0.35rem 0 rgb(0 0 0 / 20%), 0 0.75rem 1.5rem rgb(0 0 0 / 8%);
 }
 
 .bread-instance-card:hover {
 	border-color: var(--bread-color-border-strong) !important;
-	box-shadow: 0 3px 0 rgb(0 0 0 / 24%);
+	box-shadow: 0 0.45rem 0 rgb(0 0 0 / 24%), 0 1rem 1.75rem rgb(0 0 0 / 12%);
+	transform: translateY(-2px);
 }
 
 .bread-instance-card:has([aria-pressed='true']) {
