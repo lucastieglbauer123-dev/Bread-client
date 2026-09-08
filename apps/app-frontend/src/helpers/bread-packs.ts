@@ -111,16 +111,20 @@ export async function installBreadPack(
 	}
 	const slugs = mergeBreadPackSlugs(selectedIds)
 
-	const projectsById = new Map<string, { slug: string; project: Labrinth.Projects.v2.Project }>()
-	await Promise.all(
+	const projects = await Promise.all(
 		slugs.map(async (slug) => {
 			const project = (await get_project(slug, 'must_revalidate')) as Labrinth.Projects.v2.Project
 			if (!project?.id) throw new Error(`Modrinth project not found for '${slug}'.`)
-			// A slug can be listed by more than one pack (or resolve through an
-			// alias); keep one project entry so it is version-resolved/installed once.
-			if (!projectsById.has(project.id)) projectsById.set(project.id, { slug, project })
+			return { slug, project }
 		}),
 	)
+	// A slug can be listed by more than one pack (or resolve through an alias);
+	// keep one project entry so it is version-resolved/installed once while
+	// preserving the merged slug order for deterministic installs.
+	const projectsById = new Map<string, { slug: string; project: Labrinth.Projects.v2.Project }>()
+	for (const project of projects) {
+		if (!projectsById.has(project.project.id)) projectsById.set(project.project.id, project)
+	}
 
 	const resolved = await Promise.all(
 		[...projectsById.values()].map(async ({ slug, project }) => {
