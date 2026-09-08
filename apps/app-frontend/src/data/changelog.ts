@@ -25,6 +25,9 @@ export const BREAD_CHANGELOG: ChangelogEntry[] = [
 			'Fixed content-install headers being clipped in the install modal.',
 			'Constrained library instance cards to a stable responsive grid.',
 			'Made Notifications and Performance launch-behavior controls keyboard and pointer accessible.',
+			'Bread pack installs continue after individual failures and report skipped slugs with reasons.',
+			'Pack resolution falls back to an exact compatible CurseForge Fabric file when Modrinth has no usable result.',
+			'Hardened the shell, modal rows, tabs, and responsive grids against clipping and pointer-event regressions.',
 		],
 	},
 ]

@@ -15,3 +15,6 @@
 - Fixed content-install headers being clipped in the install modal.
 - Constrained library instance cards to a stable responsive grid.
 - Made Notifications and Performance launch-behavior controls keyboard and pointer accessible.
+- Bread pack installs now continue after individual lookup, compatibility, download, or install failures; skipped slugs and reasons are shown in a persistent notification.
+- Pack resolution falls back to an exact compatible CurseForge Fabric file when Modrinth has no usable project or version.
+- Hardened the shell, modal rows, tabs, and responsive grids against clipping and pointer-event regressions.

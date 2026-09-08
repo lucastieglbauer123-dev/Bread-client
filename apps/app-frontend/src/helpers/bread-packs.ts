@@ -124,9 +124,9 @@ async function resolveCurseForgeMod(slug: string, gameVersion: string) {
 }
 
 /**
- * Resolves each pack slug through Modrinth immediately before install, then lets the existing
- * instance resolver install the selected version and its dependencies. No jars or version IDs are
- * stored in the Bread pack registry.
+ * Resolves each pack slug through Modrinth (with an exact CurseForge fallback) immediately before
+ * install, then lets the existing instance resolver install Modrinth versions and their
+ * dependencies. No jars or version IDs are stored in the Bread pack registry.
  */
 export async function installBreadPack(
 	instanceId: string,
