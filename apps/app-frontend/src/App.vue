@@ -2183,9 +2183,10 @@ provideAppUpdateDownloadProgress(appUpdateDownload)
 				<button
 					type="button"
 					class="bread-nav-item bread-nav-item--notifications"
+					data-tauri-drag-region-exclude
 					:aria-expanded="notificationsOpen"
 					:aria-label="formatMessage(messages.notifications)"
-					@click="toggleNotifications"
+					@click.stop.prevent="toggleNotifications"
 				>
 					<BellIcon />
 					<span>{{ formatMessage(messages.notifications) }}</span>
@@ -2610,6 +2611,8 @@ provideAppUpdateDownloadProgress(appUpdateDownload)
 	text-align: left;
 	font-size: 0.9375rem;
 	font-weight: 600;
+	cursor: pointer;
+	pointer-events: auto;
 }
 
 .bread-nav-item svg {
@@ -2625,6 +2628,7 @@ provideAppUpdateDownloadProgress(appUpdateDownload)
 
 .bread-nav-item--notifications {
 	position: relative;
+	z-index: 30;
 }
 
 .bread-notification-badge {
