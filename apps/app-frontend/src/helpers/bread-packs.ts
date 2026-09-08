@@ -111,6 +111,18 @@ function normalizeSlug(value: string): string {
 	return value.toLowerCase().replace(/[^a-z0-9]/g, '')
 }
 
+async function resolveCurseForgeMod(slug: string, gameVersion: string) {
+	const result = await searchCurseForgeMods(`?query=${encodeURIComponent(slug)}`, gameVersion)
+	const normalized = normalizeSlug(slug)
+	const match = result.hits.find(
+		(hit) => normalizeSlug(hit.slug) === normalized || normalizeSlug(hit.name) === normalized,
+	)
+	if (!match) throw new Error(`No exact CurseForge project match for '${slug}'.`)
+	const file = await getCurseForgeLatestFile(match.curseforge_id, gameVersion)
+	const downloadUrl = await getCurseForgeDownloadUrl(match.curseforge_id, file.id)
+	return { slug, modId: match.curseforge_id, fileId: file.id, downloadUrl }
+}
+
 /**
  * Resolves each pack slug through Modrinth immediately before install, then lets the existing
  * instance resolver install the selected version and its dependencies. No jars or version IDs are
@@ -152,23 +164,7 @@ export async function installBreadPack(
 			continue
 		} catch (error) {
 			try {
-				const result = await searchCurseForgeMods(
-					`?query=${encodeURIComponent(slug)}`,
-					gameVersion,
-				)
-				const normalized = normalizeSlug(slug)
-				const match = result.hits.find(
-					(hit) => normalizeSlug(hit.slug) === normalized || normalizeSlug(hit.name) === normalized,
-				)
-				if (!match) throw new Error(`No exact CurseForge project match for '${slug}'.`)
-				const file = await getCurseForgeLatestFile(match.curseforge_id, gameVersion)
-				const downloadUrl = await getCurseForgeDownloadUrl(match.curseforge_id, file.id)
-				curseForgeResolved.push({
-					slug,
-					modId: match.curseforge_id,
-					fileId: file.id,
-					downloadUrl,
-				})
+				curseForgeResolved.push(await resolveCurseForgeMod(slug, gameVersion))
 			} catch (curseForgeError) {
 				skipped.push({
 					slug,
@@ -207,7 +203,14 @@ export async function installBreadPack(
 			}
 			resolved.push({ slug, project, version })
 		} catch (error) {
-			skipped.push({ slug, reason: errorMessage(error) })
+			try {
+				curseForgeResolved.push(await resolveCurseForgeMod(slug, gameVersion))
+			} catch (curseForgeError) {
+				skipped.push({
+					slug,
+					reason: `Modrinth: ${errorMessage(error)} CurseForge: ${errorMessage(curseForgeError)}`,
+				})
+			}
 		}
 	}
 
@@ -227,7 +230,7 @@ export async function installBreadPack(
 			plans.push(plan)
 			installed.push(slug)
 		} catch (error) {
-			skipped.push({ slug: project.slug, reason: errorMessage(error) })
+			skipped.push({ slug, reason: errorMessage(error) })
 		}
 	}
 	for (const { slug, modId, fileId, downloadUrl } of curseForgeResolved) {
