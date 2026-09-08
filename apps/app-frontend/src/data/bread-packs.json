@@ -1,0 +1,28 @@
+[
+	{
+		"id": "performance",
+		"name": "Performance",
+		"description": "A lighter, faster Fabric instance with the essentials already selected.",
+		"slugs": ["sodium", "lithium", "ferrite-core", "modmenu"]
+	},
+	{
+		"id": "visual",
+		"name": "Visual",
+		"description": "Shader-ready visuals, readable lighting, and resource-pack polish.",
+		"slugs": ["iris", "sodium", "entityculling", "lambdynamiclights", "continuity"]
+	},
+	{
+		"id": "pvp-combat",
+		"name": "PvP / Combat",
+		"description": "Performance plus clear combat timing, crosshair feedback, and ping.",
+		"slugs": [
+			"sodium",
+			"lithium",
+			"ferrite-core",
+			"modmenu",
+			"dynamiccrosshair",
+			"hitindicator",
+			"ping-display"
+		]
+	}
+]

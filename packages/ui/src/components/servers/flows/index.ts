@@ -1,6 +1,7 @@
 export type {
 	CreationFlowContextValue,
 	CreationFlowOptions,
+	BreadPackOption,
 	Difficulty,
 	FlowType,
 	Gamemode,

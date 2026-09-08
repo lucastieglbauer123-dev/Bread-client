@@ -19,6 +19,7 @@ import {
 	type CreationFlowContextValue,
 	type FlowType,
 	type LoaderManifestResolver,
+	type BreadPackOption,
 	type ProjectInstallCreateData,
 	type ProjectInstallSelection,
 	type ProjectSearchResult,
@@ -47,6 +48,7 @@ const props = withDefaults(
 		getLoaderManifest?: LoaderManifestResolver
 		randomizeInstanceIcon?: () => Promise<{ path: string; previewUrl: string } | null>
 		customizeInstanceIcon?: () => void
+		breadPacks?: BreadPackOption[]
 		finishDisabled?: boolean
 		finishDisabledTooltip?: string
 	}>(),
@@ -62,6 +64,7 @@ const props = withDefaults(
 		onBack: null,
 		randomizeInstanceIcon: undefined,
 		customizeInstanceIcon: undefined,
+		breadPacks: () => [],
 	},
 )
 
@@ -95,6 +98,7 @@ const ctx = createCreationFlowContext(
 		getLoaderManifest: props.getLoaderManifest,
 		randomizeInstanceIcon: props.randomizeInstanceIcon,
 		customizeInstanceIcon: props.customizeInstanceIcon,
+		breadPacks: props.breadPacks,
 		finishDisabled: computed(() => props.finishDisabled ?? false),
 		finishDisabledTooltip: computed(() => props.finishDisabledTooltip),
 	},

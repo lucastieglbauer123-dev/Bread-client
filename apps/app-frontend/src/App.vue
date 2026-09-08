@@ -117,6 +117,7 @@ import {
 } from '@/helpers/ads.js'
 import { debugAnalytics, initAnalytics, trackEvent } from '@/helpers/analytics'
 import { check_reachable } from '@/helpers/auth.js'
+import { BREAD_PACK_OPTIONS } from '@/helpers/bread-packs'
 import { get_user, get_user_many, get_version } from '@/helpers/cache.js'
 import { install_create_modpack_instance, install_get_modpack_preview } from '@/helpers/install'
 import {
@@ -2060,6 +2061,7 @@ provideAppUpdateDownloadProgress(appUpdateDownload)
 			:get-loader-manifest="getLoaderManifest"
 			:randomize-instance-icon="randomizeCreationIcon"
 			:customize-instance-icon="customizeCreationIcon"
+			:bread-packs="BREAD_PACK_OPTIONS"
 			@create="handleCreate"
 			@browse-modpacks="handleBrowseModpacks"
 		/>

@@ -94,6 +94,35 @@
 			/>
 		</div>
 
+		<!-- Bread Client presets: slugs are resolved by the host at install time. -->
+		<div v-if="ctx.flowType === 'instance' && ctx.breadPacks.length" class="flex flex-col gap-2">
+			<div class="flex items-baseline justify-between gap-3">
+				<span class="font-semibold text-contrast">{{ formatMessage(messages.packLabel) }}</span>
+				<span class="text-xs text-secondary">{{ formatMessage(messages.packOptional) }}</span>
+			</div>
+			<div class="grid gap-2 sm:grid-cols-3">
+				<button
+					v-for="pack in ctx.breadPacks"
+					:key="pack.id"
+					type="button"
+					class="bread-pack-option"
+					:class="{ 'bread-pack-option--selected': ctx.selectedBreadPack.value === pack.id }"
+					:aria-pressed="ctx.selectedBreadPack.value === pack.id"
+					@click="
+						ctx.selectedBreadPack.value =
+							ctx.selectedBreadPack.value === pack.id ? null : pack.id
+					"
+				>
+					<strong>{{ pack.name }}</strong>
+					<span>{{ pack.description }}</span>
+					<small>{{ pack.slugs.length }} {{ formatMessage(messages.packMods) }}</small>
+				</button>
+			</div>
+			<span v-if="ctx.selectedBreadPack.value" class="text-xs text-secondary">
+				{{ formatMessage(messages.packResolutionHint) }}
+			</span>
+		</div>
+
 		<!-- Loader chips -->
 		<div v-if="!hideLoaderChips" class="flex flex-col gap-2">
 			<span class="font-semibold text-contrast">{{
@@ -274,6 +303,22 @@ const messages = defineMessages({
 	instanceNamePlaceholder: {
 		id: 'creation-flow.modal.custom-setup.name.placeholder',
 		defaultMessage: 'Enter instance name',
+	},
+	packLabel: {
+		id: 'creation-flow.modal.custom-setup.pack.label',
+		defaultMessage: 'Bread pack',
+	},
+	packOptional: {
+		id: 'creation-flow.modal.custom-setup.pack.optional',
+		defaultMessage: 'Optional',
+	},
+	packMods: {
+		id: 'creation-flow.modal.custom-setup.pack.mods',
+		defaultMessage: 'mods',
+	},
+	packResolutionHint: {
+		id: 'creation-flow.modal.custom-setup.pack.resolution-hint',
+		defaultMessage: 'Modrinth will choose current compatible Fabric versions when the instance is created.',
 	},
 	loaderLabel: {
 		id: 'creation-flow.modal.custom-setup.loader.label',
@@ -739,3 +784,48 @@ const loaderVersionOptions = computed<ComboboxOption<string>[]>(() => {
 	}))
 })
 </script>
+
+<style scoped>
+.bread-pack-option {
+	display: flex;
+	min-height: 7rem;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 0.35rem;
+	border: 1px solid var(--bread-color-border-subtle, var(--color-surface-5));
+	border-radius: var(--bread-radius-md, 0.75rem);
+	background: var(--bread-color-surface-subtle, var(--color-surface-2));
+	padding: 0.75rem;
+	color: var(--bread-color-text, var(--color-text));
+	text-align: left;
+	transition: border-color 120ms ease, background-color 120ms ease, transform 120ms ease;
+}
+
+.bread-pack-option:hover {
+	border-color: var(--bread-color-brand, var(--color-brand));
+	transform: translateY(-1px);
+}
+
+.bread-pack-option--selected {
+	border-color: var(--bread-color-brand, var(--color-brand));
+	background: var(--bread-color-brand-soft, var(--color-brand-bg));
+	box-shadow: 0 0 0 1px var(--bread-color-brand, var(--color-brand));
+}
+
+.bread-pack-option strong {
+	font-size: 0.875rem;
+}
+
+.bread-pack-option span,
+.bread-pack-option small {
+	color: var(--bread-color-text-muted, var(--color-text-secondary));
+	font-size: 0.75rem;
+	line-height: 1.35;
+}
+
+.bread-pack-option small {
+	margin-top: auto;
+	color: var(--bread-color-brand-bright, var(--color-brand));
+	font-weight: 600;
+}
+</style>

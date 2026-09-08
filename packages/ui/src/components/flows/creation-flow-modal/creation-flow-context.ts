@@ -141,6 +141,15 @@ export interface ProjectInstallCreateData {
 	gameVersion: string
 }
 
+/** A launcher-provided preset whose project slugs are resolved by the host at install time. */
+export interface BreadPackOption {
+	id: string
+	name: string
+	description: string
+	slugs: string[]
+	modReasons?: Record<string, string>
+}
+
 export interface GeneratedInstanceIcon {
 	path: string
 	previewUrl: string
@@ -199,6 +208,10 @@ export interface CreationFlowContextValue {
 	modpackFile: Ref<File | null>
 	modpackFilePath: Ref<string | null>
 	projectInstall: Ref<ProjectInstallSelection | null>
+
+	// Optional launcher-provided presets
+	breadPacks: BreadPackOption[]
+	selectedBreadPack: Ref<string | null>
 
 	// Project search state (persisted across stage navigation)
 	projectSearchProjectId: Ref<string | undefined>
@@ -271,6 +284,7 @@ export interface CreationFlowOptions {
 	getLoaderManifest?: LoaderManifestResolver
 	randomizeInstanceIcon?: () => Promise<GeneratedInstanceIcon | null>
 	customizeInstanceIcon?: () => void
+	breadPacks?: BreadPackOption[]
 	finishDisabled?: ComputedRef<boolean>
 	finishDisabledTooltip?: ComputedRef<string | undefined>
 }
@@ -298,6 +312,7 @@ export function createCreationFlowContext(
 	const onBack = options.onBack ?? null
 	const randomizeInstanceIcon = options.randomizeInstanceIcon ?? null
 	const customizeInstanceIcon = options.customizeInstanceIcon ?? null
+	const breadPacks = options.breadPacks ?? []
 	const searchProjects = options.searchProjects!
 	const prepareProjectInstall = options.prepareProjectInstall
 	const createProjectInstall = options.createProjectInstall
@@ -363,6 +378,7 @@ export function createCreationFlowContext(
 	const modpackFile = ref<File | null>(null)
 	const modpackFilePath = ref<string | null>(null)
 	const projectInstall = ref<ProjectInstallSelection | null>(null)
+	const selectedBreadPack = ref<string | null>(null)
 
 	// Project search state (persisted across stage navigation)
 	const projectSearchProjectId = ref<string | undefined>()
@@ -498,6 +514,7 @@ export function createCreationFlowContext(
 		modpackFile.value = null
 		modpackFilePath.value = null
 		projectInstall.value = null
+		selectedBreadPack.value = null
 		projectSearchProjectId.value = undefined
 		projectSearchOptions.value = []
 		projectSearchHits.value = {}
@@ -526,6 +543,7 @@ export function createCreationFlowContext(
 			modpackSelection.value = null
 			modpackFile.value = null
 			modpackFilePath.value = null
+			selectedBreadPack.value = null
 			if (type === 'vanilla') {
 				selectedLoader.value = null
 				selectedLoaderVersion.value = null
@@ -570,6 +588,7 @@ export function createCreationFlowContext(
 		setupType.value = 'custom'
 		isImportMode.value = false
 		modpackSelection.value = null
+		selectedBreadPack.value = null
 		instanceName.value = selection.title
 		selectedLoader.value = selection.compatibleLoaders[0] ?? null
 		selectedGameVersion.value =
@@ -674,6 +693,8 @@ export function createCreationFlowContext(
 		modpackFile,
 		modpackFilePath,
 		projectInstall,
+		breadPacks,
+		selectedBreadPack,
 		projectSearchProjectId,
 		projectSearchOptions,
 		projectSearchHits,

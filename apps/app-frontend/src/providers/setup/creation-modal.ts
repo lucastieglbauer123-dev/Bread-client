@@ -12,6 +12,7 @@ import type ModpackAlreadyInstalledModal from '@/components/ui/modal/ModpackAlre
 import { useAppSettings } from '@/composables/use-app-settings.ts'
 import { trackEvent } from '@/helpers/analytics'
 import { get_project, get_search_results } from '@/helpers/cache.js'
+import { installBreadPack } from '@/helpers/bread-packs'
 import { import_instance } from '@/helpers/import.js'
 import {
 	type CreatePackLocation,
@@ -177,10 +178,24 @@ export function setupCreationModal(
 				iconPath,
 				iconConfig: iconPath ? getGeneratedIconConfig?.(iconPath) : null,
 			})
+			const instanceId = installJobInstanceId(job)
+			if (instanceId && config.selectedBreadPack.value) {
+				try {
+					await installBreadPack(
+						instanceId,
+						config.selectedBreadPack.value,
+						config.selectedGameVersion.value!,
+						loader,
+					)
+				} catch (packError) {
+					// Keep the newly-created instance usable even if a live Modrinth lookup fails.
+					handleError(packError as Error)
+				}
+			}
 			await navigateToCreatedInstance(job)
 
 			trackEvent('InstanceCreate', {
-				source: 'CreationModal',
+				source: config.selectedBreadPack.value ? 'CreationModalBreadPack' : 'CreationModal',
 			})
 		} catch (err) {
 			handleError(err as Error)
