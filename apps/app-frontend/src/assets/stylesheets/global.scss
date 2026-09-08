@@ -394,6 +394,31 @@ textarea {
 	background: var(--bread-color-surface-muted) !important;
 }
 
+/* Content installation can contain a wide header, source tabs, and a long
+ * instance list. Keep every row inside the modal's scroll frame instead of
+ * allowing flex children to force horizontal clipping. */
+.bread-content-install-modal {
+	width: min(35rem, calc(100vw - 2rem)) !important;
+	max-height: calc(100vh - 2rem) !important;
+}
+
+.bread-content-install-modal > [data-modal-content] {
+	width: 100%;
+	min-width: 0;
+	max-width: 100%;
+	overflow-x: hidden;
+}
+
+.bread-content-install-modal > [data-modal-content] > * {
+	min-width: 0;
+	max-width: 100%;
+}
+
+.bread-content-install-modal .chips {
+	min-width: 0;
+	max-width: 100%;
+}
+
 /* Appearance opens in the existing settings modal, but the modal surface and
  * navigation use the same shell language as the Bread sidebar. */
 .bread-settings-modal {

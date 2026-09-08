@@ -1436,7 +1436,10 @@ provideBrowseManager({
 </script>
 
 <template>
-	<div class="flex flex-col gap-2 p-6">
+	<div
+		class="bread-browse-page flex flex-col gap-2 p-6"
+		:class="{ 'bread-browse-page--installing': !!installContext }"
+	>
 		<div v-if="projectType === 'mod'" class="flex items-center gap-2">
 			<Button
 				:type="contentSource === 'modrinth' ? 'colored' : 'outlined'"
@@ -1481,3 +1484,18 @@ provideBrowseManager({
 		</Teleport>
 	</div>
 </template>
+
+<style scoped>
+/* The install header belongs below the source switcher. Keeping it in normal
+ * flow prevents the sticky negative margin from covering the app chrome or
+ * cutting off its title/tabs while content is being installed. */
+.bread-browse-page--installing :deep(.sticky) {
+	position: relative;
+	top: auto;
+	margin-top: 0;
+}
+
+.bread-browse-page--installing :deep([data-page-header]) {
+	min-width: 0;
+}
+</style>

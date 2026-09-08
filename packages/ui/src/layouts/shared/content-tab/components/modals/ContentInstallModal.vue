@@ -1,5 +1,13 @@
 <template>
-	<NewModal ref="modal" no-padding scrollable max-width="560px" width="560px" :on-hide="handleHide">
+	<NewModal
+		ref="modal"
+		class="bread-content-install-modal"
+		no-padding
+		scrollable
+		max-width="560px"
+		width="560px"
+		:on-hide="handleHide"
+	>
 		<template #title>
 			<span class="text-2xl font-semibold text-contrast">
 				{{ formatMessage(messages.header) }}
