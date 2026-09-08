@@ -21,8 +21,14 @@
 			"ferrite-core",
 			"modmenu",
 			"dynamiccrosshair",
-			"hitindicator",
+			"redhitindicator",
 			"ping-display"
 		]
+	},
+	{
+		"id": "quality-of-life",
+		"name": "Quality of Life",
+		"description": "Small, practical improvements for food, storage, crafting, and exploration.",
+		"slugs": ["appleskin", "jade", "emi", "mouse-tweaks", "shulkerboxtooltip"]
 	}
 ]

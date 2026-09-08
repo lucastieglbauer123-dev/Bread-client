@@ -50,8 +50,13 @@ const modReasons: Record<string, string> = {
 	lambdynamiclights: 'Adds dynamic light from held and dropped light sources.',
 	continuity: 'Adds connected and emissive resource-pack textures.',
 	dynamiccrosshair: 'Changes the crosshair based on the block or entity under it.',
-	hitindicator: 'Shows when a clean, fully charged hit can land.',
+	redhitindicator: 'Shows a clear hit marker below the crosshair when you damage an enemy.',
 	'ping-display': 'Shows numerical player ping in the tab list.',
+	appleskin: 'Adds food values and saturation previews to the HUD.',
+	jade: 'Shows useful information about the block or entity you are looking at.',
+	emi: 'Provides a fast, searchable item and recipe viewer.',
+	'mouse-tweaks': 'Makes moving and sorting inventory items quicker and easier.',
+	shulkerboxtooltip: 'Previews shulker box contents directly in your inventory.',
 }
 
 export const BREAD_PACKS: BreadPackDefinition[] = packDefinitions
@@ -114,7 +119,7 @@ export async function installBreadPack(
 	const projects = await Promise.all(
 		slugs.map(async (slug) => {
 			const project = (await get_project(slug, 'must_revalidate')) as Labrinth.Projects.v2.Project
-			if (!project?.id) throw new Error(`Modrinth project not found for '${slug}'.`)
+			if (!project?.id) throw new Error(`Community project not found for '${slug}'.`)
 			return { slug, project }
 		}),
 	)
