@@ -205,9 +205,14 @@ export function setupCreationModal(
 				} catch (packError) {
 					// Keep the newly-created instance usable even if a live Modrinth lookup fails.
 					handleError(packError as Error)
+				} finally {
+					// The instance is created before pack resolution. Always take the user to it,
+					// even when the pack is only partially installed or every mod is skipped.
+					await navigateToCreatedInstance(job)
 				}
+			} else {
+				await navigateToCreatedInstance(job)
 			}
-			await navigateToCreatedInstance(job)
 
 			trackEvent('InstanceCreate', {
 				source:
