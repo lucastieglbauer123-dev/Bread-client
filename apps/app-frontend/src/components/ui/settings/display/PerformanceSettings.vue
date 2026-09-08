@@ -138,12 +138,20 @@ async function clearCache(): Promise<void> {
 				<h2 class="m-0 text-lg font-semibold text-contrast">{{ formatMessage(messages.startupTitle) }}</h2>
 				<p class="m-0 mt-1 text-secondary">{{ formatMessage(messages.startupDescription) }}</p>
 			</div>
-			<div class="flex items-center justify-between gap-4">
-				<div>
+			<div
+				class="bread-performance-toggle-row flex items-center justify-between gap-4 rounded-xl border border-solid border-divider px-4 py-3"
+				data-tauri-drag-region-exclude
+			>
+				<label for="performance-check-updates" class="min-w-0 cursor-pointer">
 					<h3 class="m-0 text-base font-semibold text-contrast">{{ formatMessage(messages.checkUpdates) }}</h3>
 					<p class="m-0 mt-1 text-secondary">{{ formatMessage(messages.checkUpdatesDescription) }}</p>
-				</div>
-				<Toggle id="performance-check-updates" v-model="checkUpdatesOnStartup" />
+				</label>
+				<Toggle
+					id="performance-check-updates"
+					v-model="checkUpdatesOnStartup"
+					data-tauri-drag-region-exclude
+					@click.stop
+				/>
 			</div>
 		</section>
 
