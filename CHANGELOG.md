@@ -1,5 +1,9 @@
 # Bread Client changelog
 
+## 2026-09-09
+
+- Fixed CurseForge mod searches by allowing the frontend's authenticated API requests through the Tauri HTTP capability and CSP.
+
 ## 2026-09-08
 
 - Added a working Notifications control with unread badges and dismiss actions.

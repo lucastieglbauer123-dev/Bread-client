@@ -43,6 +43,9 @@
 					"url": "https://api.purpurmc.org/*"
 				},
 				{
+					"url": "https://api.curseforge.com/*"
+				},
+				{
 					"url": "http://localhost:8000/*"
 				},
 				{

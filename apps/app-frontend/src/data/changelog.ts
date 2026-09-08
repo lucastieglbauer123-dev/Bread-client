@@ -7,6 +7,12 @@ export interface ChangelogEntry {
 /** User-facing entries mirrored in the repository CHANGELOG.md. */
 export const BREAD_CHANGELOG: ChangelogEntry[] = [
 	{
+		date: '2026-09-09',
+		items: [
+			'Fixed CurseForge mod searches by allowing the frontend API requests through the Tauri HTTP capability and CSP.',
+		],
+	},
+	{
 		date: '2026-09-08',
 		items: [
 			'Added a working Notifications control with unread badges and dismiss actions.',
