@@ -380,6 +380,15 @@ export function createCreationFlowContext(
 	const projectInstall = ref<ProjectInstallSelection | null>(null)
 	const selectedBreadPack = ref<string | null>(null)
 
+	// Bread packs are resolved for Fabric instances only. Clear a pending pack
+	// as soon as the user switches to another loader so the create handler can
+	// never accidentally try to install it into an incompatible instance.
+	watch(selectedLoader, (loader) => {
+		if (loader && loader !== 'fabric') {
+			selectedBreadPack.value = null
+		}
+	})
+
 	// Project search state (persisted across stage navigation)
 	const projectSearchProjectId = ref<string | undefined>()
 	const projectSearchOptions = ref<ComboboxOption<string>[]>([])
@@ -545,6 +554,7 @@ export function createCreationFlowContext(
 			modpackFile.value = null
 			modpackFilePath.value = null
 			if (type === 'vanilla') {
+				selectedBreadPack.value = null
 				selectedLoader.value = null
 				selectedLoaderVersion.value = null
 				loaderVersionType.value = 'stable'
@@ -558,6 +568,7 @@ export function createCreationFlowContext(
 	function setImportMode() {
 		isImportMode.value = true
 		setupType.value = null
+		selectedBreadPack.value = null
 		modal.value?.setStage('import-instance')
 	}
 

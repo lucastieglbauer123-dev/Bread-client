@@ -106,20 +106,35 @@
 					:key="pack.id"
 					type="button"
 					class="bread-pack-option"
-					:class="{ 'bread-pack-option--selected': ctx.selectedBreadPack.value === pack.id }"
+					:class="{
+						'bread-pack-option--selected': ctx.selectedBreadPack.value === pack.id,
+						'bread-pack-option--disabled': breadPacksDisabled,
+					}"
+					:disabled="breadPacksDisabled"
 					:aria-pressed="ctx.selectedBreadPack.value === pack.id"
-					@click="
-						ctx.selectedBreadPack.value =
-							ctx.selectedBreadPack.value === pack.id ? null : pack.id
-					"
+					:title="breadPacksDisabled ? formatMessage(messages.packFabricOnly) : undefined"
+					@click="selectBreadPack(pack.id)"
 				>
 					<strong>{{ pack.name }}</strong>
 					<span>{{ pack.description }}</span>
 					<small>{{ pack.slugs.length }} {{ formatMessage(messages.packMods) }}</small>
 				</button>
 			</div>
+			<div v-if="selectedBreadPackDefinition" class="bread-pack-details">
+				<div
+					v-for="slug in selectedBreadPackDefinition.slugs"
+					:key="slug"
+					class="bread-pack-detail"
+				>
+					<strong>{{ slug }}</strong>
+					<span>{{ selectedBreadPackDefinition.modReasons[slug] }}</span>
+				</div>
+			</div>
 			<span v-if="ctx.selectedBreadPack.value" class="text-xs text-secondary">
 				{{ formatMessage(messages.packResolutionHint) }}
+			</span>
+			<span v-else-if="breadPacksDisabled" class="text-xs text-secondary">
+				{{ formatMessage(messages.packFabricOnly) }}
 			</span>
 		</div>
 
@@ -320,6 +335,10 @@ const messages = defineMessages({
 		id: 'creation-flow.modal.custom-setup.pack.resolution-hint',
 		defaultMessage: 'Modrinth will choose current compatible Fabric versions when the instance is created.',
 	},
+	packFabricOnly: {
+		id: 'creation-flow.modal.custom-setup.pack.fabric-only',
+		defaultMessage: 'Bread packs are available for Fabric instances only.',
+	},
 	loaderLabel: {
 		id: 'creation-flow.modal.custom-setup.loader.label',
 		defaultMessage: 'Loader',
@@ -403,6 +422,18 @@ const effectiveLoaders = computed(() => {
 	}
 	return ctx.availableLoaders
 })
+
+const selectedBreadPackDefinition = computed(() =>
+	ctx.breadPacks.find((pack) => pack.id === ctx.selectedBreadPack.value),
+)
+const breadPacksDisabled = computed(
+	() => selectedLoader.value !== null && selectedLoader.value !== 'fabric',
+)
+
+function selectBreadPack(packId: string) {
+	if (breadPacksDisabled.value) return
+	ctx.selectedBreadPack.value = ctx.selectedBreadPack.value === packId ? null : packId
+}
 
 // Pre-select loader and game version from initial values
 onMounted(() => {
@@ -808,8 +839,51 @@ const loaderVersionOptions = computed<ComboboxOption<string>[]>(() => {
 
 .bread-pack-option--selected {
 	border-color: var(--bread-color-brand, var(--color-brand));
-	background: var(--bread-color-brand-soft, var(--color-brand-bg));
+	background: color-mix(
+		in srgb,
+		var(--bread-color-brand, var(--color-brand)) 18%,
+		var(--bread-color-surface-subtle, var(--color-surface-2))
+	);
 	box-shadow: 0 0 0 1px var(--bread-color-brand, var(--color-brand));
+}
+
+.bread-pack-option--disabled {
+	cursor: not-allowed;
+	opacity: 0.55;
+}
+
+.bread-pack-details {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 0.35rem 0.75rem;
+	border: 1px solid var(--bread-color-border-subtle, var(--color-surface-5));
+	border-radius: var(--bread-radius-md, 0.75rem);
+	background: var(--bread-color-surface-muted, var(--color-surface-2));
+	padding: 0.65rem 0.75rem;
+}
+
+.bread-pack-detail {
+	display: flex;
+	min-width: 0;
+	flex-direction: column;
+	gap: 0.1rem;
+}
+
+.bread-pack-detail strong {
+	color: var(--bread-color-text, var(--color-text));
+	font-size: 0.72rem;
+}
+
+.bread-pack-detail span {
+	color: var(--bread-color-text-muted, var(--color-text-secondary));
+	font-size: 0.68rem;
+	line-height: 1.3;
+}
+
+@media (max-width: 34rem) {
+	.bread-pack-details {
+		grid-template-columns: 1fr;
+	}
 }
 
 .bread-pack-option strong {

@@ -127,7 +127,17 @@ function openPageContextMenu(event: MouseEvent) {
 						<strong>{{ pack.name }}</strong>
 						<small>{{ pack.slugs.length }} mods</small>
 					</span>
-					<span>{{ pack.description }}</span>
+					<span class="bread-pack-suggestion__description">{{ pack.description }}</span>
+					<span class="bread-pack-suggestion__mods" aria-label="Included mods">
+						<span
+							v-for="slug in pack.slugs"
+							:key="slug"
+							class="bread-pack-suggestion__mod"
+							:title="pack.modReasons[slug]"
+						>
+							{{ slug }}
+						</span>
+					</span>
 				</button>
 			</div>
 		</section>
@@ -244,9 +254,26 @@ function openPageContextMenu(event: MouseEvent) {
 	font-weight: 600;
 }
 
-.bread-pack-suggestion > span:last-child {
+.bread-pack-suggestion__description {
 	font-size: 0.75rem;
 	line-height: 1.35;
+}
+
+.bread-pack-suggestion__mods {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.3rem;
+	margin-top: auto;
+}
+
+.bread-pack-suggestion__mod {
+	border: 1px solid var(--bread-color-border-subtle);
+	border-radius: var(--bread-radius-pill);
+	background: var(--bread-color-surface-panel);
+	padding: 0.16rem 0.42rem;
+	color: var(--bread-color-text-subtle);
+	font-size: 0.64rem;
+	line-height: 1.2;
 }
 
 @media (max-width: 800px) {

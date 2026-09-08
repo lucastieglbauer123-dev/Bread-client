@@ -95,7 +95,7 @@ export async function installBreadPack(
 	)
 
 	const plans: ResolveContentPlan[] = []
-	for (const { slug, project, version } of resolved) {
+	for (const { project, version } of resolved) {
 		const plan = await install_project_with_dependencies(instanceId, {
 			project_id: project.id,
 			version_id: version.id,
@@ -106,7 +106,6 @@ export async function installBreadPack(
 			},
 		})
 		plans.push(plan)
-		void slug
 	}
 
 	return { pack, installed: resolved.map(({ slug }) => slug), plans }
