@@ -10,6 +10,11 @@ const archonBaseUrl = trimTrailingSlash(
 const sharedInstancesBaseUrl = trimTrailingSlash(
 	import.meta.env.SHARED_INSTANCES_API_BASE_URL || 'https://shared-instances.modrinth.com',
 )
+const curseForgeApiBaseUrl = 'https://api.curseforge.com/v1'
+
+// CurseForge's read-only catalog key is intentionally kept in one place so it
+// can be rotated without hunting through the browser and install code.
+const curseForgeApiKey = '$2a$10$UW..SDbojJuDnw8wk3Cwr.1ceDhzmHbc/SJcIg3fvGNAhOULmEVNm'
 
 export const config = {
 	siteUrl,
@@ -19,4 +24,6 @@ export const config = {
 	labrinthBaseUrl,
 	archonBaseUrl,
 	sharedInstancesBaseUrl,
+	curseForgeApiBaseUrl,
+	curseForgeApiKey,
 }

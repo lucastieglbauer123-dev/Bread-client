@@ -13,6 +13,7 @@ import type { BrowseInstallContentType, CardAction, ProjectType, Tags } from '@m
 import {
 	BrowsePageLayout,
 	BrowseSidebar,
+	Button,
 	commonMessages,
 	ContextMenu,
 	CreationFlowModal,
@@ -42,6 +43,13 @@ import { useAppServerBrowse } from '@/composables/browse/use-app-server-browse'
 import { useAppEvent } from '@/composables/use-app-event'
 import { useAppSettings } from '@/composables/use-app-settings.ts'
 import { get_project, get_search_results_v3, get_version_many } from '@/helpers/cache.js'
+import {
+	getCurseForgeDownloadUrl,
+	getCurseForgeLatestFile,
+	installCurseForgeMod,
+	searchCurseForgeMods,
+	type CurseForgeSearchResult,
+} from '@/helpers/curseforge'
 import {
 	get_installed_project_ids as getInstalledProjectIds,
 	getInstanceIconUrl,
@@ -616,6 +624,14 @@ const messages = defineMessages({
 })
 
 const projectType = ref<ProjectType>(route.params.projectType as ProjectType)
+const contentSource = ref<'modrinth' | 'curseforge'>('modrinth')
+
+function setContentSource(source: 'modrinth' | 'curseforge'): void {
+	if (contentSource.value === source) return
+	contentSource.value = source
+	newlyInstalled.value = []
+	void searchState.refreshSearch()
+}
 
 function resetInstanceContext() {
 	debugLog('instance context removed, resetting')
@@ -882,12 +898,72 @@ async function chooseFilterMatchingInstallVersion(
 	return { versionId: plan.versionId }
 }
 
+function getCurseForgeCardActions(result: Labrinth.Search.v3.ResultSearchProject): CardAction[] {
+	const projectResult = result as Labrinth.Search.v3.ResultSearchProject &
+		CurseForgeSearchResult & { installed?: boolean }
+	const isInstalled = projectResult.installed || newlyInstalled.value.includes(projectResult.project_id)
+	const isInstalling = installingProjectIds.value.has(projectResult.project_id)
+	return [
+		{
+			key: 'install',
+			label: formatMessage(
+				isInstalling
+					? messages.installingToServer
+					: isInstalled
+						? commonMessages.installedLabel
+						: instance.value
+							? commonMessages.installButton
+							: messages.addToAnInstance,
+			),
+			icon: isInstalling ? SpinnerIcon : isInstalled ? CheckIcon : PlusIcon,
+			iconClass: isInstalling ? 'animate-spin' : undefined,
+			disabled: isInstalled || isInstalling,
+			color: 'brand',
+			type: 'outlined',
+			onClick: async () => {
+				if (isInstalled || isInstalling) return
+				setProjectInstalling(projectResult.project_id, true)
+				try {
+					const target = instance.value ?? (await listInstances()).find(Boolean)
+					if (!target) {
+						throw new Error(
+							'Open a Minecraft instance before installing a CurseForge mod, or create your first instance.',
+						)
+					}
+					const file = await getCurseForgeLatestFile(
+						projectResult.curseforge_id,
+						target.game_version,
+					)
+					const downloadUrl = await getCurseForgeDownloadUrl(
+						projectResult.curseforge_id,
+						file.id,
+					)
+					await installCurseForgeMod(
+						target.id,
+						projectResult.curseforge_id,
+						file.id,
+						downloadUrl,
+					)
+					onSearchResultInstalled(projectResult.project_id)
+				} catch (error) {
+					handleError(error)
+				} finally {
+					setProjectInstalling(projectResult.project_id, false)
+				}
+			},
+		},
+	]
+}
+
 function getCardActions(
 	result: Labrinth.Search.v3.ResultSearchProject,
 	currentProjectType: string,
 ): CardAction[] {
 	if (currentProjectType === 'server') {
 		return getServerCardActions(result)
+	}
+	if (contentSource.value === 'curseforge' && currentProjectType === 'mod') {
+		return getCurseForgeCardActions(result)
 	}
 
 	const projectResult = result as Labrinth.Search.v3.ResultSearchProject & {
@@ -1076,6 +1152,29 @@ function onSearchResultsInstalled(ids: string[]) {
 async function search(requestParams: string) {
 	debugLog('searching v3', requestParams)
 	const isServer = projectType.value === 'server'
+	if (!isServer && contentSource.value === 'curseforge' && projectType.value === 'mod') {
+		const curseForgeResults = await queryClient.fetchQuery({
+			queryKey: ['search', 'curseforge', requestParams, instance.value?.game_version ?? 'all'],
+			queryFn: () => searchCurseForgeMods(requestParams, instance.value?.game_version),
+			staleTime: 30_000,
+		})
+		const hits = curseForgeResults.hits.map((hit) => {
+			const installedIds = new Set([
+				...newlyInstalled.value,
+				...(installedProjectIds.value ?? []),
+			])
+			return {
+				...hit,
+				installed: installedIds.has(hit.project_id),
+			} as Labrinth.Search.v3.ResultSearchProject & { installed?: boolean }
+		})
+		return {
+			projectHits: hits,
+			serverHits: [],
+			total_hits: curseForgeResults.total,
+			per_page: curseForgeResults.perPage,
+		}
+	}
 
 	const rawResults = await queryClient.fetchQuery({
 		queryKey: ['search', 'v3', requestParams],
@@ -1262,10 +1361,17 @@ provideBrowseManager({
 	...searchState,
 	advancedFiltersCollapsed,
 	dismissedPhotosensitivityFilterWarning,
-	getProjectLink: (result: Labrinth.Search.v3.ResultSearchProject) => ({
-		path: `/project/${result.project_id ?? result.slug}`,
-		query: getProjectBrowseQuery(),
-	}),
+	getProjectLink: (result: Labrinth.Search.v3.ResultSearchProject) => {
+		const curseForgeResult = result as Labrinth.Search.v3.ResultSearchProject &
+			Partial<CurseForgeSearchResult>
+		if (curseForgeResult.source === 'curseforge' && curseForgeResult.curseforge_url) {
+			return curseForgeResult.curseforge_url
+		}
+		return {
+			path: `/project/${result.project_id ?? result.slug}`,
+			query: getProjectBrowseQuery(),
+		}
+	},
 	getServerProjectLink: (result: Labrinth.Search.v3.ResultSearchProject) => ({
 		path: `/project/${result.slug ?? result.project_id}`,
 		query: getProjectBrowseQuery(),
@@ -1331,6 +1437,22 @@ provideBrowseManager({
 
 <template>
 	<div class="flex flex-col gap-2 p-6">
+		<div v-if="projectType === 'mod'" class="flex items-center gap-2">
+			<Button
+				:type="contentSource === 'modrinth' ? 'colored' : 'outlined'"
+				color="brand"
+				@click="setContentSource('modrinth')"
+			>
+				Modrinth
+			</Button>
+			<Button
+				:type="contentSource === 'curseforge' ? 'colored' : 'outlined'"
+				color="brand"
+				@click="setContentSource('curseforge')"
+			>
+				CurseForge
+			</Button>
+		</div>
 		<BrowsePageLayout>
 			<template #after>
 				<ContextMenu ref="contextMenuRef" :label="formatMessage(messages.projectActionsLabel)">

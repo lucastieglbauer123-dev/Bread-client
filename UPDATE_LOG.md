@@ -23,3 +23,9 @@ new Bread Client update is committed.
 - Startup now waits until the first paint before auth reachability, announcements, news, credentials, skin previews, and update checks; update checks are deferred by 3 seconds by default or about 10 seconds when disabled in Performance.
 - Browse search renders stale cached Modrinth results while revalidating in the background, and Settings, Logs, Browse, project, and hosting routes are lazy-loaded.
 - Added process-start and first-paint timing markers. The pre-change release executable reached a visible window in 5.4 seconds; the warm optimized dev run reported a 36.0-second first paint (including its debug webview/backend startup), so release timing should be re-measured after the final build.
+
+## 2026-09-08 — CurseForge catalog
+
+- Added a Modrinth / CurseForge source switch to the Fabric mod browser.
+- CurseForge searches are filtered to Minecraft mods and Fabric files, with pagination, project links, latest compatible-file lookup, and download URL verification.
+- CurseForge installs download the selected jar into the active instance and pass it through the existing instance content pipeline, so normal instance events and refresh behavior remain unchanged.
