@@ -80,6 +80,11 @@
 					<PlusIcon />
 					{{ formatMessage(messages.addAccount) }}
 				</Button>
+				<button type="button" class="bread-account-skins" @click="router.push('/skins')">
+					<ShirtIcon class="size-4 shrink-0" />
+					<span>{{ formatMessage(messages.manageSkin) }}</span>
+					<RightArrowIcon class="ml-auto size-4 shrink-0" />
+				</button>
 			</div>
 		</div>
 	</Accordion>
@@ -91,6 +96,8 @@ import {
 	PlusIcon,
 	RadioButtonCheckedIcon,
 	RadioButtonIcon,
+	RightArrowIcon,
+	ShirtIcon,
 	SpinnerIcon,
 	TrashIcon,
 } from '@modrinth/assets'
@@ -105,6 +112,7 @@ import {
 } from '@modrinth/ui'
 import type { Ref } from 'vue'
 import { computed, ref } from 'vue'
+import { useRouter } from 'vue-router'
 
 import { useAppEvent } from '@/composables/use-app-event'
 import { handleSevereError } from '@/composables/use-error.js'
@@ -122,6 +130,7 @@ import { get_available_skins } from '@/helpers/skins'
 
 const { formatMessage } = useVIntl()
 const { handleError } = injectNotificationManager()
+const router = useRouter()
 
 const emit = defineEmits<{
 	change: []
@@ -283,5 +292,34 @@ const messages = defineMessages({
 		id: 'minecraft-account.sign-in',
 		defaultMessage: 'Sign in to Minecraft',
 	},
+	manageSkin: {
+		id: 'minecraft-account.manage-skin',
+		defaultMessage: 'Skin & cape',
+	},
 })
 </script>
+
+<style scoped>
+.bread-account-skins {
+	display: flex;
+	width: 100%;
+	align-items: center;
+	gap: 0.5rem;
+	border: 1px solid var(--bread-color-border-subtle, var(--color-surface-5));
+	border-radius: 0.6rem;
+	background: transparent;
+	padding: 0.55rem 0.65rem;
+	color: var(--bread-color-text-muted, var(--color-text-secondary));
+	font-size: 0.8rem;
+	font-weight: 600;
+	text-align: left;
+	transition: border-color 120ms ease, color 120ms ease, background-color 120ms ease;
+}
+
+.bread-account-skins:hover,
+.bread-account-skins:focus-visible {
+	border-color: var(--bread-color-brand, var(--color-brand));
+	background: var(--bread-color-surface-subtle, var(--color-surface-2));
+	color: var(--bread-color-text, var(--color-text));
+}
+</style>

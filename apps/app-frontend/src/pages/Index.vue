@@ -9,6 +9,7 @@ import LibrarySection from '@/components/ui/library/index.vue'
 import WelcomeScreen from '@/components/ui/WelcomeScreen.vue'
 import RecentWorldsList from '@/components/ui/world/RecentWorldsList.vue'
 import { useAppSettings } from '@/composables/use-app-settings.ts'
+import { BREAD_PACK_OPTIONS } from '@/helpers/bread-packs'
 import { instanceListQueryOptions } from '@/pages/instance/query-options'
 import { useRootBreadcrumb } from '@/providers/breadcrumbs'
 import { injectOnboardingChecklist } from '@/providers/onboarding-checklist'
@@ -20,7 +21,7 @@ defineOptions({
 const { formatMessage } = useVIntl()
 const { handleError } = injectNotificationManager()
 const { hasCreatedInstance, isReady } = injectOnboardingChecklist()
-const showCreationModal = inject<() => void>('showCreationModal')
+const showCreationModal = inject<(packId?: string) => void>('showCreationModal')
 const pageOptions = ref<InstanceType<typeof ContextMenu>>()
 const appSettings = useAppSettings()
 
@@ -106,6 +107,30 @@ function openPageContextMenu(event: MouseEvent) {
 		@contextmenu="openPageContextMenu"
 	>
 		<LibrarySection :instances="instances" />
+		<section v-if="BREAD_PACK_OPTIONS.length" class="bread-pack-suggestions">
+			<div class="bread-pack-suggestions__heading">
+				<div>
+					<h2>Start with a Bread pack</h2>
+					<p>Pick a focus and we’ll resolve the current Fabric mods when you create it.</p>
+				</div>
+				<Button type="quiet" size="sm" @click="showCreationModal?.()">Build your own</Button>
+			</div>
+			<div class="bread-pack-suggestions__grid">
+				<button
+					v-for="pack in BREAD_PACK_OPTIONS"
+					:key="pack.id"
+					type="button"
+					class="bread-pack-suggestion"
+					@click="showCreationModal?.(pack.id)"
+				>
+					<span class="bread-pack-suggestion__topline">
+						<strong>{{ pack.name }}</strong>
+						<small>{{ pack.slugs.length }} mods</small>
+					</span>
+					<span>{{ pack.description }}</span>
+				</button>
+			</div>
+		</section>
 		<div v-if="instances.length > 0" class="bread-installation-found">
 			<div class="bread-installation-found__icon">
 				<FolderOpenIcon />
@@ -150,6 +175,84 @@ function openPageContextMenu(event: MouseEvent) {
 	border: 1px solid var(--bread-color-border-subtle);
 	border-radius: var(--bread-radius-lg);
 	background: var(--bread-color-surface-subtle);
+}
+
+.bread-pack-suggestions {
+	margin-top: 0.5rem;
+}
+
+.bread-pack-suggestions__heading {
+	display: flex;
+	align-items: end;
+	justify-content: space-between;
+	gap: 1rem;
+	margin-bottom: 0.75rem;
+}
+
+.bread-pack-suggestions__heading h2 {
+	margin: 0;
+	color: var(--bread-color-text);
+	font-family: var(--bread-font-display);
+	font-size: 1.15rem;
+	letter-spacing: -0.025em;
+}
+
+.bread-pack-suggestions__heading p {
+	margin: 0.25rem 0 0;
+	color: var(--bread-color-text-muted);
+	font-size: 0.78rem;
+}
+
+.bread-pack-suggestions__grid {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 0.75rem;
+}
+
+.bread-pack-suggestion {
+	display: flex;
+	min-height: 6rem;
+	flex-direction: column;
+	align-items: stretch;
+	gap: 0.45rem;
+	border: 1px solid var(--bread-color-border-subtle);
+	border-radius: var(--bread-radius-lg);
+	background: var(--bread-color-surface-subtle);
+	padding: 0.85rem;
+	color: var(--bread-color-text-muted);
+	text-align: left;
+	transition: border-color 120ms ease, transform 120ms ease, background-color 120ms ease;
+}
+
+.bread-pack-suggestion:hover {
+	border-color: var(--bread-color-brand);
+	background: var(--bread-color-surface-elevated);
+	transform: translateY(-1px);
+}
+
+.bread-pack-suggestion__topline {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 0.5rem;
+	color: var(--bread-color-text);
+}
+
+.bread-pack-suggestion__topline small {
+	color: var(--bread-color-brand-bright);
+	font-size: 0.7rem;
+	font-weight: 600;
+}
+
+.bread-pack-suggestion > span:last-child {
+	font-size: 0.75rem;
+	line-height: 1.35;
+}
+
+@media (max-width: 800px) {
+	.bread-pack-suggestions__grid {
+		grid-template-columns: 1fr;
+	}
 }
 
 .bread-installation-found__icon {

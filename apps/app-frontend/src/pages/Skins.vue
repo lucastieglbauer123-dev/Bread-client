@@ -1345,6 +1345,14 @@ await loadSkins()
 	display: grid;
 	grid-template-columns: minmax(0, 1fr) minmax(0, 2.5fr);
 	gap: 2.5rem;
+	min-height: 100%;
+	background: var(--bread-color-surface);
+	color: var(--bread-color-text);
+
+	h1 {
+		font-family: var(--bread-font-display);
+		letter-spacing: -0.03em;
+	}
 
 	@media (max-width: 700px) {
 		grid-template-columns: 1fr;

@@ -50,8 +50,12 @@ export function setupCreationModal(
 		return instances?.map((i) => i.name) ?? []
 	}
 
-	provide('showCreationModal', () => {
-		installationModal.value?.show()
+	provide('showCreationModal', async (packId?: string) => {
+		await installationModal.value?.show()
+		if (packId) {
+			installationModal.value?.ctx &&
+				(installationModal.value.ctx.selectedBreadPack.value = packId)
+		}
 	})
 	provide('showImportModal', async () => {
 		await installationModal.value?.show()

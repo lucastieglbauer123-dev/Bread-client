@@ -536,6 +536,7 @@ export function createCreationFlowContext(
 		projectInstall.value = null
 		setupType.value = type
 		if (type === 'modpack') {
+			selectedBreadPack.value = null
 			selectedLoader.value = null
 			selectedLoaderVersion.value = null
 			loaderVersionType.value = 'stable'
@@ -543,7 +544,6 @@ export function createCreationFlowContext(
 			modpackSelection.value = null
 			modpackFile.value = null
 			modpackFilePath.value = null
-			selectedBreadPack.value = null
 			if (type === 'vanilla') {
 				selectedLoader.value = null
 				selectedLoaderVersion.value = null
