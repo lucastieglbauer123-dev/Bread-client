@@ -818,6 +818,13 @@ pub async fn launch_minecraft(
 
     let state = State::get().await?;
 
+    // Show the launch transition immediately; the playing activity is set only
+    // after the Minecraft process has been spawned successfully below.
+    let _ = state
+        .discord_rpc
+        .set_activity(&format!("Launching {}...", instance.name), true)
+        .await;
+
     let instance_path = get_instance_full_path(&instance.path).await?;
 
     let (minecraft, version_index) =
@@ -1132,18 +1139,13 @@ pub async fn launch_minecraft(
     }
 
     let _ = state
-        .discord_rpc
-        .set_activity(&format!("Playing {}", instance.name), true)
-        .await;
-
-    let _ = state
         .friends_socket
         .update_status(Some(instance.name.clone()))
         .await;
 
     // Create Minecraft child by inserting it into the state
     // This also spawns the process and prepares the subsequent processes
-    state
+    let process_metadata = state
         .process_manager
         .insert_new_process(
             &instance.id,
@@ -1186,5 +1188,16 @@ pub async fn launch_minecraft(
                 Ok(())
             },
         )
-        .await
+        .await?;
+
+    let _ = state
+        .discord_rpc
+        .set_playing_activity(
+            &instance.name,
+            process_metadata.start_time.timestamp(),
+            true,
+        )
+        .await;
+
+    Ok(process_metadata)
 }

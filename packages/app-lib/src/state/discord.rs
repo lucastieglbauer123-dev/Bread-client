@@ -2,7 +2,7 @@ use std::sync::{Arc, atomic::AtomicBool};
 
 use discord_rich_presence::{
     DiscordIpc, DiscordIpcClient,
-    activity::{Activity, Assets},
+    activity::{Activity, Assets, Timestamps},
 };
 use tokio::sync::RwLock;
 
@@ -17,7 +17,7 @@ impl DiscordGuard {
     /// Initialize discord IPC client, and attempt to connect to it
     /// If it fails, it will still return a DiscordGuard, but the client will be unconnected
     pub fn init() -> crate::Result<DiscordGuard> {
-        let dipc = DiscordIpcClient::new("1123683254248148992");
+        let dipc = DiscordIpcClient::new("1546907409497198652");
 
         Ok(DiscordGuard {
             client: Arc::new(RwLock::new(dipc)),
@@ -72,8 +72,8 @@ impl DiscordGuard {
 
         let activity = Activity::new().state(msg).assets(
             Assets::new()
-                .large_image("modrinth_simple")
-                .large_text("Modrinth Logo"),
+                .large_image("bread_icon")
+                .large_text("Bread Client"),
         );
 
         // Attempt to set the activity
@@ -86,6 +86,61 @@ impl DiscordGuard {
             if let Err(_e) = res {
                 client.reconnect()?;
                 return Ok(client.set_activity(activity)?); // try again, but don't reconnect if it fails again
+            }
+        } else {
+            res?;
+        }
+
+        Ok(())
+    }
+
+    /// Set a playing activity with an elapsed-time timer.
+    pub async fn set_playing_activity(
+        &self,
+        instance_name: &str,
+        start_timestamp: i64,
+        reconnect_if_fail: bool,
+    ) -> crate::Result<()> {
+        let state = State::get().await?;
+        let settings = crate::state::Settings::get(&state.pool).await?;
+        if !settings.discord_rpc {
+            Ok(self.clear_activity(true).await?)
+        } else {
+            Ok(self
+                .force_set_playing_activity(instance_name, start_timestamp, reconnect_if_fail)
+                .await?)
+        }
+    }
+
+    /// Set a playing activity regardless of the Discord setting.
+    pub async fn force_set_playing_activity(
+        &self,
+        instance_name: &str,
+        start_timestamp: i64,
+        reconnect_if_fail: bool,
+    ) -> crate::Result<()> {
+        if !self.retry_if_not_ready().await {
+            return Ok(());
+        }
+
+        let state = format!("Playing {instance_name}");
+        let activity = Activity::new()
+            .state(&state)
+            .timestamps(Timestamps::new().start(start_timestamp))
+            .assets(
+                Assets::new()
+                    .large_image("bread_icon")
+                    .large_text("Bread Client"),
+            );
+
+        let mut client: tokio::sync::RwLockWriteGuard<'_, DiscordIpcClient> =
+            self.client.write().await;
+        let res = client.set_activity(activity.clone());
+
+        if reconnect_if_fail {
+            if let Err(_e) = res {
+                client.reconnect()?;
+                return Ok(client.set_activity(activity)?);
             }
         } else {
             res?;
@@ -135,8 +190,9 @@ impl DiscordGuard {
 
         let running_instances = state.process_manager.get_all();
         if let Some(existing_child) = running_instances.first() {
-            self.set_activity(
-                &format!("Playing {}", existing_child.instance_name),
+            self.set_playing_activity(
+                &existing_child.instance_name,
+                existing_child.start_time.timestamp(),
                 reconnect_if_fail,
             )
             .await?;
