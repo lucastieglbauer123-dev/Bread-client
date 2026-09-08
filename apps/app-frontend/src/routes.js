@@ -1,9 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
-import * as Pages from '@/pages'
-import * as Hosting from '@/pages/hosting/manage'
-import * as Instance from '@/pages/instance'
-import * as Project from '@/pages/project'
+import Index from '@/pages/Index.vue'
 
 /**
  * Configures application routing. Add page to pages/index and then add to route table here.
@@ -14,64 +11,64 @@ export default new createRouter({
 		{
 			path: '/',
 			name: 'Home',
-			component: Pages.Index,
+			component: Index,
 		},
 		{
 			path: '/hosting/manage/',
 			name: 'Servers',
-			component: Pages.Servers,
+			component: () => import('@/pages/Servers.vue'),
 		},
 		{
 			path: '/hosting/manage/:id',
 			name: 'ServerManage',
-			component: Hosting.Index,
+			component: () => import('@/pages/hosting/manage/Index.vue'),
 			children: [
 				{
 					path: '',
 					name: 'ServerManageOverview',
-					component: Hosting.Overview,
+					component: () => import('@/pages/hosting/manage/Overview.vue'),
 				},
 				{
 					path: 'content',
 					name: 'ServerManageContent',
-					component: Hosting.Content,
+					component: () => import('@/pages/hosting/manage/Content.vue'),
 				},
 				{
 					path: 'files',
 					name: 'ServerManageFiles',
-					component: Hosting.Files,
+					component: () => import('@/pages/hosting/manage/Files.vue'),
 				},
 				{
 					path: 'backups',
 					name: 'ServerManageBackups',
-					component: Hosting.Backups,
+					component: () => import('@/pages/hosting/manage/Backups.vue'),
 				},
 				{
 					path: 'access',
 					name: 'ServerManageAccess',
-					component: Hosting.Access,
+					component: () => import('@/pages/hosting/manage/Access.vue'),
 				},
 			],
 		},
 		{
 			path: '/browse/:projectType',
 			name: 'Discover content',
-			component: Pages.Browse,
+			component: () => import('@/pages/Browse.vue'),
 		},
 		{
 			path: '/skins',
 			name: 'Skin selector',
-			component: Pages.Skins,
+			component: () => import('@/pages/Skins.vue'),
 		},
 		{
 			path: '/screenshots',
 			name: 'Screenshots',
-			component: Pages.Screenshots,
+			component: () => import('@/pages/Screenshots.vue'),
 		},
 		{
 			path: '/user/:user/:projectType?',
 			name: 'User',
-			component: Pages.User,
+			component: () => import('@/pages/User.vue'),
 		},
 		{
 			path: '/:projectType(mod|plugin|datapack|resourcepack|shader|modpack)/:id/:rest(.*)*',
@@ -83,71 +80,71 @@ export default new createRouter({
 		{
 			path: '/project/:id',
 			name: 'Project',
-			component: Project.Index,
+			component: () => import('@/pages/project/Index.vue'),
 			props: true,
 			children: [
 				{
 					path: '',
 					name: 'Description',
-					component: Project.Description,
+					component: () => import('@/pages/project/Description.vue'),
 				},
 				{
 					path: 'versions',
 					name: 'Versions',
-					component: Project.Versions,
+					component: () => import('@/pages/project/Versions.vue'),
 				},
 				{
 					path: 'version/:version',
 					name: 'Version',
-					component: Project.Version,
+					component: () => import('@/pages/project/Version.vue'),
 					props: true,
 				},
 				{
 					path: 'gallery',
 					name: 'Gallery',
-					component: Project.Gallery,
+					component: () => import('@/pages/project/Gallery.vue'),
 				},
 			],
 		},
 		{
 			path: '/instance/:id',
 			name: 'Instance',
-			component: Instance.Index,
+			component: () => import('@/pages/instance/layout.vue'),
 			children: [
 				{
 					path: 'worlds',
 					name: 'InstanceWorlds',
-					component: Instance.Worlds,
+					component: () => import('@/pages/instance/worlds/index.vue'),
 				},
 				{
 					path: 'share',
 					name: 'InstanceShare',
-					component: Instance.Share,
+					component: () => import('@/pages/instance/share/index.vue'),
 				},
 				{
 					path: '',
 					name: 'InstanceContent',
-					component: Instance.Content,
+					component: () => import('@/pages/instance/content/index.vue'),
 				},
 				{
 					path: 'projects/:type',
 					name: 'InstanceContentFilter',
-					component: Instance.Content,
+					component: () => import('@/pages/instance/content/index.vue'),
 				},
 				{
 					path: 'files',
 					name: 'InstanceFiles',
-					component: Instance.Files,
+					component: () => import('@/pages/instance/files/index.vue'),
 				},
 				{
 					path: 'screenshots',
 					name: 'InstanceScreenshots',
-					component: Instance.Screenshots,
+					component: () => import('@/pages/instance/screenshots/index.vue'),
 				},
 				{
 					path: 'logs',
 					name: 'InstanceLogs',
-					component: Instance.Logs,
+					component: () => import('@/pages/instance/logs/index.vue'),
 					meta: {
 						renderMode: 'fixed',
 					},

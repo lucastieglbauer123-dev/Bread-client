@@ -24,18 +24,19 @@ import {
 } from '@modrinth/ui'
 import { getVersion } from '@tauri-apps/api/app'
 import { platform as getOsPlatform, version as getOsVersion } from '@tauri-apps/plugin-os'
-import { computed, provide, ref, watch } from 'vue'
+import { computed, defineAsyncComponent, provide, ref, watch } from 'vue'
 
-import PrivacySettings from '@/components/ui/settings/account/PrivacySettings.vue'
-import ProfileSettings from '@/components/ui/settings/account/ProfileSettings.vue'
-import SocialSettings from '@/components/ui/settings/account/SocialSettings.vue'
-import AppearanceSettings from '@/components/ui/settings/display/AppearanceSettings.vue'
-import BehaviorSettings from '@/components/ui/settings/display/BehaviorSettings.vue'
-import FeatureFlagSettings from '@/components/ui/settings/display/FeatureFlagSettings.vue'
-import LanguageSettings from '@/components/ui/settings/display/LanguageSettings.vue'
-import InstancesSyncedSettings from '@/components/ui/settings/instances/InstancesSyncedSettings.vue'
-import JavaSettings from '@/components/ui/settings/instances/JavaSettings.vue'
-import ResourceManagementSettings from '@/components/ui/settings/instances/ResourceManagementSettings.vue'
+const PrivacySettings = defineAsyncComponent(() => import('@/components/ui/settings/account/PrivacySettings.vue'))
+const ProfileSettings = defineAsyncComponent(() => import('@/components/ui/settings/account/ProfileSettings.vue'))
+const SocialSettings = defineAsyncComponent(() => import('@/components/ui/settings/account/SocialSettings.vue'))
+const AppearanceSettings = defineAsyncComponent(() => import('@/components/ui/settings/display/AppearanceSettings.vue'))
+const BehaviorSettings = defineAsyncComponent(() => import('@/components/ui/settings/display/BehaviorSettings.vue'))
+const FeatureFlagSettings = defineAsyncComponent(() => import('@/components/ui/settings/display/FeatureFlagSettings.vue'))
+const LanguageSettings = defineAsyncComponent(() => import('@/components/ui/settings/display/LanguageSettings.vue'))
+const PerformanceSettings = defineAsyncComponent(() => import('@/components/ui/settings/display/PerformanceSettings.vue'))
+const InstancesSyncedSettings = defineAsyncComponent(() => import('@/components/ui/settings/instances/InstancesSyncedSettings.vue'))
+const JavaSettings = defineAsyncComponent(() => import('@/components/ui/settings/instances/JavaSettings.vue'))
+const ResourceManagementSettings = defineAsyncComponent(() => import('@/components/ui/settings/instances/ResourceManagementSettings.vue'))
 import { useAppSettings } from '@/composables/use-app-settings.ts'
 import { get, set } from '@/helpers/settings.ts'
 import {
@@ -69,6 +70,10 @@ const tabCategories = defineMessages({
 		id: 'app.settings.sidebar.label.instances',
 		defaultMessage: 'Instances',
 	},
+	performance: {
+		id: 'settings.sidebar.label.performance',
+		defaultMessage: 'Performance',
+	},
 })
 
 const tabs = [
@@ -89,6 +94,12 @@ const tabs = [
 		category: tabCategories.display,
 		icon: Settings2Icon,
 		content: BehaviorSettings,
+	},
+	{
+		name: tabCategories.performance,
+		category: tabCategories.performance,
+		icon: GaugeIcon,
+		content: PerformanceSettings,
 	},
 	{
 		name: defineMessage({

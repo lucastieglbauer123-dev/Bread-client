@@ -118,6 +118,7 @@ import { debugAnalytics, initAnalytics, trackEvent } from '@/helpers/analytics'
 import { check_reachable } from '@/helpers/auth.js'
 import { BREAD_PACK_OPTIONS } from '@/helpers/bread-packs'
 import { get_user, get_user_many, get_version } from '@/helpers/cache.js'
+import { markFirstPaint } from '@/helpers/startup-metrics'
 import { install_create_modpack_instance, install_get_modpack_preview } from '@/helpers/install'
 import {
 	can_current_user_use_shared_instances,
@@ -459,6 +460,7 @@ const os = ref('')
 const isDevEnvironment = ref(false)
 
 const stateInitialized = ref(false)
+const firstPaintReady = ref(false)
 const globalSyncedOptionsQuery = useQuery({
 	queryKey: ['global-synced-options'],
 	queryFn: get_global_synced_options,
@@ -485,6 +487,7 @@ const authServerQuery = useQuery({
 	refetchInterval: 5 * 60 * 1000, // 5 minutes
 	retry: false,
 	refetchOnWindowFocus: false,
+	enabled: computed(() => stateInitialized.value && firstPaintReady.value),
 })
 
 const authUnreachable = computed(() => {
@@ -525,7 +528,6 @@ onMounted(async () => {
 	document.querySelector('body').addEventListener('contextmenu', handleContextMenu)
 	document.addEventListener('fullscreenchange', handleFullscreenChange)
 
-	checkUpdates()
 })
 
 onUnmounted(async () => {
@@ -769,6 +771,7 @@ async function setupApp() {
 	appSettings.toggleSidebar = toggle_sidebar
 	appSettings.devMode = developer_mode
 	stateInitialized.value = true
+	scheduleStartupUpdateCheck()
 
 	await getCurrentWindow().onResized(async () => {
 		isMaximized.value = await getCurrentWindow().isMaximized()
@@ -788,51 +791,76 @@ async function setupApp() {
 		document.getElementsByTagName('html')[0].classList.add('windows')
 	}
 
-	fetch(`https://api.modrinth.com/appCriticalAnnouncement.json?version=${version}`)
-		.then((response) => response.json())
-		.then((res) => {
-			if (res && res.header && res.body) {
-				criticalErrorMessage.value = res
-			}
-		})
-		.catch(() => {
-			console.log(
-				`No critical announcement found at https://api.modrinth.com/appCriticalAnnouncement.json?version=${version}`,
-			)
-		})
+	deferStartupWork(async () => {
+		fetch(`https://api.modrinth.com/appCriticalAnnouncement.json?version=${version}`)
+			.then((response) => response.json())
+			.then((res) => {
+				if (res && res.header && res.body) {
+					criticalErrorMessage.value = res
+				}
+			})
+			.catch(() => {
+				console.log(
+					`No critical announcement found at https://api.modrinth.com/appCriticalAnnouncement.json?version=${version}`,
+				)
+			})
 
-	fetch(`https://modrinth.com/news/feed/articles.json`)
-		.then((response) => response.json())
-		.then((res) => {
-			if (res && res.articles) {
-				news.value = res.articles
-					.map((article) => ({
-						...article,
-						path: article.link,
-					}))
-					.slice(0, 4)
-			}
-		})
-		.catch((error) => {
-			console.error('Failed to fetch news articles', error)
-		})
+		fetch(`https://modrinth.com/news/feed/articles.json`)
+				.then((response) => response.json())
+				.then((res) => {
+					if (res && res.articles) {
+						news.value = res.articles
+							.map((article) => ({
+								...article,
+								path: article.link,
+							}))
+							.slice(0, 4)
+					}
+				})
+				.catch((error) => {
+					console.error('Failed to fetch news articles', error)
+				})
 
-	get_opening_command().then(handleCommand)
-	fetchCredentials()
+		get_opening_command().then(handleCommand)
+		fetchCredentials()
 
-	try {
-		const skins = (await get_available_skins()) ?? []
-		const capes = (await get_available_capes()) ?? []
-		generateSkinPreviews(skins, capes)
-	} catch (error) {
-		console.warn('Failed to generate skin previews in app setup.', error)
-	}
+		try {
+			const skins = (await get_available_skins()) ?? []
+			const capes = (await get_available_capes()) ?? []
+			generateSkinPreviews(skins, capes)
+		} catch (error) {
+			console.warn('Failed to generate skin previews in app setup.', error)
+		}
+	})
 
 	if (pending_update_toast_for_version !== null) {
 		const settings = await getSettings()
 		settings.pending_update_toast_for_version = null
 		await setSettings(settings)
 	}
+}
+
+const STARTUP_UPDATE_CHECK_KEY = 'bread.performance.check-updates-on-startup'
+
+function deferStartupWork(work) {
+	const run = () => {
+		if (firstPaintReady.value) {
+			void work()
+		} else {
+			requestAnimationFrame(run)
+		}
+	}
+	requestAnimationFrame(run)
+}
+
+function scheduleStartupUpdateCheck() {
+	const deferred = localStorage.getItem(STARTUP_UPDATE_CHECK_KEY) === 'false'
+	const delay = deferred ? 10_000 : 3_000
+	window.setTimeout(() => {
+		if (stateInitialized.value) {
+			void checkUpdates()
+		}
+	}, delay)
 }
 
 const stateFailed = ref(false)
@@ -1446,6 +1474,10 @@ watch(
 )
 
 onMounted(() => {
+	requestAnimationFrame(() => {
+		markFirstPaint()
+		firstPaintReady.value = true
+	})
 	invoke('show_window')
 
 	error.setErrorModal(errorModal.value)

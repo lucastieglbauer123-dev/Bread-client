@@ -6,7 +6,8 @@
 
 use native_dialog::{DialogBuilder, MessageLevel};
 use std::env;
-use std::sync::atomic::Ordering;
+use std::sync::{OnceLock, atomic::Ordering};
+use std::time::SystemTime;
 use tauri::{Listener, Manager};
 use tauri_plugin_fs::FsExt;
 use theseus::prelude::*;
@@ -20,6 +21,8 @@ mod macos;
 mod updater_impl;
 #[cfg(not(feature = "updater"))]
 mod updater_impl_noop;
+
+static PROCESS_START_TIME: OnceLock<SystemTime> = OnceLock::new();
 
 // Should be called in launcher initialization
 #[tracing::instrument(skip_all)]
@@ -49,6 +52,11 @@ async fn initialize_state(
 #[tracing::instrument(skip_all)]
 #[tauri::command]
 fn show_window(app: tauri::AppHandle) {
+    if let Some(start) = PROCESS_START_TIME.get() {
+        if let Ok(elapsed) = start.elapsed() {
+            eprintln!("[Bread startup] first paint: {} ms", elapsed.as_millis());
+        }
+    }
     let win = app.get_window("main").unwrap();
     if let Err(e) = win.show() {
         DialogBuilder::message()
@@ -113,6 +121,9 @@ async fn set_restart_after_pending_update(
 // if Tauri app is called with arguments, then those arguments will be treated as commands
 // ie: deep links or filepaths for .mrpacks
 fn main() {
+    let process_start = SystemTime::now();
+    let _ = PROCESS_START_TIME.set(process_start);
+    eprintln!("[Bread startup] process start: {:?}", process_start);
     #[cfg(feature = "export-app-events")]
     theseus::export_app_event_bindings(
         std::path::PathBuf::from(env!("CARGO_MANIFEST_DIR"))

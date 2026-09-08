@@ -12,6 +12,9 @@ import { overlayScrollbarsDirective } from '@/directives/overlayScrollbars'
 import i18nPlugin from '@/plugins/i18n'
 import i18nDebugPlugin from '@/plugins/i18n-debug'
 import router from '@/routes'
+import { markProcessStart } from '@/helpers/startup-metrics'
+
+markProcessStart()
 
 const vueScan = new VueScanPlugin({
 	enabled: false, // Enable or disable the tracker

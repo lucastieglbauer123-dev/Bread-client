@@ -16,3 +16,10 @@ new Bread Client update is committed.
 ### Build follow-up
 
 - Fixed the Notifications handler to remain valid in the plain JavaScript Vue script block used by the launcher.
+
+## 2026-09-08 — performance and startup
+
+- Added a Performance settings tab with deferred startup-update control, saved Java path display plus manual re-scan, and scoped content-cache clearing.
+- Startup now waits until the first paint before auth reachability, announcements, news, credentials, skin previews, and update checks; update checks are deferred by 3 seconds by default or about 10 seconds when disabled in Performance.
+- Browse search renders stale cached Modrinth results while revalidating in the background, and Settings, Logs, Browse, project, and hosting routes are lazy-loaded.
+- Added process-start and first-paint timing markers. The pre-change release executable reached a visible window in 5.4 seconds; the warm optimized dev run reported a 36.0-second first paint (including its debug webview/backend startup), so release timing should be re-measured after the final build.
