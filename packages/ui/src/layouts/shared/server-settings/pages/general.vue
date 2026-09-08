@@ -19,7 +19,7 @@
 									:disabled="!canUseAdvancedSettings"
 									@keyup.enter="!serverName && saveGeneral"
 								/>
-								<span>This name is only visible on Modrinth.</span>
+								<span>This name is only visible in Bread Hosting.</span>
 								<div class="text-red font-medium">
 									<span v-if="!isValidServerName"> Server name cannot be empty. </span>
 								</div>
@@ -56,7 +56,7 @@
 										class="flex min-h-9 shrink-0 select-none items-center py-2 pr-4 font-medium opacity-50 [filter:grayscale(50%)]"
 										:class="!serverSubdomain ? '!ml-auto' : ''"
 									>
-										.modrinth.gg
+										.server.gg
 									</div>
 								</div>
 							</label>
@@ -297,7 +297,7 @@ const getServerSpecs = (product?: Labrinth.Billing.Internal.Product | null) => {
 }
 
 const serverHostname = computed(() =>
-	serverSubdomain.value ? `${serverSubdomain.value}.modrinth.gg` : 'Unknown',
+	serverSubdomain.value ? `${serverSubdomain.value}.server.gg` : 'Unknown',
 )
 
 const serverSpecs = computed(() => getServerSpecs(serverProduct.value))

@@ -150,7 +150,7 @@
     "defaultMessage": "פתח בתקייה"
   },
   "button.open-in-modrinth": {
-    "defaultMessage": "פתח בModrinth"
+    "defaultMessage": "פתח בBread Client"
   },
   "button.play": {
     "defaultMessage": "שחק"
@@ -618,7 +618,7 @@
     "defaultMessage": "מפקח"
   },
   "omorphia.component.badge.label.modrinth-team": {
-    "defaultMessage": "צוות Modrinth"
+    "defaultMessage": "צוות Bread Client"
   },
   "omorphia.component.badge.label.pending": {
     "defaultMessage": "בהמתנה"

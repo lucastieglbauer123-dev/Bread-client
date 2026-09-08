@@ -78,7 +78,7 @@
     "message": "Не вдалося встановити Minecraft"
   },
   "app.action-bar.install.summary.modrinth-unreachable": {
-    "message": "Не вдалося зʼєднатися з Modrinth"
+    "message": "Не вдалося зʼєднатися з Bread Client"
   },
   "app.action-bar.install.summary.no-write-permission": {
     "message": "Немає прав для запису"
@@ -138,7 +138,7 @@
     "message": "Прийняти всі"
   },
   "app.ads-consent.body": {
-    "message": "Реклама підтримує існування Modrinth і фінансує виплати творцям. Наші партнери можуть зберігати й отримувати доступ до cookie в застосунку, щоб персоналізувати рекламу та збирати метрики."
+    "message": "Реклама підтримує існування Bread Client і фінансує виплати творцям. Наші партнери можуть зберігати й отримувати доступ до cookie в застосунку, щоб персоналізувати рекламу та збирати метрики."
   },
   "app.ads-consent.manage": {
     "message": "Налаштувати"
@@ -147,7 +147,7 @@
     "message": "Відхилити всі"
   },
   "app.ads-consent.title": {
-    "message": "Ваша приватність і як реклама підтримує Modrinth"
+    "message": "Ваша приватність і як реклама підтримує Bread Client"
   },
   "app.appearance-settings.compact-mode.title": {
     "message": "Компактний режим"
@@ -165,7 +165,7 @@
     "message": "Приховати ім'я"
   },
   "app.appearance-settings.minimize-launcher.description": {
-    "message": "Згортати Modrinth App під час запуску Minecraft."
+    "message": "Згортати Bread Client під час запуску Minecraft."
   },
   "app.appearance-settings.minimize-launcher.title": {
     "message": "Згортати застосунок"
@@ -189,7 +189,7 @@
     "message": "Приховати праву бічну панель"
   },
   "app.appearance-settings.unknown-pack-warning.description": {
-    "message": "Показувати попередження про безпеку перед встановленням Modrinth Pack (.mrpack), який не розміщено на Modrinth."
+    "message": "Показувати попередження про безпеку перед встановленням Bread Client Pack (.mrpack), який не розміщено на Bread Client."
   },
   "app.appearance-settings.unknown-pack-warning.title": {
     "message": "Попереджати перед установленням невідомих збірок"
@@ -315,16 +315,16 @@
     "message": "Переглянути примірник"
   },
   "app.hosting.update-required.description": {
-    "message": "Вам потрібно оновитися, щоб використовувати Modrinth Hosting через застосунок Modrinth"
+    "message": "Вам потрібно оновитися, щоб використовувати Bread Hosting через застосунок Bread Client"
   },
   "app.hosting.update-required.download": {
     "message": "Завантажити для оновлення"
   },
   "app.hosting.update-required.rinthbot-alt": {
-    "message": "Схвильований бот Modrinth"
+    "message": "Схвильований бот Bread Client"
   },
   "app.hosting.update-required.title": {
-    "message": "Потрібне оновлення Modrinth App"
+    "message": "Потрібне оновлення Bread Client"
   },
   "app.icon-editor.apply-icons-modal.badge": {
     "message": "Нове оновлення"
@@ -648,13 +648,13 @@
     "message": "Увійти як"
   },
   "app.instance.shared-instance-wrong-account.signed-out-header": {
-    "message": "Ви повинні ввійти в Modrinth"
+    "message": "Ви повинні ввійти в Bread Client"
   },
   "app.instance.shared-instance-wrong-account.user-admonition-body-v2": {
     "message": "щоб отримувати оновлення для цієї спільної збірки."
   },
   "app.instance.shared-instance-wrong-account.warning-header": {
-    "message": "Ви використовуєте не той обліковий запис Modrinth"
+    "message": "Ви використовуєте не той обліковий запис Bread Client"
   },
   "app.instance.tab.content": {
     "message": "Уміст"
@@ -921,10 +921,10 @@
     "message": "Установити"
   },
   "app.modal.install-to-play.invite-warning": {
-    "message": "Це запрошення створив інший користувач Modrinth, не сам Modrinth. Приймайте запрошення лише від тих людей, яким довіряєте."
+    "message": "Це запрошення створив інший користувач Bread Client, не сам Bread Client. Приймайте запрошення лише від тих людей, яким довіряєте."
   },
   "app.modal.install-to-play.invite-warning-with-creator": {
-    "message": "Це запрошення створив користувач <creator>{username}</creator>, не Modrinth. Приймайте запрошення лише від людей, яким довіряєте."
+    "message": "Це запрошення створив користувач <creator>{username}</creator>, не Bread Client. Приймайте запрошення лише від людей, яким довіряєте."
   },
   "app.modal.install-to-play.managed-content.modpack-header": {
     "message": "Уміст збірки"
@@ -957,7 +957,7 @@
     "message": "Для отримання допомоги зв'яжіться з нашою <support-link>командою підтримки</support-link>. Для створення звіту про помилки відкрийте <github-link>issue в GitHub</github-link>."
   },
   "app.modal.install-to-play.reviewed-files": {
-    "message": "Файли, які не опубліковані на Modrinth, не перевіряються."
+    "message": "Файли, які не опубліковані на Bread Client, не перевіряються."
   },
   "app.modal.install-to-play.shared-instance": {
     "message": "Спільний примірник"
@@ -966,10 +966,10 @@
     "message": "Уміст спільного профілю"
   },
   "app.modal.install-to-play.shared-instance-unknown-files-description": {
-    "message": "Цей спільний примірник містить файли, які не викладені на Modrinth. Наполегливо радимо встановлювати вміст лише з тих джерел, яким ви довіряєте."
+    "message": "Цей спільний примірник містить файли, які не викладені на Bread Client. Наполегливо радимо встановлювати вміст лише з тих джерел, яким ви довіряєте."
   },
   "app.modal.install-to-play.unknown-files-description": {
-    "message": "Ця збірка сервера містить файли, які не викладені на Modrinth. Наполегливо радимо встановлювати вміст лише з тих джерел, яким ви довіряєте."
+    "message": "Ця збірка сервера містить файли, які не викладені на Bread Client. Наполегливо радимо встановлювати вміст лише з тих джерел, яким ви довіряєте."
   },
   "app.modal.install-to-play.unknown-files-warning": {
     "message": "Попередження про невідомі файли"
@@ -990,7 +990,7 @@
     "message": "Видалено"
   },
   "app.modal.update-to-play.server-modpack-unknown-files-description": {
-    "message": "Це оновлення збірки сервера містить файли, які не викладені на Modrinth. Наполегливо радимо встановлювати вміст лише з тих джерел, яким ви довіряєте."
+    "message": "Це оновлення збірки сервера містить файли, які не викладені на Bread Client. Наполегливо радимо встановлювати вміст лише з тих джерел, яким ви довіряєте."
   },
   "app.modal.update-to-play.shared-instance-added-label": {
     "message": "Додано"
@@ -999,7 +999,7 @@
     "message": "Видалено"
   },
   "app.modal.update-to-play.shared-instance-unknown-files-description": {
-    "message": "Це оновлення спільного примірника містить файли, які не викладені на Modrinth. Наполегливо радимо встановлювати вміст лише з тих джерел, яким ви довіряєте."
+    "message": "Це оновлення спільного примірника містить файли, які не викладені на Bread Client. Наполегливо радимо встановлювати вміст лише з тих джерел, яким ви довіряєте."
   },
   "app.modal.update-to-play.update-required": {
     "message": "Необхідне оновлення"
@@ -1014,16 +1014,16 @@
     "message": "Головна"
   },
   "app.nav.modrinth-account": {
-    "message": "Обліковий запис Modrinth"
+    "message": "Обліковий запис Bread Client"
   },
   "app.nav.modrinth-hosting": {
-    "message": "Modrinth Hosting"
+    "message": "Bread Hosting"
   },
   "app.nav.sign-in-to-modrinth-account": {
-    "message": "Увійти в обліковий запис Modrinth"
+    "message": "Увійти в обліковий запис Bread Client"
   },
   "app.nav.upgrade-to-modrinth-plus": {
-    "message": "Оновити до Modrinth+"
+    "message": "Оновити до Bread Supporter"
   },
   "app.navigation.home": {
     "message": "Головна"
@@ -1083,7 +1083,7 @@
     "message": "Перезапуск..."
   },
   "app.settings.app-version": {
-    "message": "Modrinth App {version}"
+    "message": "Bread Client {version}"
   },
   "app.settings.default-instance-options.environment-variables.description": {
     "message": "Змінні середовища встановлюються, коли примірник запускається."
@@ -1176,16 +1176,16 @@
     "message": "macOS"
   },
   "app.settings.privacy.ads-consent.intro": {
-    "message": "Реклама підтримує існування Modrinth і фінансує виплати творцям. Наші партнери можуть зберігати й отримувати доступ до cookie в застосунку, щоб персоналізувати рекламу та збирати метрики. Ви можете відмовитися від них або керувати налаштуваннями нижче."
+    "message": "Реклама підтримує існування Bread Client і фінансує виплати творцям. Наші партнери можуть зберігати й отримувати доступ до cookie в застосунку, щоб персоналізувати рекламу та збирати метрики. Ви можете відмовитися від них або керувати налаштуваннями нижче."
   },
   "app.settings.privacy.discord-rich-presence.description": {
-    "message": "Показувати Modrinth App як вашу поточну активність у Discord. Це не впливає на Rich Presence, доданий до збірок модами. Потребує перезапуску застосунку."
+    "message": "Показувати Bread Client як вашу поточну активність у Discord. Це не впливає на Rich Presence, доданий до збірок модами. Потребує перезапуску застосунку."
   },
   "app.settings.privacy.discord-rich-presence.title": {
     "message": "Discord Rich Presence"
   },
   "app.settings.privacy.telemetry.description": {
-    "message": "Modrinth збирає анонімізовану аналітику та дані про використання для покращення зручності та адаптації сервісу. Вимкнувши цю опцію, ви відмовляєтеся від збору, і ваші дані більше не збиратимуться."
+    "message": "Bread Client збирає анонімізовану аналітику та дані про використання для покращення зручності та адаптації сервісу. Вимкнувши цю опцію, ви відмовляєтеся від збору, і ваші дані більше не збиратимуться."
   },
   "app.settings.privacy.telemetry.title": {
     "message": "Телеметрія"
@@ -1203,7 +1203,7 @@
     "message": "Очистити кеш?"
   },
   "app.settings.resource-management.app-cache.description": {
-    "message": "Очистити кешовані дані та завантажити їх знову з Modrinth. Застосунок може завантажуватися повільніше, поки кеш відновиться."
+    "message": "Очистити кешовані дані та завантажити їх знову з Bread Client. Застосунок може завантажуватися повільніше, поки кеш відновиться."
   },
   "app.settings.resource-management.app-cache.purge": {
     "message": "Очистити кеш"
@@ -1224,7 +1224,7 @@
     "message": "Оглянути каталог застосунку"
   },
   "app.settings.resource-management.app-directory.description": {
-    "message": "Де Modrinth App зберігає збірки та інші файли. Зміни набудуть чинності після перезапуску застосунку."
+    "message": "Де Bread Client зберігає збірки та інші файли. Зміни набудуть чинності після перезапуску застосунку."
   },
   "app.settings.resource-management.app-directory.select": {
     "message": "Вибрати новий каталог застосунку"
@@ -1380,13 +1380,13 @@
     "message": "MINECON Earth 2017"
   },
   "app.skins.section.modrinth": {
-    "message": "Modrinth"
+    "message": "Bread Client"
   },
   "app.skins.section.modrinth-pride": {
-    "message": "Modrinth Pride"
+    "message": "Bread Client Pride"
   },
   "app.skins.section.modrinth-pride.tooltip": {
-    "message": "Ви отримали ці скіни за участь у благодійній акції Modrinth Pride під час місяця прайду."
+    "message": "Ви отримали ці скіни за участь у благодійній акції Bread Client Pride під час місяця прайду."
   },
   "app.skins.section.mounts-of-mayhem": {
     "message": "Mounts of Mayhem"
@@ -1416,10 +1416,10 @@
     "message": "Увімкнути"
   },
   "app.survey.body": {
-    "message": "Не бажаєте відповісти на кілька запитань про ваш досвід користування Modrinth App?"
+    "message": "Не бажаєте відповісти на кілька запитань про ваш досвід користування Bread Client?"
   },
   "app.survey.footer": {
-    "message": "Цей відгук надійде безпосередньо команді Modrinth і допоможе у створенні майбутніх оновлень!"
+    "message": "Цей відгук надійде безпосередньо команді Bread Client і допоможе у створенні майбутніх оновлень!"
   },
   "app.survey.no-thanks": {
     "message": "Ні, дякую"
@@ -1428,16 +1428,16 @@
     "message": "Пройти опитування"
   },
   "app.survey.title": {
-    "message": "Привіт, користувачу Modrinth!"
+    "message": "Привіт, користувачу Bread Client!"
   },
   "app.update-popup.body.download-complete": {
-    "message": "Modrinth App v{version} завантажено. Перезапустіть, щоб оновити зараз, або це відбудеться автоматично після закриття застосунку."
+    "message": "Bread Client v{version} завантажено. Перезапустіть, щоб оновити зараз, або це відбудеться автоматично після закриття застосунку."
   },
   "app.update-popup.body.linux": {
-    "message": "Modrinth App v{version} вже доступно. Скористайтеся менеджером пакетів, щоб отримати найновіші функції та виправлення!"
+    "message": "Bread Client v{version} вже доступно. Скористайтеся менеджером пакетів, щоб отримати найновіші функції та виправлення!"
   },
   "app.update-popup.body.metered": {
-    "message": "Modrinth App v{version} вже доступно! Оскільки ви використовуєте лімітне підключення, ми не завантажили його автоматично."
+    "message": "Bread Client v{version} вже доступно! Оскільки ви використовуєте лімітне підключення, ми не завантажили його автоматично."
   },
   "app.update-popup.changelog": {
     "message": "Список змін"
@@ -1470,10 +1470,10 @@
     "message": "Готові до гри?"
   },
   "app.welcome-screen.title": {
-    "message": "Вітаємо в Modrinth"
+    "message": "Вітаємо в Bread Client"
   },
   "app.world.server-modal.placeholder-address": {
-    "message": "example.modrinth.gg"
+    "message": "example.server.gg"
   },
   "app.world.server-modal.select-an-option": {
     "message": "Виберіть опцію"
@@ -1539,7 +1539,7 @@
     "message": "Уведіть ім’я користувача…"
   },
   "friends.add-friend.username.title": {
-    "message": "Яке ім’я користувача Modrinth у вашого друга?"
+    "message": "Яке ім’я користувача Bread Client у вашого друга?"
   },
   "friends.add-friends-to-share": {
     "message": "<link>Додайте друзів</link>, щоб бачити, у що вони грають!"
@@ -1581,7 +1581,7 @@
     "message": "{title} — {count}"
   },
   "friends.sign-in-to-add-friends": {
-    "message": "<link>Увійдіть в обліковий запис Modrinth</link>, щоб додати друзів і бачити, у що вони грають!"
+    "message": "<link>Увійдіть в обліковий запис Bread Client</link>, щоб додати друзів і бачити, у що вони грають!"
   },
   "installation-settings.shared-instance.linked-title": {
     "message": "Пов'язана спільна збірка"
@@ -1602,7 +1602,7 @@
     "message": "Скасувати публікацію спільної збірки"
   },
   "installation-settings.shared-instance.unpublish-description": {
-    "message": "Видалити цю спільну збірку з Modrinth і припинити надсилати оновлення всім, хто нею користується. Це не вплине на вашу локальну збірку."
+    "message": "Видалити цю спільну збірку з Bread Client і припинити надсилати оновлення всім, хто нею користується. Це не вплине на вашу локальну збірку."
   },
   "installation-settings.shared-instance.unpublishing-button": {
     "message": "Скасування публікації..."
@@ -1617,7 +1617,7 @@
     "message": "Відв'язати спільну збірку"
   },
   "installation-settings.unpublish-shared-instance.modal.admonition-body": {
-    "message": "Це видалить спільну збірку з серверів Modrinth. Користувачі Modrinth App припинять отримувати оновлення, але ваша локальна збірка та її вміст залишаться на цьому пристрої."
+    "message": "Це видалить спільну збірку з серверів Bread Client. Користувачі Bread Client припинять отримувати оновлення, але ваша локальна збірка та її вміст залишаться на цьому пристрої."
   },
   "installation-settings.unpublish-shared-instance.modal.admonition-header": {
     "message": "Скасування публікації спільної збірки"
@@ -1866,7 +1866,7 @@
     "message": "Динаміт"
   },
   "instance.icon-editor.symbol.wrenth-rinth": {
-    "message": "Гайковий ключ Modrinth"
+    "message": "Гайковий ключ Bread Client"
   },
   "instance.icon-editor.symbol.zombie": {
     "message": "Зомбі"
@@ -2283,7 +2283,7 @@
     "message": "Створити обліковий запис"
   },
   "modal.modrinth-account-required.description": {
-    "message": "Ви повинні ввійти у свій обліковий запис Modrinth, перш ніж використовувати цей функціонал."
+    "message": "Ви повинні ввійти у свій обліковий запис Bread Client, перш ніж використовувати цей функціонал."
   },
   "modal.modrinth-account-required.header": {
     "message": "Необхідний обліковий запис"
@@ -2292,10 +2292,10 @@
     "message": "Знову відкрити переглядач"
   },
   "modal.modrinth-account-required.sign-in-button": {
-    "message": "Увійти в Modrinth"
+    "message": "Увійти в Bread Client"
   },
   "modal.modrinth-account-required.sign-in-heading": {
-    "message": "Вхід в обліковий запис Modrinth"
+    "message": "Вхід в обліковий запис Bread Client"
   },
   "modal.modrinth-account-required.signing-in-header": {
     "message": "Вхід"

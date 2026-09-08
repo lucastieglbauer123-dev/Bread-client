@@ -78,7 +78,7 @@
     "message": "Cài đặt Minecraft thất bại"
   },
   "app.action-bar.install.summary.modrinth-unreachable": {
-    "message": "Không thể kết nối được với Modrinth"
+    "message": "Không thể kết nối được với Bread Client"
   },
   "app.action-bar.install.summary.no-write-permission": {
     "message": "Không có quyền để viết"
@@ -138,7 +138,7 @@
     "message": "Chấp nhận tất cả"
   },
   "app.ads-consent.body": {
-    "message": "Quảng cáo giúp Modrinth hoạt động và tài trợ cho việc thanh toán cho người sáng tạo nội dung. Các đối tác của chúng tôi có thể lưu trữ hoặc truy cập cookie trong ứng dụng để cá nhân hóa quảng cáo và đo lường hiệu suất."
+    "message": "Quảng cáo giúp Bread Client hoạt động và tài trợ cho việc thanh toán cho người sáng tạo nội dung. Các đối tác của chúng tôi có thể lưu trữ hoặc truy cập cookie trong ứng dụng để cá nhân hóa quảng cáo và đo lường hiệu suất."
   },
   "app.ads-consent.manage": {
     "message": "Quản lý tùy chọn"
@@ -147,7 +147,7 @@
     "message": "Từ chối tất cả"
   },
   "app.ads-consent.title": {
-    "message": "Quyền riêng tư của bạn và cách quảng cáo hỗ trợ Modrinth"
+    "message": "Quyền riêng tư của bạn và cách quảng cáo hỗ trợ Bread Client"
   },
   "app.appearance-settings.compact-mode.description": {
     "message": "Hiển thị thư viện phiên bản theo bố cục hàng nhỏ gọn."
@@ -174,7 +174,7 @@
     "message": "Bước vào các thế giới hoặc các khu vực riêng biệt"
   },
   "app.appearance-settings.minimize-launcher.description": {
-    "message": "Thu nhỏ ứng dụng Modrinth khi Minecraft khởi động."
+    "message": "Thu nhỏ ứng dụng Bread Client khi Minecraft khởi động."
   },
   "app.appearance-settings.minimize-launcher.title": {
     "message": "Thu nhỏ ứng dụng"
@@ -198,7 +198,7 @@
     "message": "Ẩn thanh bên"
   },
   "app.appearance-settings.unknown-pack-warning.description": {
-    "message": "Hiển thị cảnh báo an toàn trước khi cài đặt một gói Modrinth (.mrpack) không được lưu trữ trên Modrinth."
+    "message": "Hiển thị cảnh báo an toàn trước khi cài đặt một gói Bread Client (.mrpack) không được lưu trữ trên Bread Client."
   },
   "app.appearance-settings.unknown-pack-warning.title": {
     "message": "Cảnh báo tôi trước khi cài đặt các modpacks không rõ nguồn gốc"
@@ -219,7 +219,7 @@
     "message": "Sử dụng các cài đặt hành vi này ở mọi nơi bạn đăng nhập. Hãy tắt tùy chọn này nếu muốn duy trì các cài đặt riêng cho thiết bị này."
   },
   "app.behavior-settings.sync-across-devices.signed-out-tooltip": {
-    "message": "Đăng nhập vào tài khoản Modrinth để đồng bộ hóa cài đặt."
+    "message": "Đăng nhập vào tài khoản Bread Client để đồng bộ hóa cài đặt."
   },
   "app.behavior-settings.sync-across-devices.title": {
     "message": "Đồng bộ hóa hành vi trên các thiết bị"
@@ -300,13 +300,13 @@
     "message": "Tham gia ngay"
   },
   "app.hosting.update-required.description": {
-    "message": "Bạn cần cập nhật để sử dụng Modrinth Hosting thông qua ứng dụng Modrinth"
+    "message": "Bạn cần cập nhật để sử dụng Bread Hosting thông qua ứng dụng Bread Client"
   },
   "app.hosting.update-required.download": {
     "message": "Tải xuống để cập nhật"
   },
   "app.hosting.update-required.title": {
-    "message": "Yêu cầu cập nhật ứng dụng Modrinth"
+    "message": "Yêu cầu cập nhật ứng dụng Bread Client"
   },
   "app.icon-editor.apply-icons-modal.apply-error": {
     "message": "Không thể áp dụng các biểu tượng ngẫu nhiên cho các thực thể."
@@ -315,7 +315,7 @@
     "message": "Điểm mới trong bản cập nhật này"
   },
   "app.icon-editor.apply-icons-modal.description": {
-    "message": "Tạo biểu tượng tùy chỉnh cho các instance của bạn ngay trong ứng dụng Modrinth. Hãy kết hợp các hình nền với những biểu tượng từ Minecraft và các bản mod phổ biến!"
+    "message": "Tạo biểu tượng tùy chỉnh cho các instance của bạn ngay trong ứng dụng Bread Client. Hãy kết hợp các hình nền với những biểu tượng từ Minecraft và các bản mod phổ biến!"
   },
   "app.icon-editor.apply-icons-modal.title": {
     "message": "Trình chỉnh sửa biểu tượng tùy chỉnh"
@@ -681,13 +681,13 @@
     "message": "MINECON Earth 2017"
   },
   "app.skins.section.modrinth": {
-    "message": "Modrinth"
+    "message": "Bread Client"
   },
   "app.skins.section.modrinth-pride": {
-    "message": "Modrinth Pride"
+    "message": "Bread Client Pride"
   },
   "app.skins.section.modrinth-pride.tooltip": {
-    "message": "Bạn đã được tặng những skin này sau khi quyên góp cho Modrinth trong tháng tự hào LGBT thế giới."
+    "message": "Bạn đã được tặng những skin này sau khi quyên góp cho Bread Client trong tháng tự hào LGBT thế giới."
   },
   "app.skins.section.mounts-of-mayhem": {
     "message": "Mounts of Mayhem"
@@ -711,13 +711,13 @@
     "message": "Đổi skin"
   },
   "app.update-popup.body.download-complete": {
-    "message": "Phiên bản v{version} của Modrinth đã sẵn sàng để có thể cài đặt. Khởi động lại ứng dụng để cập nhật ngay bây giờ, hoặc tự động cập nhật sau khi bạn tắt Modrinth."
+    "message": "Phiên bản v{version} của Bread Client đã sẵn sàng để có thể cài đặt. Khởi động lại ứng dụng để cập nhật ngay bây giờ, hoặc tự động cập nhật sau khi bạn tắt Bread Client."
   },
   "app.update-popup.body.linux": {
-    "message": "Phiên bản v{version} của Modrinth hiện đang khả dụng. Hãy sử dụng trình quản lý gói của bạn để cập nhật các tính năng và bản vá lỗi mới nhất!"
+    "message": "Phiên bản v{version} của Bread Client hiện đang khả dụng. Hãy sử dụng trình quản lý gói của bạn để cập nhật các tính năng và bản vá lỗi mới nhất!"
   },
   "app.update-popup.body.metered": {
-    "message": "Phiên bản v{version} của Modrinth hiện đang khả dụng ngay bây giờ! Vì bạn đang sử dụng mạng có tính phí theo dung lượng nên chúng tôi không tự động tải xuống."
+    "message": "Phiên bản v{version} của Bread Client hiện đang khả dụng ngay bây giờ! Vì bạn đang sử dụng mạng có tính phí theo dung lượng nên chúng tôi không tự động tải xuống."
   },
   "app.update-popup.changelog": {
     "message": "Nhật ký thay đổi"
@@ -741,7 +741,7 @@
     "message": "Phiên bản {version} đã được cài đặt thành công!"
   },
   "app.world.server-modal.placeholder-address": {
-    "message": "example.modrinth.gg"
+    "message": "example.server.gg"
   },
   "app.world.server-modal.select-an-option": {
     "message": "Chọn một tuỳ chọn"
@@ -771,10 +771,10 @@
     "message": "Nó có thể khác với tên người dùng Minecraft của họ!"
   },
   "friends.add-friend.username.placeholder": {
-    "message": "Nhập tên người dùng Modrinth..."
+    "message": "Nhập tên người dùng Bread Client..."
   },
   "friends.add-friend.username.title": {
-    "message": "Tên người dùng Modrinth của bạn của bạn là gì?"
+    "message": "Tên người dùng Bread Client của bạn của bạn là gì?"
   },
   "friends.add-friends-to-share": {
     "message": "Hãy <link>thêm bạn bè</link> để biết họ đang chơi gì!"
@@ -816,7 +816,7 @@
     "message": "{title} - {count}"
   },
   "friends.sign-in-to-add-friends": {
-    "message": "<link>Đăng nhập bằng tài khoản Modrinth</link> để kết bạn và xem họ đang chơi gì!"
+    "message": "<link>Đăng nhập bằng tài khoản Bread Client</link> để kết bạn và xem họ đang chơi gì!"
   },
   "instance.add-server.add-and-play": {
     "message": "Thêm và chơi"

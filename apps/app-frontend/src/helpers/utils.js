@@ -50,7 +50,7 @@ export async function showLauncherLogsFolder() {
 
 export async function createInstanceShortcut(instanceName, instanceId, options = {}) {
 	const outputPath = await save({
-		defaultPath: `Modrinth - ${instanceName}`,
+		defaultPath: `Bread Client - ${instanceName}`,
 	})
 
 	if (!outputPath) return null

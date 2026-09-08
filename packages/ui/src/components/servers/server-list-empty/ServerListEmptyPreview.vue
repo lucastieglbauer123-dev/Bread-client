@@ -81,7 +81,7 @@
 				<div
 					class="flex h-8 items-center justify-between gap-2 rounded-xl bg-surface-1 px-2.5 text-sm font-medium text-primary"
 				>
-					<span class="truncate">https://modrinth.com/server/abc123</span>
+					<span class="truncate">server.example/abc123</span>
 					<ClipboardCopyIcon class="size-4 shrink-0 text-secondary" />
 				</div>
 			</div>
@@ -111,7 +111,7 @@
 						</p>
 						<p class="m-0 flex items-center gap-1">
 							<Avatar :src="modrinthSmpIcon" size="1.25rem" no-shadow />
-							<span class="font-medium text-contrast">Modrinth SMP</span>
+					<span class="font-medium text-contrast">Bread SMP</span>
 							<span>{{ formatMessage(messages.serverSuffix) }}</span>
 						</p>
 					</div>
@@ -168,7 +168,7 @@ const messages = defineMessages({
 	},
 	searchPlaceholder: {
 		id: 'sharing.invite-players-modal.search-placeholder',
-		defaultMessage: 'Enter Modrinth username',
+		defaultMessage: 'Enter Bread Client username',
 	},
 	addButton: {
 		id: 'sharing.invite-players-modal.add',

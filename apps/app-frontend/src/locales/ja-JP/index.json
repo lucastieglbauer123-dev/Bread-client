@@ -78,7 +78,7 @@
     "message": "マインクラフトのセットアップに失敗しました"
   },
   "app.action-bar.install.summary.modrinth-unreachable": {
-    "message": "Modrinthに接続できませんでした"
+    "message": "Bread Clientに接続できませんでした"
   },
   "app.action-bar.install.summary.no-write-permission": {
     "message": "書き込み権限がありません"
@@ -138,7 +138,7 @@
     "message": "すべて受け入れる"
   },
   "app.ads-consent.body": {
-    "message": "Modrinthは広告収益によって運営され、クリエイターへの報酬もその収益から支払われています。当社のパートナーは、広告のパーソナライズや効果測定のために、アプリ内でCookieを保存・利用する場合があります。"
+    "message": "Bread Clientは広告収益によって運営され、クリエイターへの報酬もその収益から支払われています。当社のパートナーは、広告のパーソナライズや効果測定のために、アプリ内でCookieを保存・利用する場合があります。"
   },
   "app.ads-consent.manage": {
     "message": "設定の管理"
@@ -147,7 +147,7 @@
     "message": "すべて拒否する"
   },
   "app.ads-consent.title": {
-    "message": "プライバシーと広告がModrinthを支える仕組み"
+    "message": "プライバシーと広告がBread Clientを支える仕組み"
   },
   "app.appearance-settings.default-landing-page.home": {
     "message": "ホーム"
@@ -186,7 +186,7 @@
     "message": "右のサイドバーを隠す"
   },
   "app.appearance-settings.unknown-pack-warning.description": {
-    "message": "Modrinth以外でホストされているModrinthパック（.mrpack）をインストールする前に、安全警告を表示します。"
+    "message": "Bread Client以外でホストされているBread Clientパック（.mrpack）をインストールする前に、安全警告を表示します。"
   },
   "app.appearance-settings.unknown-pack-warning.title": {
     "message": "不明なModパックのインストール前に警告する"
@@ -540,13 +540,13 @@
     "message": "このアカウントでサインインすることで"
   },
   "app.instance.shared-instance-wrong-account.signed-out-header": {
-    "message": "Modrinthへのサインインが必要です"
+    "message": "Bread Clientへのサインインが必要です"
   },
   "app.instance.shared-instance-wrong-account.user-admonition-body-v2": {
     "message": "インスタンスのアップデートを受け取ることができます。"
   },
   "app.instance.shared-instance-wrong-account.warning-header": {
-    "message": "Modrinthのアカウントが間違っています"
+    "message": "Bread Clientのアカウントが間違っています"
   },
   "app.instance.worlds.add-server": {
     "message": "サーバーを追加"
@@ -678,10 +678,10 @@
     "message": "インストール"
   },
   "app.modal.install-to-play.invite-warning": {
-    "message": "この招待は他のModrinthユーザーによって作成されたものであり、Modrinth公式のものではありません。信頼できる人からの招待のみ承諾してください。"
+    "message": "この招待は他のBread Clientユーザーによって作成されたものであり、Bread Client公式のものではありません。信頼できる人からの招待のみ承諾してください。"
   },
   "app.modal.install-to-play.invite-warning-with-creator": {
-    "message": "この招待はModrinthではなく<creator>{username}</creator>によって作成されました。信頼できる人物からの招待のみ受諾してください。"
+    "message": "この招待はBread Clientではなく<creator>{username}</creator>によって作成されました。信頼できる人物からの招待のみ受諾してください。"
   },
   "app.modal.install-to-play.mod-count": {
     "message": "{count, plural, other {#個のMod}}"
@@ -711,7 +711,7 @@
     "message": "サポートに関するお問い合わせは、<support-link>サポートチーム</support-link>までご連絡ください。バグの報告は、<github-link>GitHubのIssue</github-link>を作成してください。"
   },
   "app.modal.install-to-play.reviewed-files": {
-    "message": "追加するファイルはModrinthの認証を受けていません"
+    "message": "追加するファイルはBread Clientの認証を受けていません"
   },
   "app.modal.install-to-play.shared-instance": {
     "message": "共有インスタンス"
@@ -720,10 +720,10 @@
     "message": "共有された起動構成の内容"
   },
   "app.modal.install-to-play.shared-instance-unknown-files-description": {
-    "message": "この共有された起動構成には、Modrinthで公開されていないファイルが含まれています。信頼できる提供元からのファイルのみをインストールすることを強くお勧めします。"
+    "message": "この共有された起動構成には、Bread Clientで公開されていないファイルが含まれています。信頼できる提供元からのファイルのみをインストールすることを強くお勧めします。"
   },
   "app.modal.install-to-play.unknown-files-description": {
-    "message": "このサーバーModパックには、Modrinthに公開されていないファイルが含まれています。信頼できるソースからのファイルのみをインストールすることを強く推奨します。"
+    "message": "このサーバーModパックには、Bread Clientに公開されていないファイルが含まれています。信頼できるソースからのファイルのみをインストールすることを強く推奨します。"
   },
   "app.modal.install-to-play.unknown-files-warning": {
     "message": "不明なファイルの警告"
@@ -744,7 +744,7 @@
     "message": "削除されました"
   },
   "app.modal.update-to-play.server-modpack-unknown-files-description": {
-    "message": "このサーバーModパックのアップデートには、Modrinthに公開されていないファイルが含まれています。信頼できるソースからのファイルのみをインストールすることを強く推奨します。"
+    "message": "このサーバーModパックのアップデートには、Bread Clientに公開されていないファイルが含まれています。信頼できるソースからのファイルのみをインストールすることを強く推奨します。"
   },
   "app.modal.update-to-play.shared-instance-added-label": {
     "message": "追加済み"
@@ -753,7 +753,7 @@
     "message": "削除済み"
   },
   "app.modal.update-to-play.shared-instance-unknown-files-description": {
-    "message": "この共有された起動構成のアップデートには、Modrinthで公開されていないファイルが含まれています。信頼できる提供元からのファイルのみをインストールすることを強くお勧めします。"
+    "message": "この共有された起動構成のアップデートには、Bread Clientで公開されていないファイルが含まれています。信頼できる提供元からのファイルのみをインストールすることを強くお勧めします。"
   },
   "app.modal.update-to-play.update-required": {
     "message": "更新が必要です"
@@ -768,16 +768,16 @@
     "message": "ホーム"
   },
   "app.nav.modrinth-account": {
-    "message": "Modrinthアカウント"
+    "message": "Bread Clientアカウント"
   },
   "app.nav.modrinth-hosting": {
-    "message": "Modrinth Hosting"
+    "message": "Bread Hosting"
   },
   "app.nav.sign-in-to-modrinth-account": {
-    "message": "Modrinthアカウントにサインイン"
+    "message": "Bread Clientアカウントにサインイン"
   },
   "app.nav.upgrade-to-modrinth-plus": {
-    "message": "Modrinth+にアップグレード"
+    "message": "Bread Supporterにアップグレード"
   },
   "app.news.title": {
     "message": "ニュース"
@@ -819,7 +819,7 @@
     "message": "再起動中..."
   },
   "app.settings.app-version": {
-    "message": "Modrinth App {version}"
+    "message": "Bread Client {version}"
   },
   "app.settings.default-instance-options.environment-variables.description": {
     "message": "インスタンス起動時に設定される環境変数"
@@ -912,16 +912,16 @@
     "message": "MacOS"
   },
   "app.settings.privacy.ads-consent.intro": {
-    "message": "Modrinthは広告収益によって運営され、クリエイターへの報酬もその収益から支払われています。当社のパートナーは、広告のパーソナライズや効果測定のために、アプリ内でCookieを保存・利用する場合があります。この機能は下のボタンから個別に拒否や許可または変更することができます。"
+    "message": "Bread Clientは広告収益によって運営され、クリエイターへの報酬もその収益から支払われています。当社のパートナーは、広告のパーソナライズや効果測定のために、アプリ内でCookieを保存・利用する場合があります。この機能は下のボタンから個別に拒否や許可または変更することができます。"
   },
   "app.settings.privacy.discord-rich-presence.description": {
-    "message": "Discordの現在のプレイ中に Modrinth App を表示します。これはModによってインスタンスに追加されるRich Presenceには影響しません。適用にはアプリの再起動が必要です。"
+    "message": "Discordの現在のプレイ中に Bread Client を表示します。これはModによってインスタンスに追加されるRich Presenceには影響しません。適用にはアプリの再起動が必要です。"
   },
   "app.settings.privacy.discord-rich-presence.title": {
     "message": "Discord Rich Presence"
   },
   "app.settings.privacy.telemetry.description": {
-    "message": "Modrinthはユーザー体験の向上および最適化のために、匿名化されたアナリティクスと利用データを収集しています。このオプションをオフにすることで無効化（オプトアウト）され、以降データの収集は行われません。"
+    "message": "Bread Clientはユーザー体験の向上および最適化のために、匿名化されたアナリティクスと利用データを収集しています。このオプションをオフにすることで無効化（オプトアウト）され、以降データの収集は行われません。"
   },
   "app.settings.privacy.telemetry.title": {
     "message": "テレメトリ"
@@ -939,7 +939,7 @@
     "message": "アプリのキャッシュを破棄しますか？"
   },
   "app.settings.resource-management.app-cache.description": {
-    "message": "キャッシュデータを消去し、Modrinthから再ダウンロードします。キャッシュが再構築されるまで、アプリの読み込みが遅くなる場合があります。"
+    "message": "キャッシュデータを消去し、Bread Clientから再ダウンロードします。キャッシュが再構築されるまで、アプリの読み込みが遅くなる場合があります。"
   },
   "app.settings.resource-management.app-cache.purge": {
     "message": "キャッシュを破棄"
@@ -960,7 +960,7 @@
     "message": "アプリのディレクトリを参照..."
   },
   "app.settings.resource-management.app-directory.description": {
-    "message": "Modrinth Appがインスタンスやその他のファイルを保存する場所です。変更はアプリの再起動後に反映されます。"
+    "message": "Bread Clientがインスタンスやその他のファイルを保存する場所です。変更はアプリの再起動後に反映されます。"
   },
   "app.settings.resource-management.app-directory.select": {
     "message": "新しいアプリディレクトリを選択"
@@ -1116,13 +1116,13 @@
     "message": "MINECON Earth 2017"
   },
   "app.skins.section.modrinth": {
-    "message": "Modrinth"
+    "message": "Bread Client"
   },
   "app.skins.section.modrinth-pride": {
-    "message": "Modrinth プライド"
+    "message": "Bread Client プライド"
   },
   "app.skins.section.modrinth-pride.tooltip": {
-    "message": "これらのスキンは、プライド月間中にModrinthのプライド募金活動に寄付したことで獲得したものです。"
+    "message": "これらのスキンは、プライド月間中にBread Clientのプライド募金活動に寄付したことで獲得したものです。"
   },
   "app.skins.section.mounts-of-mayhem": {
     "message": "マウント・オブ・メイヘム"
@@ -1152,10 +1152,10 @@
     "message": "オンに切り替え"
   },
   "app.survey.body": {
-    "message": "Modrinth App の使用感についての簡単なアンケートにご協力いただけますか？"
+    "message": "Bread Client の使用感についての簡単なアンケートにご協力いただけますか？"
   },
   "app.survey.footer": {
-    "message": "このフィードバックはModrinthチームに直接届けられ、今後のアップデートの改善に役立てられます！"
+    "message": "このフィードバックはBread Clientチームに直接届けられ、今後のアップデートの改善に役立てられます！"
   },
   "app.survey.no-thanks": {
     "message": "結構です"
@@ -1164,16 +1164,16 @@
     "message": "アンケートに回答"
   },
   "app.survey.title": {
-    "message": "Modrinthユーザーのみなさん、こんにちは！"
+    "message": "Bread Clientユーザーのみなさん、こんにちは！"
   },
   "app.update-popup.body.download-complete": {
-    "message": "Modrinth App v{version} のダウンロードが完了しました。今すぐ更新するには再読み込みするか、Modrinth Appを閉じる際に自動更新されます。"
+    "message": "Bread Client v{version} のダウンロードが完了しました。今すぐ更新するには再読み込みするか、Bread Clientを閉じる際に自動更新されます。"
   },
   "app.update-popup.body.linux": {
-    "message": "Modrinth App v{version} が利用可能です。最新の機能と修正プログラムを入手するには、パッケージマネージャーを使用して更新してください！"
+    "message": "Bread Client v{version} が利用可能です。最新の機能と修正プログラムを入手するには、パッケージマネージャーを使用して更新してください！"
   },
   "app.update-popup.body.metered": {
-    "message": "Modrinth App v{version} が利用可能になりました！お使いのネットワークが従量制のため、自動ダウンロードは行っておりません。"
+    "message": "Bread Client v{version} が利用可能になりました！お使いのネットワークが従量制のため、自動ダウンロードは行っておりません。"
   },
   "app.update-popup.changelog": {
     "message": "更新履歴"
@@ -1200,7 +1200,7 @@
     "message": "インスタンスにインストール"
   },
   "app.world.server-modal.placeholder-address": {
-    "message": "example.modrinth.gg"
+    "message": "example.server.gg"
   },
   "app.world.server-modal.select-an-option": {
     "message": "オプションを選択"
@@ -1263,10 +1263,10 @@
     "message": "これはMinecraftユーザー名とは異なる可能性があります！"
   },
   "friends.add-friend.username.placeholder": {
-    "message": "Modrinthユーザー名を入力…"
+    "message": "Bread Clientユーザー名を入力…"
   },
   "friends.add-friend.username.title": {
-    "message": "あなたのフレンドのModrinthユーザー名は何ですか？"
+    "message": "あなたのフレンドのBread Clientユーザー名は何ですか？"
   },
   "friends.add-friends-to-share": {
     "message": "<link>友達を追加</link>して、彼らが何をしているか見てみよう！"
@@ -1308,7 +1308,7 @@
     "message": "{title} - {count}"
   },
   "friends.sign-in-to-add-friends": {
-    "message": "<link>Modrinthアカウントにサインイン</link>して友達を追加し、彼らがプレイしているゲームをチェックしよう！"
+    "message": "<link>Bread Clientアカウントにサインイン</link>して友達を追加し、彼らがプレイしているゲームをチェックしよう！"
   },
   "installation-settings.shared-instance.linked-title": {
     "message": "リンク済の共有された起動構成"
@@ -1329,7 +1329,7 @@
     "message": "共有された軌道構成を非公開にする"
   },
   "installation-settings.shared-instance.unpublish-description": {
-    "message": "この共有インスタンスをModrinthから削除し、使用者へのアップデート送信を停止します。ローカルのインスタンスには影響しません。"
+    "message": "この共有インスタンスをBread Clientから削除し、使用者へのアップデート送信を停止します。ローカルのインスタンスには影響しません。"
   },
   "installation-settings.shared-instance.unpublishing-button": {
     "message": "非公開に設定中..."
@@ -1344,7 +1344,7 @@
     "message": "共有インスタンスのリンクを解除"
   },
   "installation-settings.unpublish-shared-instance.modal.admonition-body": {
-    "message": "Modrinthのサーバーからこの共有インスタンスを削除します。Modrinthアプリでこれを使用しているユーザーへのアップデート配信は停止しますが、ローカルのインスタンスとそのコンテンツはこのデバイスに残ります。"
+    "message": "Bread Clientのサーバーからこの共有インスタンスを削除します。Bread Clientアプリでこれを使用しているユーザーへのアップデート配信は停止しますが、ローカルのインスタンスとそのコンテンツはこのデバイスに残ります。"
   },
   "installation-settings.unpublish-shared-instance.modal.admonition-header": {
     "message": "共有インスタンスの非公開化"
@@ -1962,7 +1962,7 @@
     "message": "アカウントを作成"
   },
   "modal.modrinth-account-required.description": {
-    "message": "この機能を利用するには、Modrinthアカウントにログインする必要があります。"
+    "message": "この機能を利用するには、Bread Clientアカウントにログインする必要があります。"
   },
   "modal.modrinth-account-required.header": {
     "message": "アカウントが必要です"
@@ -1971,10 +1971,10 @@
     "message": "もう一度ブラウザを開く"
   },
   "modal.modrinth-account-required.sign-in-button": {
-    "message": "Modrinthへサインイン"
+    "message": "Bread Clientへサインイン"
   },
   "modal.modrinth-account-required.sign-in-heading": {
-    "message": "Modrinth アカウントにサインインしてください"
+    "message": "Bread Client アカウントにサインインしてください"
   },
   "modal.modrinth-account-required.signing-in-header": {
     "message": "サインイン"

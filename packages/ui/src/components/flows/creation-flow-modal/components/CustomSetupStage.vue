@@ -338,7 +338,7 @@ const messages = defineMessages({
 	},
 	packResolutionHint: {
 		id: 'creation-flow.modal.custom-setup.pack.resolution-hint',
-		defaultMessage: 'Modrinth will choose current compatible Fabric versions when the instance is created.',
+		defaultMessage: 'Bread Client will choose current compatible Fabric versions when the instance is created.',
 	},
 	packFabricOnly: {
 		id: 'creation-flow.modal.custom-setup.pack.fabric-only',

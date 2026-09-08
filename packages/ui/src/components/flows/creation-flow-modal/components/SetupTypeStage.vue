@@ -189,7 +189,7 @@ const messages = defineMessages({
 	},
 	premadeInstanceDescription: {
 		id: 'creation-flow.modal.setup-type.option.premade-instance.description',
-		defaultMessage: 'Browse curated Modrinth modpacks.',
+		defaultMessage: 'Browse curated community modpacks.',
 	},
 	importOwnTitle: {
 		id: 'creation-flow.modal.setup-type.option.import-own.title',

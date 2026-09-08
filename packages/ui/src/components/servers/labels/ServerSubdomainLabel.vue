@@ -15,7 +15,7 @@
 				:class="props.subdomain ? 'hover:underline' : ''"
 				@click="copySubdomain"
 			>
-				{{ subdomain }}.modrinth.gg
+				{{ subdomain }}.server.gg
 			</div>
 		</div>
 	</div>

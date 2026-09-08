@@ -99,7 +99,7 @@
     "defaultMessage": "Nie znaleziono wyników dla twojego wyszukiwania!"
   },
   "browse.offline": {
-    "defaultMessage": "Jesteś offline. Połącz się z internetem, aby przeglądać Modrinth!"
+    "defaultMessage": "Jesteś offline. Połącz się z internetem, aby przeglądać Bread Client!"
   },
   "browse.search.placeholder": {
     "defaultMessage": "Szukaj {projectType}..."
@@ -234,7 +234,7 @@
     "defaultMessage": "Otwórz w folderze"
   },
   "button.open-in-modrinth": {
-    "defaultMessage": "Otwórz na Modrinth"
+    "defaultMessage": "Otwórz na Bread Client"
   },
   "button.play": {
     "defaultMessage": "Graj"
@@ -516,13 +516,13 @@
     "defaultMessage": "Usunięto (wyłączono) {count}"
   },
   "content.diff-modal.reviewed-files": {
-    "defaultMessage": "Pliki nieopublikowane w Modrinth nie są sprawdzane."
+    "defaultMessage": "Pliki nieopublikowane w Bread Client nie są sprawdzane."
   },
   "content.diff-modal.unknown-content-body": {
     "defaultMessage": "Zawartość na Twoim serwerze nie mogła zostać przeanalizowana i może być objęta tą zmianą."
   },
   "content.diff-modal.unknown-files-description": {
-    "defaultMessage": "Ta aktualizacja zawiera pliki, które nie zostały opublikowane na Modrinth. Zalecamy instalowanie plików tylko z źródeł, którym ufasz."
+    "defaultMessage": "Ta aktualizacja zawiera pliki, które nie zostały opublikowane na Bread Client. Zalecamy instalowanie plików tylko z źródeł, którym ufasz."
   },
   "content.diff-modal.unknown-files-warning": {
     "defaultMessage": "Ostrzeżenie o nieznanych plikach"
@@ -1161,7 +1161,7 @@
     "defaultMessage": "link-do-dzieła"
   },
   "external-files.permissions-card.editor.modrinth-link-to-work": {
-    "defaultMessage": "Wygląda na to, że jest to link do Modrinth. Jeżeli ta zawartość jest dostępna na Modrinth, Twoja paczka najprawdopodobniej została źle wyeksportowana. Jeżeli ta zawartość jest pobrana z innej strony, spróbuj pobrać ją ponownie z Modrinth; czasami pliki z innych stron nie są identyczne."
+    "defaultMessage": "Wygląda na to, że jest to link do Bread Client. Jeżeli ta zawartość jest dostępna na Bread Client, Twoja paczka najprawdopodobniej została źle wyeksportowana. Jeżeli ta zawartość jest pobrana z innej strony, spróbuj pobrać ją ponownie z Bread Client; czasami pliki z innych stron nie są identyczne."
   },
   "external-files.permissions-card.editor.notes-label": {
     "defaultMessage": "Notatki"
@@ -1185,7 +1185,7 @@
     "defaultMessage": "Jeżeli okaże się, że skłamałeś/aś lub przesłane zdjęcia są sfałszowane, Twoje konto i projekt mogą zostać zawieszone."
   },
   "external-files.permissions-card.editor.proof-warning.title": {
-    "defaultMessage": "Zespół Modrinth może zweryfikować dowody"
+    "defaultMessage": "Zespół Bread Client może zweryfikować dowody"
   },
   "external-files.permissions-card.editor.save": {
     "defaultMessage": "Zapisz atrybucję"
@@ -1272,7 +1272,7 @@
     "defaultMessage": "Automatyczna atrybucja"
   },
   "external-files.permissions-card.reason.globally-allowed.description": {
-    "defaultMessage": "Widzieliśmy jeż ten plik i przygotowaliśmy dla Ciebie gotową atrybucję. Jeżeli coś tu nie pasuje, skontaktuj się z obsługą Modrinth przez centrum pomocy"
+    "defaultMessage": "Widzieliśmy jeż ten plik i przygotowaliśmy dla Ciebie gotową atrybucję. Jeżeli coś tu nie pasuje, skontaktuj się z obsługą Bread Client przez centrum pomocy"
   },
   "external-files.permissions-card.reason.license": {
     "defaultMessage": "Licencja"
@@ -2217,7 +2217,7 @@
     "defaultMessage": "Zewnętrzne"
   },
   "instances.managed-content-modal.external-content-description": {
-    "defaultMessage": "Ten plik nie jest opublikowany na Modrinth."
+    "defaultMessage": "Ten plik nie jest opublikowany na Bread Client."
   },
   "instances.managed-content-modal.header": {
     "defaultMessage": "Zarządzana zawartość"
@@ -2817,16 +2817,16 @@
     "defaultMessage": "Otrzymuj aktualizacje plików, gdy zmienione są na serwerze"
   },
   "modal.open-in-app.get-app": {
-    "defaultMessage": "Pobierz Modrinth App"
+    "defaultMessage": "Pobierz Bread Client"
   },
   "modal.open-in-app.opening-automatically": {
-    "defaultMessage": "Modrinth App zostanie otwarte automatycznie..."
+    "defaultMessage": "Bread Client zostanie otwarte automatycznie..."
   },
   "modal.open-in-app.title": {
-    "defaultMessage": "Otwieranie Modrinth App"
+    "defaultMessage": "Otwieranie Bread Client"
   },
   "modal.open-in-app.why-use": {
-    "defaultMessage": "Czemu warto używać Modrinth App"
+    "defaultMessage": "Czemu warto używać Bread Client"
   },
   "notification.error.title": {
     "defaultMessage": "Wystąpił błąd"
@@ -2880,7 +2880,7 @@
     "defaultMessage": "Moderator"
   },
   "omorphia.component.badge.label.modrinth-team": {
-    "defaultMessage": "Zespół Modrinth"
+    "defaultMessage": "Zespół Bread Client"
   },
   "omorphia.component.badge.label.pending": {
     "defaultMessage": "Oczekujący"
@@ -3000,13 +3000,13 @@
     "defaultMessage": "Visa"
   },
   "profile.bio.fallback.creator": {
-    "defaultMessage": "Twórca na Modrinth."
+    "defaultMessage": "Twórca na Bread Client."
   },
   "profile.bio.fallback.user": {
-    "defaultMessage": "Użytkownik Modrinth."
+    "defaultMessage": "Użytkownik Bread Client."
   },
   "profile.block-user.admonition-body": {
-    "defaultMessage": "Użytkownik {username} nie będzie mógł wysyłać ci zaproszeń do znajomych, zapraszać się do udostępnionych instancji lub zapraszać się do serwerów Modrinth Hosting."
+    "defaultMessage": "Użytkownik {username} nie będzie mógł wysyłać ci zaproszeń do znajomych, zapraszać się do udostępnionych instancji lub zapraszać się do serwerów Bread Hosting."
   },
   "profile.block-user.admonition-title": {
     "defaultMessage": "Czy na pewno chcesz zablokować tego użytkownika?"
@@ -3060,7 +3060,7 @@
     "defaultMessage": "{count, plural, one {# projekt} few {# projekty} other {# projektów}}"
   },
   "profile.details.error.github-popup-blocked": {
-    "defaultMessage": "Zezwalaj na wyskakujące okienka dla Modrinth, a następnie spróbuj ponownie."
+    "defaultMessage": "Zezwalaj na wyskakujące okienka dla Bread Client, a następnie spróbuj ponownie."
   },
   "profile.details.error.github-profile-message": {
     "defaultMessage": "Profil GitHub nie może zostać odzyskany. Spróbuj ponownie."
@@ -3138,10 +3138,10 @@
     "defaultMessage": "{count, plural, one {projekt} few {projekty} other {projektów}}"
   },
   "profile.official-account": {
-    "defaultMessage": "Oficjalne konto Modrinth"
+    "defaultMessage": "Oficjalne konto Bread Client"
   },
   "profile.official-account.bio": {
-    "defaultMessage": "Oficjalne konto Modrinth. Otrzymaj wsparcie na stronie <support-link></support-link> lub poprzez e-mail <email></email>"
+    "defaultMessage": "Oficjalne konto Bread Client. Otrzymaj wsparcie na stronie <support-link></support-link> lub poprzez e-mail <email></email>"
   },
   "profile.unblock-user.error-description": {
     "defaultMessage": "Wystąpił błąd podczas odblokowywania tego użytkownika. Spróbuj ponownie później."
@@ -3504,7 +3504,7 @@
     "defaultMessage": "{count} {countPlural, plural, one {grał ostatnio} other {grało ostatnio}}"
   },
   "project.recent-plays.tooltip": {
-    "defaultMessage": "{count} {countPlural, plural, one {grał ostatnio} other {grało ostatnio}} poprzez Modrinth przez ostatnie 2 tygodnie"
+    "defaultMessage": "{count} {countPlural, plural, one {grał ostatnio} other {grało ostatnio}} poprzez Bread Client przez ostatnie 2 tygodnie"
   },
   "project.server.customModpackTooltip": {
     "defaultMessage": "Ten projekt wykorzystuje niestandardową paczkę modów"
@@ -3831,7 +3831,7 @@
     "defaultMessage": "Twój projekt ma wiele środowisk"
   },
   "project.settings.environment.notice.review-options.description": {
-    "defaultMessage": "Właśnie zmodernizowaliśmy system środowisk w Modrinth i są teraz dostępne nowe opcje. Upewnij się, że poniżej wybrano właściwą opcję, a następnie kliknij 'Weryfikuj' gdy skończysz!"
+    "defaultMessage": "Właśnie zmodernizowaliśmy system środowisk w Bread Client i są teraz dostępne nowe opcje. Upewnij się, że poniżej wybrano właściwą opcję, a następnie kliknij 'Weryfikuj' gdy skończysz!"
   },
   "project.settings.environment.notice.review-options.title": {
     "defaultMessage": "Proszę zapoznać się z opcjami poniżej"
@@ -4107,7 +4107,7 @@
     "defaultMessage": "Loader"
   },
   "search.photosensitivity-warning-modal.body.3": {
-    "defaultMessage": "Korzystasz z jakiejkolwiek zawartości na Modrinth na własne ryzyko. Dbaj o siebie! 💚"
+    "defaultMessage": "Korzystasz z jakiejkolwiek zawartości na Bread Client na własne ryzyko. Dbaj o siebie! 💚"
   },
   "search.photosensitivity-warning-modal.dont-show-again": {
     "defaultMessage": "Nie pokazuj ponownie"
@@ -4797,7 +4797,7 @@
     "defaultMessage": "Awatar użytkownika {username}"
   },
   "servers.backups.item.creator.support": {
-    "defaultMessage": "Obsługa Modrinth"
+    "defaultMessage": "Obsługa Bread Client"
   },
   "servers.backups.item.manual-backup": {
     "defaultMessage": "Ręczne kopie zapasowe"
@@ -4872,13 +4872,13 @@
     "defaultMessage": "Nie pomylić z nazwą użytkownika Minecraft."
   },
   "servers.grant-access-modal.target.label": {
-    "defaultMessage": "Nazwa użytkownika Modrinth"
+    "defaultMessage": "Nazwa użytkownika Bread Client"
   },
   "servers.grant-access-modal.target.no-suggestions": {
     "defaultMessage": "Nie znaleziono żadnych użytkowników."
   },
   "servers.grant-access-modal.target.placeholder": {
-    "defaultMessage": "Wprowadź nazwę użytkownika Modrinth"
+    "defaultMessage": "Wprowadź nazwę użytkownika Bread Client"
   },
   "servers.grant-access-modal.target.searching": {
     "defaultMessage": "Wyszukiwanie..."
@@ -4935,13 +4935,13 @@
     "defaultMessage": "Dowiedz się więcej"
   },
   "servers.list-empty.modrinth-hosting-label": {
-    "defaultMessage": "Modrinth Hosting"
+    "defaultMessage": "Bread Hosting"
   },
   "servers.list-empty.new-server-button": {
     "defaultMessage": "Nowy serwer"
   },
   "servers.list-empty.no-servers-description": {
-    "defaultMessage": "Instaluj modyfikacje, zapraszaj znajomych i graj z nimi przy użyciu Modrinth App."
+    "defaultMessage": "Instaluj modyfikacje, zapraszaj znajomych i graj z nimi przy użyciu Bread Client."
   },
   "servers.list-empty.one-click-mod-installs-description": {
     "defaultMessage": "Wybierz swoje ulubione mody, a my zajmiemy się resztą."
@@ -4953,7 +4953,7 @@
     "defaultMessage": "Graj z przyjaciółmi"
   },
   "servers.list-empty.sign-in-button": {
-    "defaultMessage": "Zaloguj się na Modrinth"
+    "defaultMessage": "Zaloguj się na Bread Client"
   },
   "servers.list-empty.simple-setup-description": {
     "defaultMessage": "Ustaw serwer tak, jak zwykły świat w trybie jednoosobowym."
@@ -5013,7 +5013,7 @@
     "defaultMessage": "Twoja subskrypcja zostanie anulowana dnia <date>{formattedDate}</date>. "
   },
   "servers.listing.notice.suspended": {
-    "defaultMessage": "Twój serwer został zawieszony. Skontaktuj się z obsługą Modrinth, by dowiedzieć się więcej."
+    "defaultMessage": "Twój serwer został zawieszony. Skontaktuj się z obsługą Bread Client, by dowiedzieć się więcej."
   },
   "servers.listing.notice.upgrading": {
     "defaultMessage": "Twój serwer jest aktualnie ulepszany i wkrótce zostanie włączony ponownie."
@@ -5031,7 +5031,7 @@
     "defaultMessage": "Ikona serwera"
   },
   "servers.listing.support-label": {
-    "defaultMessage": "Obsługa Modrinth"
+    "defaultMessage": "Obsługa Bread Client"
   },
   "servers.listing.using-project-label": {
     "defaultMessage": "Używa {projectTitle}"
@@ -5046,7 +5046,7 @@
     "defaultMessage": "Przesyłanie w toku"
   },
   "servers.manage.contact-support-button": {
-    "defaultMessage": "Skontaktuj się z obsługą Modrinth"
+    "defaultMessage": "Skontaktuj się z obsługą Bread Client"
   },
   "servers.manage.error.alert-notice": {
     "defaultMessage": "Nasze systemy automatycznie zawiadamiają nasz zespół, gdy występuje jakakolwiek awaria. Aktualnie przywracamy serwery do działania."
@@ -5058,10 +5058,10 @@
     "defaultMessage": "Informacje na temat błędu:"
   },
   "servers.manage.error.queue-notice": {
-    "defaultMessage": "Świeżo kupione serwery Modrinth Hosting są najpierw wstawiane do kolejki i będą pokazane tutaj, gdy będą gotowe. <warning>Nie próbuj kupować od nowa serwera.</warning>"
+    "defaultMessage": "Świeżo kupione serwery Bread Hosting są najpierw wstawiane do kolejki i będą pokazane tutaj, gdy będą gotowe. <warning>Nie próbuj kupować od nowa serwera.</warning>"
   },
   "servers.manage.error.support-notice": {
-    "defaultMessage": "Jeżeli potrzebujesz spersonalizowanego wsparcia odnośnie do stanu Twojego serwera, skontaktuj się z obsługą Modrinth."
+    "defaultMessage": "Jeżeli potrzebujesz spersonalizowanego wsparcia odnośnie do stanu Twojego serwera, skontaktuj się z obsługą Bread Client."
   },
   "servers.manage.error.title": {
     "defaultMessage": "Serwery nie mogły zostać załadowane"
@@ -5094,7 +5094,7 @@
     "defaultMessage": "Załaduj ponownie"
   },
   "servers.manage.resubscribe-error.text": {
-    "defaultMessage": "Wystąpił błąd podczas ponawiania subskrypcji do serwera Modrinth."
+    "defaultMessage": "Wystąpił błąd podczas ponawiania subskrypcji do serwera Bread Client."
   },
   "servers.manage.resubscribe-error.title": {
     "defaultMessage": "Błąd resubskrybcji"
@@ -5115,7 +5115,7 @@
     "defaultMessage": "Szukaj wśród {count} {count, plural, one {serweru} other {serwerów}}..."
   },
   "servers.manage.servers-title": {
-    "defaultMessage": "Modrinth Hosting"
+    "defaultMessage": "Bread Hosting"
   },
   "servers.manage.settings-hint.description": {
     "defaultMessage": "Teraz mogą być znalezione tutaj!"
@@ -5142,10 +5142,10 @@
     "defaultMessage": "Okres próbny serwera od Medal zakończył się, więc Twój serwer został zawieszony. Musisz wybrać plan, by dalej móc korzystać z serwera."
   },
   "servers.medal-listing.notice.suspended": {
-    "defaultMessage": "Twój serwer został zawieszony. Zaktualizuj swoje dane rozliczeniowe lub skontaktuj się z obsługą Modrinth, by dowiedzieć się więcej."
+    "defaultMessage": "Twój serwer został zawieszony. Zaktualizuj swoje dane rozliczeniowe lub skontaktuj się z obsługą Bread Client, by dowiedzieć się więcej."
   },
   "servers.medal-listing.notice.suspended-with-reason": {
-    "defaultMessage": "Twój serwer został zawieszony: {reason}. Zaktualizuj swoje dane rozliczeniowe lub skontaktuj się z obsługą Modrinth, by dowiedzieć się więcej."
+    "defaultMessage": "Twój serwer został zawieszony: {reason}. Zaktualizuj swoje dane rozliczeniowe lub skontaktuj się z obsługą Bread Client, by dowiedzieć się więcej."
   },
   "servers.medal-listing.notice.upgrading": {
     "defaultMessage": "Twój serwer jest aktualnie ulepszany i wkrótce zostanie włączony ponownie."
@@ -5193,7 +5193,7 @@
     "defaultMessage": "Nieodrzucalne"
   },
   "servers.purchase.notification.success.text": {
-    "defaultMessage": "Zakup Modrinth Hosting zakończony sukcesem."
+    "defaultMessage": "Zakup Bread Hosting zakończony sukcesem."
   },
   "servers.purchase.notification.success.title": {
     "defaultMessage": "Zakup przebiegł pomyślnie"
@@ -5280,7 +5280,7 @@
     "defaultMessage": "Gdzie chciałbyś(-abyś), aby znajdował się Twój serwer?"
   },
   "servers.region.region-unsupported": {
-    "defaultMessage": "Nie ma na liście lokalizacji, którą potrzebujesz? <link>Daj nam znać, gdzie chcesz zobaczyć Modrinth Hosting!</link>"
+    "defaultMessage": "Nie ma na liście lokalizacji, którą potrzebujesz? <link>Daj nam znać, gdzie chcesz zobaczyć Bread Hosting!</link>"
   },
   "servers.region.southeast-asia": {
     "defaultMessage": "Azja Południowo-Wschodnia"
@@ -5352,7 +5352,7 @@
     "defaultMessage": "Ustaw serwer"
   },
   "servers.setup.onboarding.step.choose.description": {
-    "defaultMessage": "Wybierz swoją ulubioną paczkę modów z Modrinth lub wybierz loader i dodaj mody, które chcesz."
+    "defaultMessage": "Wybierz swoją ulubioną paczkę modów z Bread Client lub wybierz loader i dodaj mody, które chcesz."
   },
   "servers.setup.onboarding.step.choose.title": {
     "defaultMessage": "Wybierz w co grać"
@@ -5379,7 +5379,7 @@
     "defaultMessage": "Twój serwer jest gotowy. Oto co musisz zrobić, by zacząć grać!"
   },
   "servers.setup.onboarding.welcome.title": {
-    "defaultMessage": "Witaj w Modrinth Hosting"
+    "defaultMessage": "Witaj w Bread Hosting"
   },
   "servers.setup.rate-limit.text": {
     "defaultMessage": "Przekroczono limit operacji. Spróbuj ponownie później."
@@ -5457,7 +5457,7 @@
     "defaultMessage": "Zaawansowane renderowanie"
   },
   "settings.display.sidebar.external-links-new-tab.description": {
-    "defaultMessage": "Spraw, aby linki prowadzące poza Modrinth otwierały się w nowej karcie. Niezależnie od tego ustawienia linki w tej samej domenie i w opisach Markdown będą otwierane w tej samej karcie, a linki w reklamach i edytowanych stronach będą otwierane w nowej karcie."
+    "defaultMessage": "Spraw, aby linki prowadzące poza Bread Client otwierały się w nowej karcie. Niezależnie od tego ustawienia linki w tej samej domenie i w opisach Markdown będą otwierane w tej samej karcie, a linki w reklamach i edytowanych stronach będą otwierane w nowej karcie."
   },
   "settings.display.sidebar.external-links-new-tab.title": {
     "defaultMessage": "Otwieraj linki zewnętrzne w nowej karcie"
@@ -5478,7 +5478,7 @@
     "defaultMessage": "Ciemny"
   },
   "settings.display.theme.description": {
-    "defaultMessage": "Wybierz preferowany motyw kolorystyczny dla Modrinth App."
+    "defaultMessage": "Wybierz preferowany motyw kolorystyczny dla Bread Client."
   },
   "settings.display.theme.light": {
     "defaultMessage": "Jasny"
@@ -5499,7 +5499,7 @@
     "defaultMessage": "Synchronizuj motyw między urządzeniami"
   },
   "settings.display.theme.sync-across-devices.sign-in-tooltip": {
-    "defaultMessage": "Zaloguj się na Modrinth, aby synchronizować motyw"
+    "defaultMessage": "Zaloguj się na Bread Client, aby synchronizować motyw"
   },
   "settings.display.theme.system": {
     "defaultMessage": "Synchronizuj z systemem"
@@ -5559,7 +5559,7 @@
     "defaultMessage": "Zdjęcie profilowe"
   },
   "settings.profile.public-information.description": {
-    "defaultMessage": "Twoje informacje profilowe są publicznie <profile-link>dostępne na Modrinth</profile-link> i poprzez <docs-link>Modrinth API</docs-link>."
+    "defaultMessage": "Twoje informacje profilowe są publicznie <profile-link>dostępne na Bread Client</profile-link> i poprzez <docs-link>Bread Client API</docs-link>."
   },
   "settings.profile.save-error": {
     "defaultMessage": "Nie udało się zaktualizować profilu"
@@ -5568,10 +5568,10 @@
     "defaultMessage": "Wystąpił błąd podczas aktualizowania profilu. Spróbuj ponownie później."
   },
   "settings.profile.sign-in-required.description": {
-    "defaultMessage": "Zaloguj się na konto Modrinth, by dostosować swój publiczny profil."
+    "defaultMessage": "Zaloguj się na konto Bread Client, by dostosować swój publiczny profil."
   },
   "settings.profile.sign-in-required.title": {
-    "defaultMessage": "Wymagane jest konto Modrinth"
+    "defaultMessage": "Wymagane jest konto Bread Client"
   },
   "settings.profile.username.description": {
     "defaultMessage": "Unikatowa bez uwzględniania wielkości liter nazwa identyfikująca Twój profil."
@@ -5586,7 +5586,7 @@
     "defaultMessage": "Użytkownik"
   },
   "settings.social.blocked-users.description": {
-    "defaultMessage": "Lista użytkowników zablokowanych na Modrinth. Nie mogą oni:"
+    "defaultMessage": "Lista użytkowników zablokowanych na Bread Client. Nie mogą oni:"
   },
   "settings.social.blocked-users.empty": {
     "defaultMessage": "Brak zablokowanych użytkowników."
@@ -5601,7 +5601,7 @@
     "defaultMessage": "Wysyłać ci zaproszeń do znajomych"
   },
   "settings.social.blocked-users.restriction.hosting": {
-    "defaultMessage": "Zapraszać cię do zarządzania serwerem Modrinth Hosting."
+    "defaultMessage": "Zapraszać cię do zarządzania serwerem Bread Hosting."
   },
   "settings.social.blocked-users.restriction.shared-instances": {
     "defaultMessage": "Zapraszać cię do udostępnionych instancji"
@@ -5625,7 +5625,7 @@
     "defaultMessage": "Awatar użytkownika {username}"
   },
   "settings.social.friend-requests.description": {
-    "defaultMessage": "Kontroluj, kto może wysyłać Ci zaproszenia do znajomych na Modrinth."
+    "defaultMessage": "Kontroluj, kto może wysyłać Ci zaproszenia do znajomych na Bread Client."
   },
   "settings.social.friend-requests.title": {
     "defaultMessage": "Zaproszenia do znajomych"
@@ -5643,10 +5643,10 @@
     "defaultMessage": "Nikt"
   },
   "settings.social.sign-in-required.description": {
-    "defaultMessage": "Możesz kontrolować, kto może z Tobą pisać i zarządzać zablokowanymi użytkownikami na koncie Modrinth"
+    "defaultMessage": "Możesz kontrolować, kto może z Tobą pisać i zarządzać zablokowanymi użytkownikami na koncie Bread Client"
   },
   "settings.social.sign-in-required.title": {
-    "defaultMessage": "Wymagane jest konto Modrinth"
+    "defaultMessage": "Wymagane jest konto Bread Client"
   },
   "settings.social.title": {
     "defaultMessage": "Społeczne"
@@ -5745,7 +5745,7 @@
     "defaultMessage": "Zapisz"
   },
   "sharing.invite-players-modal.search-placeholder": {
-    "defaultMessage": "Wprowadź nazwę użytkownika Modrinth"
+    "defaultMessage": "Wprowadź nazwę użytkownika Bread Client"
   },
   "sharing.invite-players-modal.searching": {
     "defaultMessage": "Wyszukiwanie..."
@@ -6315,34 +6315,34 @@
     "defaultMessage": "Wirusy są często rozpowszechniane poprzez pliki modów wysyłane na platformach takich jak Discord."
   },
   "unknown-file-warning-modal.mod-warning-body": {
-    "defaultMessage": " nie zostało opublikowane na Modrinth. Zalecamy instalowanie plików tylko z źródeł, którym ufasz."
+    "defaultMessage": " nie zostało opublikowane na Bread Client. Zalecamy instalowanie plików tylko z źródeł, którym ufasz."
   },
   "unknown-file-warning-modal.mod-warning-title": {
     "defaultMessage": "Ostrzeżenie o nieznanym pliku"
   },
   "unknown-file-warning-modal.modpack-warning-body": {
-    "defaultMessage": " zawiera pliki, które nie zostały opublikowane na Modrinth. Zalecamy instalowanie plików tylko z źródeł, którym ufasz."
+    "defaultMessage": " zawiera pliki, które nie zostały opublikowane na Bread Client. Zalecamy instalowanie plików tylko z źródeł, którym ufasz."
   },
   "unknown-file-warning-modal.modpack-warning-title": {
     "defaultMessage": "Ostrzeżenie o nieznanych plikach"
   },
   "unknown-file-warning-modal.reviewed-files": {
-    "defaultMessage": "Pliki nieopublikowane w Modrinth nie są sprawdzane."
+    "defaultMessage": "Pliki nieopublikowane w Bread Client nie są sprawdzane."
   },
   "unknown-file-warning-modal.unrecognized-files": {
     "defaultMessage": "Nieznane plki"
   },
   "user.profile.badge.alpha.about.1": {
-    "defaultMessage": "Ten użytkownik utworzył konto za czasów wersji alfa Modrinth, trwającej do listopada 2020 r."
+    "defaultMessage": "Ten użytkownik utworzył konto za czasów wersji alfa Bread Client, trwającej do listopada 2020 r."
   },
   "user.profile.badge.alpha.name": {
     "defaultMessage": "Tester wersji alfa"
   },
   "user.profile.badge.beta.about.1": {
-    "defaultMessage": "Ten użytkownik utworzył konto za czasów wersji beta Modrinth, trwającej do lutego 2022 r."
+    "defaultMessage": "Ten użytkownik utworzył konto za czasów wersji beta Bread Client, trwającej do lutego 2022 r."
   },
   "user.profile.badge.beta.link": {
-    "defaultMessage": "Kliknij, aby przeczytać o uruchomieniu wersji beta Modrinth."
+    "defaultMessage": "Kliknij, aby przeczytać o uruchomieniu wersji beta Bread Client."
   },
   "user.profile.badge.beta.name": {
     "defaultMessage": "Tester wersji beta"
@@ -6390,28 +6390,28 @@
     "defaultMessage": "Wczesny twórca shaderów"
   },
   "user.profile.badge.hosting-alpha.about.1": {
-    "defaultMessage": "Ten użytkownik brał udział w zamkniętym teście Modrinth Hosting, zanim uruchomiliśmy betę Modrinth Hosting w listopadzie 2024 r."
+    "defaultMessage": "Ten użytkownik brał udział w zamkniętym teście Bread Hosting, zanim uruchomiliśmy betę Bread Hosting w listopadzie 2024 r."
   },
   "user.profile.badge.hosting-alpha.name": {
-    "defaultMessage": "Tester wersji alfa Modrinth Hosting"
+    "defaultMessage": "Tester wersji alfa Bread Hosting"
   },
   "user.profile.badge.moderator.about.1": {
-    "defaultMessage": "Ten użytkownik pracuje w Modrinth jako moderator treści."
+    "defaultMessage": "Ten użytkownik pracuje w Bread Client jako moderator treści."
   },
   "user.profile.badge.moderator.about.2": {
-    "defaultMessage": "Moderatorzy treści na Modrinth przeglądają projekty, odpowiadają na zgłoszenia i pomagają utrzymać porządek na Modrinth."
+    "defaultMessage": "Moderatorzy treści na Bread Client przeglądają projekty, odpowiadają na zgłoszenia i pomagają utrzymać porządek na Bread Client."
   },
   "user.profile.badge.moderator.name": {
     "defaultMessage": "Moderator treści"
   },
   "user.profile.badge.plus.about.1": {
-    "defaultMessage": "Ten użytkownik wspiera Modrinth i wszystkich twórców na platformie."
+    "defaultMessage": "Ten użytkownik wspiera Bread Client i wszystkich twórców na platformie."
   },
   "user.profile.badge.plus.link": {
-    "defaultMessage": "Dowiedz się, jak zostać członkiem Modrinth+."
+    "defaultMessage": "Dowiedz się, jak zostać członkiem Bread Supporter."
   },
   "user.profile.badge.plus.name": {
-    "defaultMessage": "Członek Modrinth+"
+    "defaultMessage": "Członek Bread Supporter"
   },
   "user.profile.badge.pride.about.1": {
     "defaultMessage": "Ten użytkownik wspierał choć jedną z naszych zbiórek na rzecz osób LGBTQ+."
@@ -6423,10 +6423,10 @@
     "defaultMessage": "Wsparcie zbiórki na miesiąc dumy"
   },
   "user.profile.badge.staff.about.1": {
-    "defaultMessage": "Ten użytkownik pracuje w Modrinth."
+    "defaultMessage": "Ten użytkownik pracuje w Bread Client."
   },
   "user.profile.badge.staff.name": {
-    "defaultMessage": "Zespół Modrinth"
+    "defaultMessage": "Zespół Bread Client"
   },
   "version.content.name": {
     "defaultMessage": "Nazwa"

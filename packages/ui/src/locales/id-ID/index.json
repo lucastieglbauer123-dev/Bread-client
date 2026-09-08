@@ -96,7 +96,7 @@
     "defaultMessage": "Hasil tidak ditemukan untuk pencarian Anda!"
   },
   "browse.offline": {
-    "defaultMessage": "Anda saat ini luring. Sambungkan ke internet untuk menelusuri Modrinth!"
+    "defaultMessage": "Anda saat ini luring. Sambungkan ke internet untuk menelusuri Bread Client!"
   },
   "browse.search.placeholder": {
     "defaultMessage": "Cari {projectType}..."
@@ -222,7 +222,7 @@
     "defaultMessage": "Buka di folder"
   },
   "button.open-in-modrinth": {
-    "defaultMessage": "Buka di Modrinth"
+    "defaultMessage": "Buka di Bread Client"
   },
   "button.play": {
     "defaultMessage": "Mainkan"
@@ -1440,16 +1440,16 @@
     "defaultMessage": "Berkas-berkas selalu diperbarui ketika server berubah"
   },
   "modal.open-in-app.get-app": {
-    "defaultMessage": "Dapatkan Modrinth App"
+    "defaultMessage": "Dapatkan Bread Client"
   },
   "modal.open-in-app.opening-automatically": {
-    "defaultMessage": "Modrinth App akan buka secara otomatis..."
+    "defaultMessage": "Bread Client akan buka secara otomatis..."
   },
   "modal.open-in-app.title": {
-    "defaultMessage": "Membuka Modrinth App"
+    "defaultMessage": "Membuka Bread Client"
   },
   "modal.open-in-app.why-use": {
-    "defaultMessage": "Mengapa harus Modrinth App?"
+    "defaultMessage": "Mengapa harus Bread Client?"
   },
   "notification.error.title": {
     "defaultMessage": "Terjadi kesalahan"
@@ -1479,7 +1479,7 @@
     "defaultMessage": "Moderator"
   },
   "omorphia.component.badge.label.modrinth-team": {
-    "defaultMessage": "Tim Modrinth"
+    "defaultMessage": "Tim Bread Client"
   },
   "omorphia.component.badge.label.pending": {
     "defaultMessage": "Menunggu"
@@ -2151,7 +2151,7 @@
     "defaultMessage": "Proyek Anda memiliki beberapa lingkungan"
   },
   "project.settings.environment.notice.review-options.description": {
-    "defaultMessage": "Kamu baru saja memperbaiki sistem Lingkungan di Modrinth dan pilihan baru kini tersedia. Mohon pastikan untuk memilih pilihan yang benar dan klik 'Verifikasi' bila Anda selesai!"
+    "defaultMessage": "Kamu baru saja memperbaiki sistem Lingkungan di Bread Client dan pilihan baru kini tersedia. Mohon pastikan untuk memilih pilihan yang benar dan klik 'Verifikasi' bila Anda selesai!"
   },
   "project.settings.environment.notice.review-options.title": {
     "defaultMessage": "Mohon tinjau pilihan di bawah"
@@ -2454,7 +2454,7 @@
     "defaultMessage": "Lokasi manakah yang Anda inginkan untuk server Anda?"
   },
   "servers.region.region-unsupported": {
-    "defaultMessage": "Wilayah tidak terdaftar? <link>Beri tahu kami di mana Anda ingin melihat Modrinth Hosting untuk kedepannya!</link>"
+    "defaultMessage": "Wilayah tidak terdaftar? <link>Beri tahu kami di mana Anda ingin melihat Bread Hosting untuk kedepannya!</link>"
   },
   "servers.region.southeast-asia": {
     "defaultMessage": "Asia Tenggara"

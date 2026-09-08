@@ -78,7 +78,7 @@
     "message": "Ustawianie Minecraft nie powiodło się"
   },
   "app.action-bar.install.summary.modrinth-unreachable": {
-    "message": "Nie udało się połączyć z serwerami Modrinth"
+    "message": "Nie udało się połączyć z serwerami Bread Client"
   },
   "app.action-bar.install.summary.no-write-permission": {
     "message": "Brak permisji, aby zapisać pliki"
@@ -138,7 +138,7 @@
     "message": "Zaakceptuj wszystko"
   },
   "app.ads-consent.body": {
-    "message": "Reklamy pozwalają Modrinth oraz fundują wypłaty twórców. Nasi partnerzy mogą zachować lub uzyskać dostęp ciasteczek w aplikacji, żeby spersonalizować reklamy i zmierzyć wydajność."
+    "message": "Reklamy pozwalają Bread Client oraz fundują wypłaty twórców. Nasi partnerzy mogą zachować lub uzyskać dostęp ciasteczek w aplikacji, żeby spersonalizować reklamy i zmierzyć wydajność."
   },
   "app.ads-consent.manage": {
     "message": "Zarządzaj preferencjami"
@@ -147,7 +147,7 @@
     "message": "Odrzuć wszystkie"
   },
   "app.ads-consent.title": {
-    "message": "Twoja prywatność i jak reklamy wspierają Modrinth"
+    "message": "Twoja prywatność i jak reklamy wspierają Bread Client"
   },
   "app.appearance-settings.default-landing-page.home": {
     "message": "Strona główna"
@@ -162,7 +162,7 @@
     "message": "Ukryj nazwę"
   },
   "app.appearance-settings.minimize-launcher.description": {
-    "message": "Minimalizuje Modrinth App po uruchomieniu Minecraft."
+    "message": "Minimalizuje Bread Client po uruchomieniu Minecraft."
   },
   "app.appearance-settings.minimize-launcher.title": {
     "message": "Minimalizuj aplikację"
@@ -186,7 +186,7 @@
     "message": "Ukryj prawy pasek boczny"
   },
   "app.appearance-settings.unknown-pack-warning.description": {
-    "message": "Pokaż ostrzeżenie o bezpieczeństwie przed zainstalowaniem Pakietu Modrinth (.mrpack), które nie jest hostowane na Modrinth."
+    "message": "Pokaż ostrzeżenie o bezpieczeństwie przed zainstalowaniem Pakietu Bread Client (.mrpack), które nie jest hostowane na Bread Client."
   },
   "app.appearance-settings.unknown-pack-warning.title": {
     "message": "Ostrzegaj mnie przed instalowaniem nieznanych paczek modów"
@@ -621,7 +621,7 @@
     "message": "Zaloguj się jako"
   },
   "app.instance.shared-instance-wrong-account.signed-out-header": {
-    "message": "Musisz zalogować się na Modrinth"
+    "message": "Musisz zalogować się na Bread Client"
   },
   "app.instance.shared-instance-wrong-account.user-admonition-body-v2": {
     "message": ", by otrzymywać aktualizacje dla tej udostępnionej instancji."
@@ -987,10 +987,10 @@
     "message": "Zainstaluj"
   },
   "app.modal.install-to-play.invite-warning": {
-    "message": "To zaproszenie zostało utworzone przez innego użytkownika Modrinth, nie przez firmę Modrinth. Tylko akceptuj zaproszenia od osób, którym ufasz."
+    "message": "To zaproszenie zostało utworzone przez innego użytkownika Bread Client, nie przez firmę Bread Client. Tylko akceptuj zaproszenia od osób, którym ufasz."
   },
   "app.modal.install-to-play.invite-warning-with-creator": {
-    "message": "To zaproszenie zostało utworzone przez <creator>{username}</creator>, nie przez firmę Modrinth. Akceptuj zaproszenia tylko od osób, którym ufasz."
+    "message": "To zaproszenie zostało utworzone przez <creator>{username}</creator>, nie przez firmę Bread Client. Akceptuj zaproszenia tylko od osób, którym ufasz."
   },
   "app.modal.install-to-play.mod-count": {
     "message": "{count, plural, one {# mod} few {# mody} other {# modów}}"
@@ -1020,7 +1020,7 @@
     "message": "W przypadku pytań technicznych prosimy o kontakt z <support-link>Zespołem Obsługi Klienta</support-link>. Aby, zgłosić błąd wejdź na <github-link>GitHub issue</github-link>."
   },
   "app.modal.install-to-play.reviewed-files": {
-    "message": "Pliki nieopublikowane w Modrinth nie są sprawdzane."
+    "message": "Pliki nieopublikowane w Bread Client nie są sprawdzane."
   },
   "app.modal.install-to-play.shared-instance": {
     "message": "Przesłana Instalacja"
@@ -1029,10 +1029,10 @@
     "message": "Treści w przesłanej ci instalacji"
   },
   "app.modal.install-to-play.shared-instance-unknown-files-description": {
-    "message": "Ta udostępniona instancja zawiera pliki, które nie zostały opublikowane na Modrinth. Zalecamy instalowanie plików tylko ze źródeł, którym ufasz."
+    "message": "Ta udostępniona instancja zawiera pliki, które nie zostały opublikowane na Bread Client. Zalecamy instalowanie plików tylko ze źródeł, którym ufasz."
   },
   "app.modal.install-to-play.unknown-files-description": {
-    "message": "Ta serwerowa paczka modów zawiera pliki, które nie zostały opublikowane na Modrinth. Zalecamy instalowanie plików tylko ze źródeł, którym ufasz."
+    "message": "Ta serwerowa paczka modów zawiera pliki, które nie zostały opublikowane na Bread Client. Zalecamy instalowanie plików tylko ze źródeł, którym ufasz."
   },
   "app.modal.install-to-play.unknown-files-warning": {
     "message": "Ostrzeżenie o nieznanych plikach"
@@ -1059,7 +1059,7 @@
     "message": "Usunięto"
   },
   "app.modal.update-to-play.shared-instance-unknown-files-description": {
-    "message": "Ta aktualizacja udostępnionej instancji zawiera pliki, które nie zostały opublikowane na Modrinth. Zalecamy instalowanie plików tylko ze źródeł, którym ufasz."
+    "message": "Ta aktualizacja udostępnionej instancji zawiera pliki, które nie zostały opublikowane na Bread Client. Zalecamy instalowanie plików tylko ze źródeł, którym ufasz."
   },
   "app.modal.update-to-play.update-required": {
     "message": "Wymagana jest aktualizacja"
@@ -1074,16 +1074,16 @@
     "message": "Strona główna"
   },
   "app.nav.modrinth-account": {
-    "message": "Konto Modrinth"
+    "message": "Konto Bread Client"
   },
   "app.nav.modrinth-hosting": {
-    "message": "Modrinth Hosting"
+    "message": "Bread Hosting"
   },
   "app.nav.sign-in-to-modrinth-account": {
-    "message": "Zaloguj się na konto Modrinth"
+    "message": "Zaloguj się na konto Bread Client"
   },
   "app.nav.upgrade-to-modrinth-plus": {
-    "message": "Ulepsz do Modrinth+"
+    "message": "Ulepsz do Bread Supporter"
   },
   "app.navigation.home": {
     "message": "Strona główna"
@@ -1143,7 +1143,7 @@
     "message": "Uruchamianie ponowne..."
   },
   "app.settings.app-version": {
-    "message": "Modrinth App {version}"
+    "message": "Bread Client {version}"
   },
   "app.settings.default-instance-options.environment-variables.description": {
     "message": "Zmienne środowiskowe ustawione podczas uruchamiania instancji."
@@ -1227,10 +1227,10 @@
     "message": "macOS"
   },
   "app.settings.privacy.ads-consent.intro": {
-    "message": "Reklamy pozwalają na dalsze działanie Modrinth i finansują dochody dla twórców. Nasi partnerzy mogą gromadzić albo uzyskiwać dostęp do plików cookies w celu personalizacji reklam i mierzenia skuteczności."
+    "message": "Reklamy pozwalają na dalsze działanie Bread Client i finansują dochody dla twórców. Nasi partnerzy mogą gromadzić albo uzyskiwać dostęp do plików cookies w celu personalizacji reklam i mierzenia skuteczności."
   },
   "app.settings.privacy.discord-rich-presence.description": {
-    "message": "Pokazuj Modrinth App jako aktywność na Discord. Nie wpływa to na Rich Presence dodane do instancji przez mody. Wymaga ponownego uruchomienia aplikacji."
+    "message": "Pokazuj Bread Client jako aktywność na Discord. Nie wpływa to na Rich Presence dodane do instancji przez mody. Wymaga ponownego uruchomienia aplikacji."
   },
   "app.settings.privacy.discord-rich-presence.title": {
     "message": "Discord Rich Presence"
@@ -1407,13 +1407,13 @@
     "message": "MINECON Earth 2017"
   },
   "app.skins.section.modrinth": {
-    "message": "Modrinth"
+    "message": "Bread Client"
   },
   "app.skins.section.modrinth-pride": {
-    "message": "Duma Modrinth"
+    "message": "Duma Bread Client"
   },
   "app.skins.section.modrinth-pride.tooltip": {
-    "message": "Zdobyłeś te skórki poprzez dotację na zbiórkę Dumy Modrinth w okresie Miesiąca Dumy."
+    "message": "Zdobyłeś te skórki poprzez dotację na zbiórkę Dumy Bread Client w okresie Miesiąca Dumy."
   },
   "app.skins.section.mounts-of-mayhem": {
     "message": "Mounts of Mayhem"
@@ -1446,7 +1446,7 @@
     "message": "Włącz"
   },
   "app.survey.footer": {
-    "message": "Ta opinia przejdzie bezpośrednio do zespołu Modrinth i pomoże w opracowaniu przyszłych aktualizacji!"
+    "message": "Ta opinia przejdzie bezpośrednio do zespołu Bread Client i pomoże w opracowaniu przyszłych aktualizacji!"
   },
   "app.survey.no-thanks": {
     "message": "Nie, dziękuję"
@@ -1455,16 +1455,16 @@
     "message": "Weź udział w ankiecie"
   },
   "app.survey.title": {
-    "message": "Cześć, użytkowniku Modrinth!"
+    "message": "Cześć, użytkowniku Bread Client!"
   },
   "app.update-popup.body.download-complete": {
-    "message": "Wersja Modrinth App v{version} została pobrana. Załaduj ponownie, żeby zaktualizować teraz, albo automatycznie, gdy zamkniesz Modrinth App."
+    "message": "Wersja Bread Client v{version} została pobrana. Załaduj ponownie, żeby zaktualizować teraz, albo automatycznie, gdy zamkniesz Bread Client."
   },
   "app.update-popup.body.linux": {
-    "message": "Wersja Modrinth App v{version} jest dostępna. Pobierz aktualizację poprzez menedżer pakietów, by uzyskać najnowsze funkcje i poprawki!"
+    "message": "Wersja Bread Client v{version} jest dostępna. Pobierz aktualizację poprzez menedżer pakietów, by uzyskać najnowsze funkcje i poprawki!"
   },
   "app.update-popup.body.metered": {
-    "message": "Wersja Modrinth App v{version} jest dostępna! Skoro korzystasz z sieci taryfowej, nie pobraliśmy jej automatycznie."
+    "message": "Wersja Bread Client v{version} jest dostępna! Skoro korzystasz z sieci taryfowej, nie pobraliśmy jej automatycznie."
   },
   "app.update-popup.changelog": {
     "message": "Dziennik zmian"
@@ -1506,10 +1506,10 @@
     "message": "Uciekasz z innego launchera?"
   },
   "app.welcome-screen.title": {
-    "message": "Witaj na Modrinth"
+    "message": "Witaj na Bread Client"
   },
   "app.world.server-modal.placeholder-address": {
-    "message": "example.modrinth.gg"
+    "message": "example.server.gg"
   },
   "app.world.server-modal.select-an-option": {
     "message": "Wybierz opcję"
@@ -1554,7 +1554,7 @@
     "message": "Może różnić się od nazwy użytkownika Minecraft!"
   },
   "friends.add-friend.username.placeholder": {
-    "message": "Wprowadź nazwę użytkownika Modrinth..."
+    "message": "Wprowadź nazwę użytkownika Bread Client..."
   },
   "friends.add-friend.username.title": {
     "message": "Jaka jest nazwa użytkownika Twojego znajomego?"
@@ -1599,7 +1599,7 @@
     "message": "{title} - {count}"
   },
   "friends.sign-in-to-add-friends": {
-    "message": "<link>Zaloguj się na konto Modrinth</link> by dodać znajomych i widzieć, w co grają!"
+    "message": "<link>Zaloguj się na konto Bread Client</link> by dodać znajomych i widzieć, w co grają!"
   },
   "installation-settings.shared-instance.linked-title": {
     "message": "Powiązana udostępniona instancja"
@@ -1620,13 +1620,13 @@
     "message": "Wycofaj udostępnioną instancję"
   },
   "installation-settings.shared-instance.unpublish-description": {
-    "message": "Usuń tę udostępnioną instancję z Modrinth i przestań wysyłać aktualizacje do użytkowników, którym jest udostępniona. Nie wpłynie to na twoją lokalną instancję."
+    "message": "Usuń tę udostępnioną instancję z Bread Client i przestań wysyłać aktualizacje do użytkowników, którym jest udostępniona. Nie wpłynie to na twoją lokalną instancję."
   },
   "installation-settings.shared-instance.unpublishing-button": {
     "message": "Anulowanie publikacji..."
   },
   "installation-settings.unpublish-shared-instance.modal.admonition-body": {
-    "message": "Spowoduje to usunięcie przesyłanej instalacji z serwerów Modrith. Użytkownicy korzystający z niej na Modrinth App przestaną otrzymywać aktualizacje, ale twoja lokalna instalacja zostanie na tym urządzeniu."
+    "message": "Spowoduje to usunięcie przesyłanej instalacji z serwerów Modrith. Użytkownicy korzystający z niej na Bread Client przestaną otrzymywać aktualizacje, ale twoja lokalna instalacja zostanie na tym urządzeniu."
   },
   "installation-settings.unpublish-shared-instance.modal.admonition-header": {
     "message": "Wycofywanie udostępnionej instancji"
@@ -2169,7 +2169,7 @@
     "message": "Instancja źródłowa została usunięta. Instancja jest nadal dostępna, ale nie jest już połączona i nie będzie otrzymywać aktualizacji."
   },
   "instance.shared-instance.unavailable.locked-text": {
-    "message": "Ta udostępniona instancja została zablokowana przez zespół moderacyjny Modrinth. Nie będzie otrzymywać dalszych aktualizacji z instancji źródłowej."
+    "message": "Ta udostępniona instancja została zablokowana przez zespół moderacyjny Bread Client. Nie będzie otrzymywać dalszych aktualizacji z instancji źródłowej."
   },
   "instance.shared-instance.unavailable.locked-title": {
     "message": "Instancja zablokowana"
@@ -2283,7 +2283,7 @@
     "message": "Utwórz konto"
   },
   "modal.modrinth-account-required.description": {
-    "message": "Musisz zalogować się na swoje konto Modrinth, zanim będziesz mógł korzystać z tej funkcji."
+    "message": "Musisz zalogować się na swoje konto Bread Client, zanim będziesz mógł korzystać z tej funkcji."
   },
   "modal.modrinth-account-required.header": {
     "message": "Konto wymagane"
@@ -2292,10 +2292,10 @@
     "message": "Otwórz ponownie przeglądarkę"
   },
   "modal.modrinth-account-required.sign-in-button": {
-    "message": "Zaloguj się na Modrinth"
+    "message": "Zaloguj się na Bread Client"
   },
   "modal.modrinth-account-required.sign-in-heading": {
-    "message": "Zaloguj się na konto Modrinth"
+    "message": "Zaloguj się na konto Bread Client"
   },
   "modal.modrinth-account-required.signing-in-header": {
     "message": "Trwa logowanie"
@@ -2310,7 +2310,7 @@
     "message": "Zaloguj się do Minecraft"
   },
   "onboarding-checklist.login-modrinth": {
-    "message": "Zaloguj się na Modrinth"
+    "message": "Zaloguj się na Bread Client"
   },
   "onboarding-checklist.title": {
     "message": "Pierwsze kroki"

@@ -78,7 +78,7 @@
     "message": "Nastavení Minecraftu se nezdařilo"
   },
   "app.action-bar.install.summary.modrinth-unreachable": {
-    "message": "Nepodařilo se připojit k Modrinth"
+    "message": "Nepodařilo se připojit k Bread Client"
   },
   "app.action-bar.install.summary.no-write-permission": {
     "message": "Nemáte oprávnění k zápisu"
@@ -147,7 +147,7 @@
     "message": "Odmítnout vše"
   },
   "app.ads-consent.title": {
-    "message": "Vaše soukromí a způsob, jakým reklamy podporují Modrinth"
+    "message": "Vaše soukromí a způsob, jakým reklamy podporují Bread Client"
   },
   "app.appearance-settings.compact-mode.description": {
     "message": "Zobrazit instanční knihovny v kompaktních řádcích."
@@ -174,7 +174,7 @@
     "message": "Hrát světy nebo instance"
   },
   "app.appearance-settings.minimize-launcher.description": {
-    "message": "Minimalizovat Modrinth aplikaci při spuštění Minecraftu."
+    "message": "Minimalizovat Bread Client aplikaci při spuštění Minecraftu."
   },
   "app.appearance-settings.minimize-launcher.title": {
     "message": "Minimalizovat aplikaci"
@@ -198,7 +198,7 @@
     "message": "Skrýt pravý postranní panel"
   },
   "app.appearance-settings.unknown-pack-warning.description": {
-    "message": "Zobrazit bezpečnostní varování před instalací Modrinth Pack (.mrpack), který není hostován v Modrinth."
+    "message": "Zobrazit bezpečnostní varování před instalací Bread Client Pack (.mrpack), který není hostován v Bread Client."
   },
   "app.appearance-settings.unknown-pack-warning.title": {
     "message": "Upozorni mě před instalací neznámých modpacků"
@@ -222,7 +222,7 @@
     "message": "Používejte toto nastavení všude, kde jste přihlášeni. Vypněte ho, pokud chcete různé nastavení na různých zařízeních."
   },
   "app.behavior-settings.sync-across-devices.signed-out-tooltip": {
-    "message": "Přihlašte se do vašeho Modrinth účtu aby jste si mohli synchronizovat nastavení."
+    "message": "Přihlašte se do vašeho Bread Client účtu aby jste si mohli synchronizovat nastavení."
   },
   "app.behavior-settings.sync-across-devices.title": {
     "message": "Synchronizovat nastavení mezi různými zařízeními"
@@ -339,13 +339,13 @@
     "message": "Zobrazit instanci"
   },
   "app.hosting.update-required.description": {
-    "message": "Musíte aktualizovat Modrinth Hosting přes Modrinth App"
+    "message": "Musíte aktualizovat Bread Hosting přes Bread Client"
   },
   "app.hosting.update-required.download": {
     "message": "Stáhnout novou aktualizaci"
   },
   "app.hosting.update-required.title": {
-    "message": "Modrinth App potřebuje být aktualizovaná"
+    "message": "Bread Client potřebuje být aktualizovaná"
   },
   "app.icon-editor.apply-icons-modal.apply-error": {
     "message": "Nepodařilo se použít náhodné ikony pro instance."
@@ -360,7 +360,7 @@
     "message": "Zavřít"
   },
   "app.icon-editor.apply-icons-modal.description": {
-    "message": "Vytvořit vlastní ikonu pro vaší instanci přímo v Modrinth App. Smíchejte a porovnejte pozadí se symboly z Minecraftu a populárních módů!"
+    "message": "Vytvořit vlastní ikonu pro vaší instanci přímo v Bread Client. Smíchejte a porovnejte pozadí se symboly z Minecraftu a populárních módů!"
   },
   "app.icon-editor.apply-icons-modal.instances-without-icons": {
     "message": "{count, plural, one {# instance nemá} few {# instance nemají} many {# instancí nemá} other {# instancí nemá}} zatím žádnou ikonu. Chcete, abychom {count, plural, one {jí} other {jim}} dali náhodné na začátek?"
@@ -717,13 +717,13 @@
     "message": "Přihlásit se jako"
   },
   "app.instance.shared-instance-wrong-account.signed-out-header": {
-    "message": "Musíte se přihlásit do Modrinthu"
+    "message": "Musíte se přihlásit do Bread Clientu"
   },
   "app.instance.shared-instance-wrong-account.user-admonition-body-v2": {
     "message": "dostávat aktualizace pro tuto sdílenou instanci."
   },
   "app.instance.shared-instance-wrong-account.warning-header": {
-    "message": "Používate nesprávný Modrinth účet"
+    "message": "Používate nesprávný Bread Client účet"
   },
   "app.instance.shortcut.created": {
     "message": "Zkratka vytvořena"
@@ -1095,10 +1095,10 @@
     "message": "Sdílená instance"
   },
   "app.modal.install-to-play.shared-instance-unknown-files-description": {
-    "message": "Tato sdílená instance obsahuje soubory, které nejsou publikované na Modrinthu. Silně doporučujeme instalovat pouze soubory ze zdroje, kterému důveřujete."
+    "message": "Tato sdílená instance obsahuje soubory, které nejsou publikované na Bread Clientu. Silně doporučujeme instalovat pouze soubory ze zdroje, kterému důveřujete."
   },
   "app.modal.install-to-play.unknown-files-description": {
-    "message": "Tento serverový modpack obsahuje soubory, které nejsou publikované na Modrinthu. Silně doporučujeme instalovat pouze soubory ze zdroje, kterému důveřujete."
+    "message": "Tento serverový modpack obsahuje soubory, které nejsou publikované na Bread Clientu. Silně doporučujeme instalovat pouze soubory ze zdroje, kterému důveřujete."
   },
   "app.modal.install-to-play.unknown-files-warning": {
     "message": "Upozornění na neznámý soubor"
@@ -1119,7 +1119,7 @@
     "message": "Odstraněno"
   },
   "app.modal.update-to-play.server-modpack-unknown-files-description": {
-    "message": "Tato aktualizace serverového modpacku obsahuje soubory, které nejsou publikované na Modrinthu. Silně doporučujeme instalovat pouze soubory ze zdroje, kterému důveřujete."
+    "message": "Tato aktualizace serverového modpacku obsahuje soubory, které nejsou publikované na Bread Clientu. Silně doporučujeme instalovat pouze soubory ze zdroje, kterému důveřujete."
   },
   "app.modal.update-to-play.shared-instance-added-label": {
     "message": "Přidáno"
@@ -1128,7 +1128,7 @@
     "message": "Odstraněno"
   },
   "app.modal.update-to-play.shared-instance-unknown-files-description": {
-    "message": "Tato aktualizace sdílené instance obsahuje soubory, které nejsou publikované na Modrinthu. Silně doporučujeme instalovat pouze soubory ze zdroje, kterému důveřujete."
+    "message": "Tato aktualizace sdílené instance obsahuje soubory, které nejsou publikované na Bread Clientu. Silně doporučujeme instalovat pouze soubory ze zdroje, kterému důveřujete."
   },
   "app.modal.update-to-play.update-required": {
     "message": "Je vyžadována aktualizace"
@@ -1143,16 +1143,16 @@
     "message": "Domov"
   },
   "app.nav.modrinth-account": {
-    "message": "Modrinth účet"
+    "message": "Bread Client účet"
   },
   "app.nav.modrinth-hosting": {
-    "message": "Modrinth Hosting"
+    "message": "Bread Hosting"
   },
   "app.nav.sign-in-to-modrinth-account": {
-    "message": "Přihlásit se do Modrinth účtu"
+    "message": "Přihlásit se do Bread Client účtu"
   },
   "app.nav.upgrade-to-modrinth-plus": {
-    "message": "Upgradovat na Modrinth+"
+    "message": "Upgradovat na Bread Supporter"
   },
   "app.navigation.go-back": {
     "message": "Zpět"
@@ -1227,7 +1227,7 @@
     "message": "Restartování..."
   },
   "app.settings.app-version": {
-    "message": "Modrinth App {version}"
+    "message": "Bread Client {version}"
   },
   "app.settings.default-instance-options.environment-variables.description": {
     "message": "Nastavení proměnného prostředí při spuštění instance."
@@ -1392,13 +1392,13 @@
     "message": "MINECON Earth 2017"
   },
   "app.skins.section.modrinth": {
-    "message": "Modrinth"
+    "message": "Bread Client"
   },
   "app.skins.section.modrinth-pride": {
-    "message": "Modrinth Pride"
+    "message": "Bread Client Pride"
   },
   "app.skins.section.modrinth-pride.tooltip": {
-    "message": "Tyto skiny jsi obdržel za přispění do sbírky Modrinth Pride behěm Pride měsíce."
+    "message": "Tyto skiny jsi obdržel za přispění do sbírky Bread Client Pride behěm Pride měsíce."
   },
   "app.skins.section.mounts-of-mayhem": {
     "message": "Mounts of Mayhem"
@@ -1422,10 +1422,10 @@
     "message": "Výběr skinu"
   },
   "app.survey.body": {
-    "message": "Mohli byste prosím odpovědět na pár otázek ohledně vašich zkušeností s Modrinth App?"
+    "message": "Mohli byste prosím odpovědět na pár otázek ohledně vašich zkušeností s Bread Client?"
   },
   "app.survey.footer": {
-    "message": "Tato zpětná vazba půjde přímo k týmu Modrinthu a pomůže při budoucích aktualizacích!"
+    "message": "Tato zpětná vazba půjde přímo k týmu Bread Clientu a pomůže při budoucích aktualizacích!"
   },
   "app.survey.no-thanks": {
     "message": "Ne, děkuji"
@@ -1434,16 +1434,16 @@
     "message": "Zapoj se do ankety"
   },
   "app.survey.title": {
-    "message": "Ahoj Modrinth uživateli!"
+    "message": "Ahoj Bread Client uživateli!"
   },
   "app.update-popup.body.download-complete": {
-    "message": "Stahování Modrinth App v{version} bylo dokončeno. Aktualizujte ji znovunačtením nebo se automaticky aktualizuje po zavření."
+    "message": "Stahování Bread Client v{version} bylo dokončeno. Aktualizujte ji znovunačtením nebo se automaticky aktualizuje po zavření."
   },
   "app.update-popup.body.linux": {
-    "message": "Modrinth App v{version} je k dispozici. Aktualizujte ji pomocí svého správce balíčků, abyste získali nejnovější funkce a opravy!"
+    "message": "Bread Client v{version} je k dispozici. Aktualizujte ji pomocí svého správce balíčků, abyste získali nejnovější funkce a opravy!"
   },
   "app.update-popup.body.metered": {
-    "message": "Modrinth App v{version} je nyní k dispozici! Protože jste v měřené síti, nebyla stažena automaticky."
+    "message": "Bread Client v{version} je nyní k dispozici! Protože jste v měřené síti, nebyla stažena automaticky."
   },
   "app.update-popup.changelog": {
     "message": "Seznam změn"
@@ -1488,10 +1488,10 @@
     "message": "Stiskněte <shortcut>N</shortcut> pro rychlé vytvoření instance"
   },
   "app.welcome-screen.title": {
-    "message": "Vítejte v Modrinthu"
+    "message": "Vítejte v Bread Clientu"
   },
   "app.world.server-modal.placeholder-address": {
-    "message": "priklad.modrinth.gg"
+    "message": "priklad.server.gg"
   },
   "app.world.server-modal.select-an-option": {
     "message": "Vybrat možnost"
@@ -1524,10 +1524,10 @@
     "message": "Může se lišit od jejich Minecraft přezdívky!"
   },
   "friends.add-friend.username.placeholder": {
-    "message": "Zadej přezdívku na Modrinthu..."
+    "message": "Zadej přezdívku na Bread Clientu..."
   },
   "friends.add-friend.username.title": {
-    "message": "Jaká je přezdívka tvého přítele na Modrinthu?"
+    "message": "Jaká je přezdívka tvého přítele na Bread Clientu?"
   },
   "friends.add-friends-to-share": {
     "message": "<link>Přidej si přátele</link>, abys viděl, co hrají!"
@@ -1569,7 +1569,7 @@
     "message": "{title} - {count}"
   },
   "friends.sign-in-to-add-friends": {
-    "message": "<link>Přihlas se k Modrinth účtu</link>, abys mohl přidávat přátele a vidět, co hrají!"
+    "message": "<link>Přihlas se k Bread Client účtu</link>, abys mohl přidávat přátele a vidět, co hrají!"
   },
   "instance.add-server.add-and-play": {
     "message": "Přidat a hrát"

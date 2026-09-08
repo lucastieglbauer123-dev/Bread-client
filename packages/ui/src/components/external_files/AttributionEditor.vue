@@ -91,7 +91,7 @@ const messages = defineMessages({
 	},
 	proofWarningTitle: {
 		id: 'external-files.permissions-card.editor.proof-warning.title',
-		defaultMessage: 'Modrinth staff may verify submitted proof',
+		defaultMessage: 'Bread Client staff may verify submitted proof',
 	},
 	proofWarningBody: {
 		id: 'external-files.permissions-card.editor.proof-warning.body',
@@ -144,7 +144,7 @@ const messages = defineMessages({
 	},
 	modrinthLinkToWork: {
 		id: 'external-files.permissions-card.editor.modrinth-link-to-work',
-		defaultMessage: `This appears to be a Modrinth link. If this content is available on Modrinth, your pack was likely exported incorrectly. If you downloaded it from another site, try downloading the Modrinth version instead; sometimes they are not identical files.`,
+		defaultMessage: `This appears to be a catalog link. If this content is available in the Bread catalog, your pack was likely exported incorrectly. If you downloaded it from another site, try downloading the catalog version instead; sometimes they are not identical files.`,
 	},
 	arrLabel: {
 		id: 'external-files.permissions-card.editor.all-rights-reserved',
