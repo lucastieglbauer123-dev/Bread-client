@@ -341,10 +341,10 @@ const hasPlus = computed(
 		(hasMidasBadge(credentials.value.user) ||
 			hasActivePride26Midas(authenticatedModrinthUser.value?.campaigns?.pride_26)),
 )
-const showAd = computed(
-	() => sidebarVisible.value && !hasPlus.value && credentials.value !== undefined,
-)
-const adConsentAvailable = computed(() => credentials.value !== undefined && !hasPlus.value)
+// Bread Client is intentionally ad-free; keep the page-context flags false so
+// neither the ad rail nor its consent UI can mount over the application.
+const showAd = computed(() => false)
+const adConsentAvailable = computed(() => false)
 providePageContext({
 	hierarchicalSidebarAvailable: ref(true),
 	showAds: showAd,

@@ -20,6 +20,9 @@ pub struct AdsState {
 }
 
 const AD_LINK: &str = "https://modrinth.com/wrapper/app-ads-cookie";
+// Bread Client ships without the Modrinth ad webview. The command surface is
+// retained for compatibility with shared UI code, but creation is hard-disabled.
+const ADS_ENABLED: bool = false;
 const APP_TITLE_BAR_HEIGHT: f32 = 48.0;
 #[cfg(any(windows, target_os = "macos"))]
 pub(super) const OCCLUDED_AREA_THRESHOLD: f64 = 0.5;
@@ -271,7 +274,7 @@ pub fn init<R: Runtime>() -> TauriPlugin<R> {
     tauri::plugin::Builder::<R>::new("ads")
         .setup(|app, _api| {
             app.manage(RwLock::new(AdsState {
-                shown: true,
+                shown: ADS_ENABLED,
                 visibility_holds: 0,
                 consent_required: false,
                 consent_notification_enabled: false,
@@ -474,6 +477,10 @@ pub async fn init_ads_window<R: Runtime>(
     override_shown: bool,
 ) -> crate::api::Result<()> {
     use tauri::WebviewUrl;
+
+    if !ADS_ENABLED {
+        return Ok(());
+    }
 
     let state = app.state::<RwLock<AdsState>>();
     let mut state = state.write().await;
