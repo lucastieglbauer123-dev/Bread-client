@@ -2887,6 +2887,8 @@ provideAppUpdateDownloadProgress(appUpdateDownload)
 	right: 0;
 	bottom: 0;
 	height: calc(100vh - var(--top-bar-height));
+	min-width: 0;
+	overflow: hidden;
 	background-color: var(--bread-color-surface);
 	border-top-left-radius: 0;
 
@@ -2973,9 +2975,15 @@ provideAppUpdateDownloadProgress(appUpdateDownload)
 .app-viewport {
 	flex-grow: 1;
 	height: 100%;
+	min-width: 0;
 	overflow: auto;
 	overflow-x: hidden;
 	scrollbar-gutter: stable;
+}
+
+.app-viewport > * {
+	min-width: 0;
+	max-width: 100%;
 }
 
 .app-contents::before {
@@ -3058,6 +3066,44 @@ provideAppUpdateDownloadProgress(appUpdateDownload)
 
 	.fade-enter-from {
 		opacity: 0;
+	}
+}
+
+@media (max-width: 48rem) {
+	.app-grid-layout,
+	.app-contents {
+		--left-bar-width: 12rem;
+	}
+
+	.bread-nav-item {
+		font-size: 0.875rem;
+	}
+}
+
+@media (max-width: 36rem) {
+	.app-grid-layout,
+	.app-contents {
+		--left-bar-width: 4.5rem;
+	}
+
+	.app-grid-navbar {
+		padding-right: 0.5rem;
+		padding-left: 0.5rem;
+	}
+
+	.bread-nav-item {
+		justify-content: center;
+		padding: 0;
+	}
+
+	.bread-nav-item span,
+	.bread-nav-button__label,
+	.bread-make-yours {
+		display: none;
+	}
+
+	.bread-account-selector {
+		padding: 0;
 	}
 }
 </style>
