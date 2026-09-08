@@ -492,7 +492,7 @@ onMounted(startInstanceGridResizeObserver)
 						<div
 							v-for="instance in instanceGroup.instances"
 							:key="instance.id"
-							class="min-w-0 w-full"
+							class="bread-instance-card-slot min-w-0 w-full"
 						>
 							<InstanceCard
 								:ref="(component: unknown) => setInstanceComponent(instance.id, component)"
@@ -564,7 +564,11 @@ onMounted(startInstanceGridResizeObserver)
 
 .bread-instance-grid {
 	padding-top: var(--bread-space-1);
-	grid-template-columns: repeat(auto-fit, minmax(min(17rem, 100%), 1fr)) !important;
+	grid-template-columns: repeat(auto-fill, minmax(min(17rem, 100%), 1fr)) !important;
 	gap: var(--bread-space-4) !important;
+}
+
+.bread-instance-card-slot {
+	max-width: 30rem;
 }
 </style>

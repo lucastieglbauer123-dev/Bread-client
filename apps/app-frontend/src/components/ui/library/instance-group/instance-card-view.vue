@@ -37,7 +37,11 @@ const versionRef = ref<HTMLElement | null>(null)
 	>
 		<div
 			class="relative flex shrink-0 items-center overflow-clip"
-			:class="compactMode ? 'size-10 rounded-[var(--bread-radius-md)]' : 'aspect-square min-w-full rounded-[var(--bread-radius-lg)]'"
+			:class="
+				compactMode
+					? 'size-10 rounded-[var(--bread-radius-md)]'
+					: 'aspect-[2/1] w-full min-w-0 rounded-[var(--bread-radius-lg)]'
+			"
 		>
 			<Avatar
 				class="pointer-events-none outline-none"
