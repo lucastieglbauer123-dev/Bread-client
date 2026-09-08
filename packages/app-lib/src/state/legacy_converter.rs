@@ -25,7 +25,10 @@ use uuid::Uuid;
 
 use super::MinecraftProfile;
 
-pub async fn migrate_legacy_data<'a, E>(exec: E) -> crate::Result<()>
+pub async fn migrate_legacy_data<'a, E>(
+    exec: E,
+    app_identifier: &str,
+) -> crate::Result<()>
 where
     E: sqlx::Executor<'a, Database = sqlx::Sqlite> + Copy,
 {
@@ -34,6 +37,20 @@ where
     if settings.migrated {
         return Ok(());
     };
+
+    // Bread Client intentionally has its own data directory. The legacy
+    // converter normally moves the old Modrinth launcher directory into the
+    // current app directory, which would mutate a user's existing Modrinth
+    // installation. Mark this fresh database as migrated without reading or
+    // moving anything from that legacy directory.
+    if app_identifier == "BreadClient" {
+        settings.migrated = true;
+        settings.update(exec).await?;
+        tracing::info!(
+            "Skipping legacy Modrinth data migration for isolated Bread Client state"
+        );
+        return Ok(());
+    }
 
     let Some(old_launcher_root) = default_settings_dir() else {
         return Ok(());

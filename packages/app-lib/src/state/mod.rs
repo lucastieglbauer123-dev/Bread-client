@@ -251,7 +251,7 @@ impl State {
         tracing::info!("Connecting to app database");
         let pool = db::connect(&app_identifier).await?;
 
-        legacy_converter::migrate_legacy_data(&pool).await?;
+        legacy_converter::migrate_legacy_data(&pool, &app_identifier).await?;
 
         tracing::info!("Fetching app settings");
         let mut settings = Settings::get(&pool).await?;
