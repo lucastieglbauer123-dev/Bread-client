@@ -667,6 +667,10 @@ const messages = defineMessages({
 		id: 'app.news.view-all',
 		defaultMessage: 'View all news',
 	},
+	whatsNew: {
+		id: 'app.news.whats-new',
+		defaultMessage: "What's new",
+	},
 	playingAs: {
 		id: 'app.sidebar.playing-as',
 		defaultMessage: 'Playing as',
@@ -2180,6 +2184,14 @@ provideAppUpdateDownloadProgress(appUpdateDownload)
 			</NavButton>
 			<div class="flex flex-grow"></div>
 			<div class="bread-sidebar-footer">
+				<NavButton
+					v-tooltip.right="formatMessage(messages.whatsNew)"
+					to="/whats-new"
+					:label="formatMessage(messages.whatsNew)"
+					:is-primary="(route) => route.path.startsWith('/whats-new')"
+				>
+					<NewspaperIcon />
+				</NavButton>
 				<button
 					type="button"
 					class="bread-nav-item bread-nav-item--notifications"
