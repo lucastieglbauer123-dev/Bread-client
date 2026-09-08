@@ -211,7 +211,7 @@ export interface CreationFlowContextValue {
 
 	// Optional launcher-provided presets
 	breadPacks: BreadPackOption[]
-	selectedBreadPack: Ref<string | null>
+	selectedBreadPack: Ref<string[]>
 
 	// Project search state (persisted across stage navigation)
 	projectSearchProjectId: Ref<string | undefined>
@@ -378,14 +378,14 @@ export function createCreationFlowContext(
 	const modpackFile = ref<File | null>(null)
 	const modpackFilePath = ref<string | null>(null)
 	const projectInstall = ref<ProjectInstallSelection | null>(null)
-	const selectedBreadPack = ref<string | null>(null)
+	const selectedBreadPack = ref<string[]>([])
 
 	// Bread packs are resolved for Fabric instances only. Clear a pending pack
 	// as soon as the user switches to another loader so the create handler can
 	// never accidentally try to install it into an incompatible instance.
 	watch(selectedLoader, (loader) => {
 		if (loader && loader !== 'fabric') {
-			selectedBreadPack.value = null
+			selectedBreadPack.value = []
 		}
 	})
 
@@ -523,7 +523,7 @@ export function createCreationFlowContext(
 		modpackFile.value = null
 		modpackFilePath.value = null
 		projectInstall.value = null
-		selectedBreadPack.value = null
+		selectedBreadPack.value = []
 		projectSearchProjectId.value = undefined
 		projectSearchOptions.value = []
 		projectSearchHits.value = {}
@@ -545,7 +545,7 @@ export function createCreationFlowContext(
 		projectInstall.value = null
 		setupType.value = type
 		if (type === 'modpack') {
-			selectedBreadPack.value = null
+			selectedBreadPack.value = []
 			selectedLoader.value = null
 			selectedLoaderVersion.value = null
 			loaderVersionType.value = 'stable'
@@ -554,7 +554,7 @@ export function createCreationFlowContext(
 			modpackFile.value = null
 			modpackFilePath.value = null
 			if (type === 'vanilla') {
-				selectedBreadPack.value = null
+				selectedBreadPack.value = []
 				selectedLoader.value = null
 				selectedLoaderVersion.value = null
 				loaderVersionType.value = 'stable'
@@ -568,7 +568,7 @@ export function createCreationFlowContext(
 	function setImportMode() {
 		isImportMode.value = true
 		setupType.value = null
-		selectedBreadPack.value = null
+		selectedBreadPack.value = []
 		modal.value?.setStage('import-instance')
 	}
 
@@ -599,7 +599,7 @@ export function createCreationFlowContext(
 		setupType.value = 'custom'
 		isImportMode.value = false
 		modpackSelection.value = null
-		selectedBreadPack.value = null
+		selectedBreadPack.value = []
 		instanceName.value = selection.title
 		selectedLoader.value = selection.compatibleLoaders[0] ?? null
 		selectedGameVersion.value =

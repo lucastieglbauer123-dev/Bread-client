@@ -107,11 +107,11 @@
 					type="button"
 					class="bread-pack-option"
 					:class="{
-						'bread-pack-option--selected': ctx.selectedBreadPack.value === pack.id,
+						'bread-pack-option--selected': ctx.selectedBreadPack.value.includes(pack.id),
 						'bread-pack-option--disabled': breadPacksDisabled,
 					}"
 					:disabled="breadPacksDisabled"
-					:aria-pressed="ctx.selectedBreadPack.value === pack.id"
+					:aria-pressed="ctx.selectedBreadPack.value.includes(pack.id)"
 					:title="breadPacksDisabled ? formatMessage(messages.packFabricOnly) : undefined"
 					@click="selectBreadPack(pack.id)"
 				>
@@ -120,17 +120,18 @@
 					<small>{{ pack.slugs.length }} {{ formatMessage(messages.packMods) }}</small>
 				</button>
 			</div>
-			<div v-if="selectedBreadPackDefinition" class="bread-pack-details">
+			<div v-if="selectedBreadPackMods.length" class="bread-pack-details">
 				<div
-					v-for="slug in selectedBreadPackDefinition.slugs"
-					:key="slug"
+					v-for="mod in selectedBreadPackMods"
+					:key="mod.slug"
 					class="bread-pack-detail"
 				>
-					<strong>{{ slug }}</strong>
-					<span>{{ selectedBreadPackDefinition.modReasons[slug] }}</span>
+					<strong>{{ mod.slug }}</strong>
+					<span>{{ mod.reason }}</span>
 				</div>
 			</div>
-			<span v-if="ctx.selectedBreadPack.value" class="text-xs text-secondary">
+			<span v-if="ctx.selectedBreadPack.value.length" class="text-xs text-secondary">
+				{{ formatMessage(messages.packSelected, { count: ctx.selectedBreadPack.value.length }) }}.
 				{{ formatMessage(messages.packResolutionHint) }}
 			</span>
 			<span v-else-if="breadPacksDisabled" class="text-xs text-secondary">
@@ -325,7 +326,11 @@ const messages = defineMessages({
 	},
 	packOptional: {
 		id: 'creation-flow.modal.custom-setup.pack.optional',
-		defaultMessage: 'Optional',
+		defaultMessage: 'Select one or more',
+	},
+	packSelected: {
+		id: 'creation-flow.modal.custom-setup.pack.selected',
+		defaultMessage: '{count} selected',
 	},
 	packMods: {
 		id: 'creation-flow.modal.custom-setup.pack.mods',
@@ -423,16 +428,30 @@ const effectiveLoaders = computed(() => {
 	return ctx.availableLoaders
 })
 
-const selectedBreadPackDefinition = computed(() =>
-	ctx.breadPacks.find((pack) => pack.id === ctx.selectedBreadPack.value),
-)
+const selectedBreadPackMods = computed(() => {
+	const selected = new Set(ctx.selectedBreadPack.value)
+	const seen = new Set<string>()
+	const mods: { slug: string; reason: string }[] = []
+	for (const pack of ctx.breadPacks) {
+		if (!selected.has(pack.id)) continue
+		for (const slug of pack.slugs) {
+			if (seen.has(slug)) continue
+			seen.add(slug)
+			mods.push({ slug, reason: pack.modReasons[slug] ?? '' })
+		}
+	}
+	return mods
+})
 const breadPacksDisabled = computed(
 	() => selectedLoader.value !== null && selectedLoader.value !== 'fabric',
 )
 
 function selectBreadPack(packId: string) {
 	if (breadPacksDisabled.value) return
-	ctx.selectedBreadPack.value = ctx.selectedBreadPack.value === packId ? null : packId
+	const selected = new Set(ctx.selectedBreadPack.value)
+	if (selected.has(packId)) selected.delete(packId)
+	else selected.add(packId)
+	ctx.selectedBreadPack.value = [...selected]
 }
 
 // Pre-select loader and game version from initial values

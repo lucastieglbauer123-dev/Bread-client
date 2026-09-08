@@ -19,6 +19,27 @@ export interface BreadPackOption extends BreadPackDefinition {
 	modReasons: Record<string, string>
 }
 
+/**
+ * These mods are part of the Bread experience for every selectable pack. They
+ * are kept separate from the pack registry so a multi-pack selection can merge
+ * them once alongside the selected pack slugs.
+ */
+export const BREAD_BASE_MODS = [
+	'modmenu',
+	'ok-zoomer',
+	'chat-heads',
+	'chatanimation',
+	'modernfix',
+] as const
+
+export const BREAD_BASE_MOD_REASONS: Record<string, string> = {
+	modmenu: 'Browse installed mods and open their configuration screens in-game.',
+	'ok-zoomer': 'A lightweight, configurable zoom with smooth transitions.',
+	'chat-heads': 'Shows the sender’s head beside each chat message.',
+	chatanimation: 'Adds a smooth entrance animation to chat messages.',
+	modernfix: 'Improves performance, memory use, and fixes common Minecraft bugs.',
+}
+
 const modReasons: Record<string, string> = {
 	sodium: 'High-performance rendering engine.',
 	lithium: 'Optimizes game logic without changing vanilla mechanics.',
@@ -44,8 +65,23 @@ export function getBreadPack(id: string | null | undefined): BreadPackDefinition
 	return id ? BREAD_PACKS.find((pack) => pack.id === id) : undefined
 }
 
+/**
+ * Returns the base mods followed by every selected pack's mods, preserving
+ * registry order while removing duplicate project slugs before any API lookup.
+ */
+export function mergeBreadPackSlugs(packIds: readonly string[]): string[] {
+	const slugs = [...BREAD_BASE_MODS]
+	for (const packId of packIds) {
+		const pack = getBreadPack(packId)
+		if (pack) slugs.push(...pack.slugs)
+	}
+	return [...new Set(slugs)]
+}
+
 export interface BreadPackInstallResult {
 	pack: BreadPackDefinition
+	packs: BreadPackDefinition[]
+	slugs: string[]
 	installed: string[]
 	plans: ResolveContentPlan[]
 }
@@ -57,26 +93,37 @@ export interface BreadPackInstallResult {
  */
 export async function installBreadPack(
 	instanceId: string,
-	packId: string,
+	packIds: string | readonly string[],
 	gameVersion: string,
 	loader: string,
 ): Promise<BreadPackInstallResult> {
-	const pack = getBreadPack(packId)
-	if (!pack) throw new Error(`Unknown Bread pack: '${packId}'`)
+	const selectedIds = [...new Set(typeof packIds === 'string' ? [packIds] : packIds)]
+	const packs = selectedIds.map((packId) => {
+		const pack = getBreadPack(packId)
+		if (!pack) throw new Error(`Unknown Bread pack: '${packId}'`)
+		return pack
+	})
+	if (packs.length === 0) throw new Error('Select at least one Bread pack before installing.')
 	if (loader !== 'fabric') {
-		throw new Error(`${pack.name} is currently available for Fabric instances only.`)
+		throw new Error(
+			`${packs.map((pack) => pack.name).join(' + ')} is currently available for Fabric instances only.`,
+		)
 	}
+	const slugs = mergeBreadPackSlugs(selectedIds)
 
-	const projects = await Promise.all(
-		pack.slugs.map(async (slug) => {
+	const projectsById = new Map<string, { slug: string; project: Labrinth.Projects.v2.Project }>()
+	await Promise.all(
+		slugs.map(async (slug) => {
 			const project = (await get_project(slug, 'must_revalidate')) as Labrinth.Projects.v2.Project
 			if (!project?.id) throw new Error(`Modrinth project not found for '${slug}'.`)
-			return { slug, project }
+			// A slug can be listed by more than one pack (or resolve through an
+			// alias); keep one project entry so it is version-resolved/installed once.
+			if (!projectsById.has(project.id)) projectsById.set(project.id, { slug, project })
 		}),
 	)
 
 	const resolved = await Promise.all(
-		projects.map(async ({ slug, project }) => {
+		[...projectsById.values()].map(async ({ slug, project }) => {
 			const versions = (await get_version_many(
 				project.versions,
 				'must_revalidate',
@@ -108,5 +155,11 @@ export async function installBreadPack(
 		plans.push(plan)
 	}
 
-	return { pack, installed: resolved.map(({ slug }) => slug), plans }
+	return {
+		pack: packs[0],
+		packs,
+		slugs,
+		installed: resolved.map(({ slug }) => slug),
+		plans,
+	}
 }

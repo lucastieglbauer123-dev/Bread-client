@@ -54,7 +54,7 @@ export function setupCreationModal(
 		await installationModal.value?.show()
 		if (packId) {
 			installationModal.value?.ctx &&
-				(installationModal.value.ctx.selectedBreadPack.value = packId)
+				(installationModal.value.ctx.selectedBreadPack.value = [packId])
 		}
 	})
 	provide('showImportModal', async () => {
@@ -183,7 +183,7 @@ export function setupCreationModal(
 				iconConfig: iconPath ? getGeneratedIconConfig?.(iconPath) : null,
 			})
 			const instanceId = installJobInstanceId(job)
-			if (instanceId && config.selectedBreadPack.value) {
+			if (instanceId && config.selectedBreadPack.value.length > 0) {
 				try {
 					await installBreadPack(
 						instanceId,
@@ -199,7 +199,10 @@ export function setupCreationModal(
 			await navigateToCreatedInstance(job)
 
 			trackEvent('InstanceCreate', {
-				source: config.selectedBreadPack.value ? 'CreationModalBreadPack' : 'CreationModal',
+				source:
+					config.selectedBreadPack.value.length > 0
+						? 'CreationModalBreadPack'
+						: 'CreationModal',
 			})
 		} catch (err) {
 			handleError(err as Error)
