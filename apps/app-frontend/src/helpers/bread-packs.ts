@@ -88,7 +88,17 @@ export interface BreadPackInstallResult {
 	packs: BreadPackDefinition[]
 	slugs: string[]
 	installed: string[]
+	skipped: BreadPackSkippedMod[]
 	plans: ResolveContentPlan[]
+}
+
+export interface BreadPackSkippedMod {
+	slug: string
+	reason: string
+}
+
+function errorMessage(error: unknown): string {
+	return error instanceof Error ? error.message : String(error)
 }
 
 /**
@@ -116,13 +126,17 @@ export async function installBreadPack(
 	}
 	const slugs = mergeBreadPackSlugs(selectedIds)
 
-	const projects = await Promise.all(
-		slugs.map(async (slug) => {
+	const skipped: BreadPackSkippedMod[] = []
+	const projects: { slug: string; project: Labrinth.Projects.v2.Project }[] = []
+	for (const slug of slugs) {
+		try {
 			const project = (await get_project(slug, 'must_revalidate')) as Labrinth.Projects.v2.Project
 			if (!project?.id) throw new Error(`Community project not found for '${slug}'.`)
-			return { slug, project }
-		}),
-	)
+			projects.push({ slug, project })
+		} catch (error) {
+			skipped.push({ slug, reason: errorMessage(error) })
+		}
+	}
 	// A slug can be listed by more than one pack (or resolve through an alias);
 	// keep one project entry so it is version-resolved/installed once while
 	// preserving the merged slug order for deterministic installs.
@@ -131,8 +145,13 @@ export async function installBreadPack(
 		if (!projectsById.has(project.project.id)) projectsById.set(project.project.id, project)
 	}
 
-	const resolved = await Promise.all(
-		[...projectsById.values()].map(async ({ slug, project }) => {
+	const resolved: {
+		slug: string
+		project: Labrinth.Projects.v2.Project
+		version: Labrinth.Versions.v2.Version
+	}[] = []
+	for (const { slug, project } of projectsById.values()) {
+		try {
 			const versions = (await get_version_many(
 				project.versions,
 				'must_revalidate',
@@ -146,29 +165,38 @@ export async function installBreadPack(
 					`No Fabric ${gameVersion} version is available for '${slug}'. Update the instance version or try again later.`,
 				)
 			}
-			return { slug, project, version }
-		}),
-	)
+			resolved.push({ slug, project, version })
+		} catch (error) {
+			skipped.push({ slug, reason: errorMessage(error) })
+		}
+	}
 
 	const plans: ResolveContentPlan[] = []
-	for (const { project, version } of resolved) {
-		const plan = await install_project_with_dependencies(instanceId, {
-			project_id: project.id,
-			version_id: version.id,
-			content_type: 'mod',
-			selected: {
-				game_versions: [gameVersion],
-				loaders: [loader],
-			},
-		})
-		plans.push(plan)
+	const installed: string[] = []
+	for (const { slug, project, version } of resolved) {
+		try {
+			const plan = await install_project_with_dependencies(instanceId, {
+				project_id: project.id,
+				version_id: version.id,
+				content_type: 'mod',
+				selected: {
+					game_versions: [gameVersion],
+					loaders: [loader],
+				},
+			})
+			plans.push(plan)
+			installed.push(slug)
+		} catch (error) {
+			skipped.push({ slug: project.slug, reason: errorMessage(error) })
+		}
 	}
 
 	return {
 		pack: packs[0],
 		packs,
 		slugs,
-		installed: resolved.map(({ slug }) => slug),
+		installed,
+		skipped,
 		plans,
 	}
 }
