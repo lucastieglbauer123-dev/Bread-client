@@ -1235,6 +1235,11 @@ async function requestModrinthAuth(flow = 'sign-in', addAccount = false) {
 	return !!credentials.value?.session
 }
 
+// WelcomeScreen uses the original Modrinth OAuth flow while presenting Bread
+// Client branding. Keeping this callback here avoids changing the auth client
+// ID or the credentials refresh path used by the rest of the app.
+provide('showBreadSignIn', () => requestSignIn('sign-in', false))
+
 async function logOut() {
 	if (!credentials.value?.user) return
 	await completeAccountSwitch(() => logout())

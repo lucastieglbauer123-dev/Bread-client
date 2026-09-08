@@ -3,17 +3,18 @@ import { ImportIcon, PlusIcon } from '@modrinth/assets'
 import { Button, defineMessages, IntlFormatted, useVIntl } from '@modrinth/ui'
 import { inject, onMounted, onUnmounted, ref } from 'vue'
 
-import modrinthSocialIcon from '../../assets/welcome/modrinth-social-icon.png'
+import BreadLogo from './BreadLogo.vue'
 
 const showCreationModal = inject<() => void>('showCreationModal')
 const showImportModal = inject<() => void>('showImportModal')
+const showBreadSignIn = inject<() => Promise<void>>('showBreadSignIn')
 
 const { formatMessage } = useVIntl()
 
 const messages = defineMessages({
 	welcomeTitle: {
 		id: 'app.welcome-screen.title',
-		defaultMessage: 'Welcome to Modrinth',
+		defaultMessage: 'Welcome to Bread Client',
 	},
 	welcomeDescription: {
 		id: 'app.welcome-screen.description',
@@ -22,6 +23,10 @@ const messages = defineMessages({
 	createInstance: {
 		id: 'app.welcome-screen.create-instance',
 		defaultMessage: 'Create an instance',
+	},
+	signIn: {
+		id: 'app.welcome-screen.sign-in',
+		defaultMessage: 'Sign in to Bread Client',
 	},
 	quickCreateHint: {
 		id: 'app.welcome-screen.quick-create-hint',
@@ -38,6 +43,7 @@ const messages = defineMessages({
 })
 
 const offline = ref(!navigator.onLine)
+const signingIn = ref(false)
 
 function handleOffline() {
 	offline.value = true
@@ -67,6 +73,18 @@ function handleQuickCreate(event: KeyboardEvent) {
 	}
 }
 
+async function signIn() {
+	if (offline.value || signingIn.value || !showBreadSignIn) return
+	signingIn.value = true
+	try {
+		// The injected callback uses the existing Modrinth OAuth client ID and
+		// flow; this button only changes the visible Bread Client branding.
+		await showBreadSignIn()
+	} finally {
+		signingIn.value = false
+	}
+}
+
 onMounted(() => {
 	window.addEventListener('offline', handleOffline)
 	window.addEventListener('online', handleOnline)
@@ -88,9 +106,7 @@ onUnmounted(() => {
 					class="dot-pattern pointer-events-none absolute left-1/2 -top-52 -z-10 h-[29.875rem] w-[min(25.9375rem,80vw)] -translate-x-1/2 rounded-2xl [@media(max-height:700px)]:h-[23rem]"
 					aria-hidden="true"
 				/>
-				<div class="size-[6.25rem]">
-					<img :src="modrinthSocialIcon" alt="" class="pointer-events-none size-full" />
-				</div>
+				<BreadLogo variant="splash" />
 				<div class="flex flex-col items-center gap-2">
 					<h1 class="m-0 flex items-center gap-2 text-2xl font-semibold leading-8 text-contrast">
 						{{ formatMessage(messages.welcomeTitle) }}
@@ -110,6 +126,15 @@ onUnmounted(() => {
 					>
 						<PlusIcon />
 						{{ formatMessage(messages.createInstance) }}
+					</Button>
+					<Button
+						type="outlined"
+						size="lg"
+						class="!shadow-none"
+						:disabled="offline || signingIn || !showBreadSignIn"
+						@click="signIn"
+					>
+						{{ formatMessage(messages.signIn) }}
 					</Button>
 					<span class="flex items-center gap-1 text-sm leading-5 text-secondary">
 						<IntlFormatted :message-id="messages.quickCreateHint">
