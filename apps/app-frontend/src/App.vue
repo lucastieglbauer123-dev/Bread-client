@@ -2112,6 +2112,14 @@ provideAppUpdateDownloadProgress(appUpdateDownload)
 				<ImagesIcon />
 				<span>{{ formatMessage(messages.files) }}</span>
 			</div>
+			<NavButton
+				v-tooltip.right="formatMessage(appMessages.skinSelectorLabel)"
+				to="/skins"
+				:label="formatMessage(appMessages.skinSelectorLabel)"
+				:is-primary="(route) => route.path.startsWith('/skins')"
+			>
+				<ShirtIcon />
+			</NavButton>
 			</div>
 			<div class="bread-nav-secondary">
 			<NavButton v-tooltip.right="formatMessage(appMessages.skinSelectorLabel)" to="/skins">
