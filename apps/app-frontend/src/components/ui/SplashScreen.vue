@@ -7,7 +7,7 @@
 				<span v-if="message">{{ message }}</span>
 			</div>
 			<div class="gradient-bg" data-tauri-drag-region></div>
-			<div class="cube-bg"></div>
+			<div class="bread-pattern-bg" aria-hidden="true"></div>
 			<div class="base-bg"></div>
 		</div>
 	</Transition>
@@ -85,12 +85,6 @@ useAppEvent('loading', (e) => {
 	position: fixed;
 	inset: 0;
 	z-index: 10000;
-
-	--splash-cube-image: url('@/assets/loading/cube.png');
-
-	&.light-mode {
-		--splash-cube-image: url('@/assets/loading/cube-light.webp');
-	}
 }
 
 .splash-fade-leave-active {
@@ -136,28 +130,21 @@ useAppEvent('loading', (e) => {
 	z-index: 9997;
 }
 
-.cube-bg {
+.bread-pattern-bg {
 	position: absolute;
-
-	left: 50%;
-	top: 50%;
-	transform: translate(-50%, -50%);
-
-	width: 180vw;
-	height: 180vh;
-	background-color: var(--color-bg);
-
+	inset: 0;
 	z-index: 9996;
-
-	&::after {
-		content: '';
-		position: absolute;
-		inset: 0;
-		background: var(--splash-cube-image) center no-repeat;
-		background-size: contain;
-		opacity: var(--splash-cube-opacity);
-		mix-blend-mode: var(--splash-cube-blend);
-	}
+	background-image: radial-gradient(
+		circle,
+		color-mix(in srgb, var(--color-text-primary) 25%, transparent) 0.5px,
+		transparent 0.75px
+	);
+	background-size: 0.5625rem 0.5625rem;
+	opacity: 0.8;
+	-webkit-mask-image: radial-gradient(ellipse at center, black 10%, transparent 68%);
+	mask-image: radial-gradient(ellipse at center, black 10%, transparent 68%);
+	-webkit-mask-repeat: no-repeat;
+	mask-repeat: no-repeat;
 }
 
 .base-bg {
