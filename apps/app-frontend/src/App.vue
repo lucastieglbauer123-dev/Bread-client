@@ -11,6 +11,7 @@ import {
 import {
 	ArrowBigUpDashIcon,
 	ArrowLeftRightIcon,
+	BellIcon,
 	ChevronLeftIcon,
 	ChevronRightIcon,
 	CompassIcon,
@@ -278,6 +279,16 @@ const hostingIntercom = useHostingIntercom({
 const notificationManager = new AppNotificationManager()
 provideNotificationManager(notificationManager)
 const { handleError, addNotification } = notificationManager
+const notificationsOpen = ref(false)
+const notifications = computed(() => notificationManager.getNotifications())
+
+function toggleNotifications(): void {
+	notificationsOpen.value = !notificationsOpen.value
+}
+
+function dismissNotification(id: string | number): void {
+	notificationManager.removeNotification(id)
+}
 
 useAppEvent(
 	'warning',
@@ -2165,11 +2176,17 @@ provideAppUpdateDownloadProgress(appUpdateDownload)
 			</NavButton>
 			<div class="flex flex-grow"></div>
 			<div class="bread-sidebar-footer">
-				<div class="bread-nav-item bread-nav-item--notifications" aria-label="Notifications">
-					<RefreshCwIcon />
+				<button
+					type="button"
+					class="bread-nav-item bread-nav-item--notifications"
+					:aria-expanded="notificationsOpen"
+					:aria-label="formatMessage(messages.notifications)"
+					@click="toggleNotifications"
+				>
+					<BellIcon />
 					<span>{{ formatMessage(messages.notifications) }}</span>
-					<span class="bread-notification-badge">2</span>
-				</div>
+					<span v-if="notifications.length" class="bread-notification-badge">{{ notifications.length }}</span>
+				</button>
 			<NavButton
 				v-tooltip.right="formatMessage(commonMessages.settingsLabel)"
 				:to="() => appSettingsModal?.show()"
@@ -2185,6 +2202,38 @@ provideAppUpdateDownloadProgress(appUpdateDownload)
 						<em>Explore themes</em>
 					</span>
 				</button>
+			</div>
+			<div v-if="notificationsOpen" class="bread-notification-popover" role="dialog" aria-label="Notifications">
+				<div class="bread-notification-popover__header">
+					<strong>{{ formatMessage(messages.notifications) }}</strong>
+					<button
+						type="button"
+						class="bread-notification-popover__close"
+						aria-label="Close notifications"
+						@click="notificationsOpen = false"
+					>
+						<XIcon />
+					</button>
+				</div>
+				<div v-if="notifications.length === 0" class="bread-notification-popover__empty">
+					You're all caught up.
+				</div>
+				<div v-else class="bread-notification-popover__list">
+					<div v-for="notification in notifications" :key="notification.id" class="bread-notification-popover__item">
+						<div class="bread-notification-popover__item-copy">
+							<strong>{{ notification.title || 'Notification' }}</strong>
+							<span v-if="notification.text">{{ notification.text }}</span>
+						</div>
+						<button
+							type="button"
+							class="bread-notification-popover__dismiss"
+							aria-label="Dismiss notification"
+							@click="dismissNotification(notification.id)"
+						>
+							<XIcon />
+						</button>
+					</div>
+				</div>
 			</div>
 			<span v-tooltip.right="profileButtonTooltip" class="bread-modrinth-account inline-flex">
 				<IconButton
@@ -2547,10 +2596,14 @@ provideAppUpdateDownloadProgress(appUpdateDownload)
 	display: flex;
 	align-items: center;
 	gap: 0.75rem;
+	width: 100%;
 	min-height: 2.75rem;
 	padding: 0 0.75rem;
+	border: 0;
 	border-radius: var(--bread-radius-md);
+	background: transparent;
 	color: var(--bread-color-text-muted);
+	text-align: left;
 	font-size: 0.9375rem;
 	font-weight: 600;
 }
@@ -2583,6 +2636,109 @@ provideAppUpdateDownloadProgress(appUpdateDownload)
 	color: var(--bread-color-brand-contrast);
 	font-size: 0.7rem;
 	font-weight: 800;
+}
+
+.bread-notification-popover {
+	position: absolute;
+	left: calc(var(--left-bar-width) - 0.5rem);
+	bottom: 1rem;
+	width: min(24rem, calc(100vw - var(--left-bar-width) - 2rem));
+	max-height: min(32rem, calc(100vh - 2rem));
+	overflow: hidden;
+	border: 1px solid var(--bread-color-border-strong);
+	border-radius: var(--bread-radius-lg);
+	background: var(--bread-color-surface-panel);
+	box-shadow: 0 1rem 2.5rem rgb(0 0 0 / 35%);
+	z-index: 20;
+}
+
+.bread-notification-popover__header,
+.bread-notification-popover__item {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 0.75rem;
+}
+
+.bread-notification-popover__header {
+	padding: 0.875rem 1rem;
+	border-bottom: 1px solid var(--bread-color-border-subtle);
+	color: var(--bread-color-text-primary);
+}
+
+.bread-notification-popover__close,
+.bread-notification-popover__dismiss {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	border: 0;
+	border-radius: var(--bread-radius-sm);
+	background: transparent;
+	color: var(--bread-color-text-muted);
+	cursor: pointer;
+}
+
+.bread-notification-popover__close {
+	width: 1.75rem;
+	height: 1.75rem;
+}
+
+.bread-notification-popover__close:hover,
+.bread-notification-popover__dismiss:hover {
+	background: var(--bread-color-surface-muted);
+	color: var(--bread-color-text-primary);
+}
+
+.bread-notification-popover__close svg,
+.bread-notification-popover__dismiss svg {
+	width: 1rem;
+	height: 1rem;
+}
+
+.bread-notification-popover__empty {
+	padding: 1.5rem 1rem;
+	color: var(--bread-color-text-muted);
+	font-size: 0.875rem;
+	text-align: center;
+}
+
+.bread-notification-popover__list {
+	max-height: min(28rem, calc(100vh - 6rem));
+	overflow-y: auto;
+}
+
+.bread-notification-popover__item {
+	align-items: flex-start;
+	padding: 0.875rem 1rem;
+	border-bottom: 1px solid var(--bread-color-border-subtle);
+}
+
+.bread-notification-popover__item:last-child {
+	border-bottom: 0;
+}
+
+.bread-notification-popover__item-copy {
+	display: flex;
+	min-width: 0;
+	flex-direction: column;
+	gap: 0.25rem;
+}
+
+.bread-notification-popover__item-copy strong {
+	color: var(--bread-color-text-primary);
+	font-size: 0.875rem;
+}
+
+.bread-notification-popover__item-copy span {
+	color: var(--bread-color-text-muted);
+	font-size: 0.8125rem;
+	line-height: 1.4;
+}
+
+.bread-notification-popover__dismiss {
+	flex: 0 0 auto;
+	width: 1.5rem;
+	height: 1.5rem;
 }
 
 .bread-account-selector {
