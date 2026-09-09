@@ -13,6 +13,7 @@ export const BREAD_CHANGELOG: ChangelogEntry[] = [
 			'Replaced the inactive Downloads and Files sidebar entries with Recent Activity and Crash Reports views.',
 			'Crash report links now open the matching instance log directly.',
 			'Added the purple flame theme for KJ and a switch for showing the original launcher themes.',
+			'Added an instance Settings → Import tab with local .mrpack preview and import choices.',
 		],
 	},
 	{

@@ -3,6 +3,7 @@ import type { Labrinth } from '@modrinth/api-client'
 import {
 	ChevronRightIcon,
 	EyeIcon,
+	FileArchiveIcon,
 	InfoIcon,
 	Settings2Icon,
 	UsersIcon,
@@ -29,6 +30,7 @@ import type { GameInstance } from '@/helpers/types'
 import BehaviorSettings from './behavior-settings.vue'
 import GeneralSettings from './general-settings.vue'
 import InstallationSettings from './installation-settings.vue'
+import ImportSettings from './import-settings.vue'
 import { provideInstanceSettings } from './instance-settings-context.ts'
 import SharingSettings from './sharing-settings.vue'
 import SyncedOptionsSettings from './synced-options-settings.vue'
@@ -95,6 +97,14 @@ const tabs = computed<TabbedModalTab[]>(() => [
 		}),
 		icon: WrenchIcon,
 		content: InstallationSettings,
+	},
+	{
+		name: defineMessage({
+			id: 'instance.settings.tabs.import',
+			defaultMessage: 'Import',
+		}),
+		icon: FileArchiveIcon,
+		content: ImportSettings,
 	},
 	{
 		name: defineMessage({
