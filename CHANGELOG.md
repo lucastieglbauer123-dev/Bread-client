@@ -3,6 +3,7 @@
 ## 2026-09-09
 
 - New Minecraft title screen.
+- Confirmed the standalone Bread logo export is available at `bread-logo-export.png` (1024 × 1024).
 - Fixed the KJ purple flame theme so its animated flame wash renders above the launcher shell while preserving the Standard, Bread, csm purple, and Amber palettes.
 - Added a new Play dashboard layout with a featured instance, quick actions, library board, and activity rail; the original grouped layout remains selectable in Behavior settings.
 - Fixed CurseForge mod searches by allowing the frontend's authenticated API requests through the Tauri HTTP capability and CSP.
