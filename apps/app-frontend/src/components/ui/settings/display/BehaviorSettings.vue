@@ -146,14 +146,6 @@ const messages = defineMessages({
 		defaultMessage:
 			'Skip confirmations for low-risk actions such as duplicate installs, normal content deletion, bulk updates, unlinking, and repairs. Warnings for dangerous actions are always shown.',
 	},
-	legacyUiTitle: {
-		id: 'app.behavior-settings.legacy-ui.title',
-		defaultMessage: 'Use the original launcher layout',
-	},
-	legacyUiDescription: {
-		id: 'app.behavior-settings.legacy-ui.description',
-		defaultMessage: 'Keep Bread colours and branding while restoring the familiar original structure.',
-	},
 })
 
 type BehaviorSettingsState = {
@@ -175,14 +167,6 @@ const [initialSettings, initialGlobalSyncedOptions] = await Promise.all([
 ])
 const persistedSettings = ref(initialSettings)
 const persistedGlobalSyncedOptions = ref(initialGlobalSyncedOptions)
-const legacyUi = ref(localStorage.getItem('bread-legacy-ui') === 'true')
-
-function setLegacyUi(enabled: boolean) {
-	legacyUi.value = enabled
-	localStorage.setItem('bread-legacy-ui', String(enabled))
-	window.dispatchEvent(new CustomEvent('bread-ui-mode-changed'))
-}
-
 function getBehaviorSettingsState(
 	settings: AppSettings,
 	globalSyncedOptions: GlobalSyncedOptions,
@@ -349,13 +333,6 @@ onBeforeUnmount(() => {
 				<Toggle id="toggle-sidebar" v-model="current.hideRightSidebar" />
 			</div>
 
-			<div class="flex items-center justify-between gap-4">
-				<div>
-					<h3 class="m-0 text-lg font-semibold text-contrast">{{ formatMessage(messages.legacyUiTitle) }}</h3>
-					<p class="m-0 mt-1">{{ formatMessage(messages.legacyUiDescription) }}</p>
-				</div>
-				<Toggle id="legacy-ui" :model-value="legacyUi" @update:model-value="setLegacyUi" />
-			</div>
 		</div>
 	</section>
 

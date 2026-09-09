@@ -4,6 +4,7 @@
 
 - New Minecraft title screen.
 - Added a BreadClient wordmark to the Minecraft title logo and replaced vanilla splash text with Bread Client messages.
+- Added a clearly labelled Classic layout toggle to Settings → Appearance for switching between the new workspace and the compact layout.
 - Confirmed the standalone Bread logo export is available at `bread-logo-export.png` (1024 × 1024).
 - Kept the executable package metadata MSI-safe (`1.0.0`) while the bundle version remains sourced from the Bread Client frontend package.
 - Consolidated Bread sign-in to the onboarding action; the sidebar account card remains the single Minecraft account control.
@@ -21,7 +22,7 @@
 - Added a one-click icon-only Quick start row to the Play page.
 - Added local launcher statistics for total playtime, most-played instance, and installed mods.
 - Notifications now open in a fixed overlay with a backdrop and Escape-to-close behavior.
-- Added smooth route transitions and an optional original-layout fallback in Behavior settings.
+- Added smooth route transitions and an optional Classic layout fallback in Settings → Appearance.
 - Added local custom theme imports for background images and JSON palettes.
 - Hardened merged pack installs so the same CurseForge project is never downloaded twice.
 - Discord Rich Presence now uses Bread Client identity with idle, launching, and timed playing states.

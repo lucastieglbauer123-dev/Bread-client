@@ -63,6 +63,14 @@ const messages = defineMessages({
 		id: 'app.settings.bread.restore.button',
 		defaultMessage: 'Restore standard',
 	},
+	classicLayout: {
+		id: 'app.settings.bread.classic-layout',
+		defaultMessage: 'Classic layout',
+	},
+	classicLayoutDescription: {
+		id: 'app.settings.bread.classic-layout.description',
+		defaultMessage: 'Use the familiar compact layout instead of the new Bread workspace.',
+	},
 	originalThemes: {
 		id: 'app.settings.bread.original-themes',
 		defaultMessage: 'Switch to original themes',
@@ -153,6 +161,7 @@ function loadOriginalThemes(): boolean {
 }
 
 const showOriginalThemes = ref(loadOriginalThemes())
+const classicLayout = ref(localStorage.getItem('bread-legacy-ui') === 'true')
 const customBackground = ref(localStorage.getItem('bread-custom-background') ?? '')
 
 function applyCustomBackground() {
@@ -224,6 +233,16 @@ function setShowOriginalThemes(enabled: boolean): void {
 	showOriginalThemes.value = enabled
 	try {
 		window.localStorage.setItem('bread-show-original-themes', String(enabled))
+	} catch {
+		// storage blocked or full
+	}
+}
+
+function setClassicLayout(enabled: boolean): void {
+	classicLayout.value = enabled
+	try {
+		window.localStorage.setItem('bread-legacy-ui', String(enabled))
+		window.dispatchEvent(new CustomEvent('bread-ui-mode-changed'))
 	} catch {
 		// storage blocked or full
 	}
@@ -388,6 +407,21 @@ provideAppearanceSettings({
 			</h1>
 			<p>{{ formatMessage(messages.breadDescription) }}</p>
 		</header>
+
+		<section class="bread-settings-section bread-classic-layout-section">
+			<div>
+				<h2>{{ formatMessage(messages.classicLayout) }}</h2>
+				<p>{{ formatMessage(messages.classicLayoutDescription) }}</p>
+			</div>
+			<label class="bread-settings-toggle">
+				<input
+					type="checkbox"
+					:checked="classicLayout"
+					@change="setClassicLayout($event.target.checked)"
+				/>
+				<span aria-hidden="true" />
+			</label>
+		</section>
 
 		<section class="bread-settings-section bread-original-themes-section">
 			<div>
