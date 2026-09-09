@@ -340,7 +340,7 @@ pub enum Theme {
 	Standard,
 	Bread,
 	Purple,
-	#[serde(alias = "purple-flame")]
+	#[serde(rename = "purple-flame", alias = "purple_flame")]
 	PurpleFlame,
 	Amber,
     Light,
