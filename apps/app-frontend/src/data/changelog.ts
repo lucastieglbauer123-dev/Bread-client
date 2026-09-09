@@ -9,6 +9,7 @@ export const BREAD_CHANGELOG: ChangelogEntry[] = [
 	{
 		date: '2026-09-09',
 		items: [
+			'Launcher stats now combine recent and submitted playtime and count installed Fabric mods from content metadata.',
 			'Removed the Profile and Social settings tabs; Minecraft account login remains the single account surface until a Bread account service exists.',
 			'Crash reports now read logs without clearing them, isolate per-instance failures, and show a friendly empty state.',
 			'Fixed the recurring giant library card by constraining the card media and grid tracks at their layout boundary.',

@@ -3,15 +3,22 @@ import { ChartIcon, ClockIcon, PackageIcon, RefreshCwIcon } from '@modrinth/asse
 import { Button, injectNotificationManager } from '@modrinth/ui'
 import { computed, onMounted, ref } from 'vue'
 
-import { get_installed_project_ids, list as listInstances } from '@/helpers/instance'
+import { get_content_items, list as listInstances } from '@/helpers/instance'
 
 const { handleError } = injectNotificationManager()
 const instances = ref<any[]>([])
 const totalMods = ref(0)
 const loading = ref(true)
 
-const totalPlaytime = computed(() => instances.value.reduce((total, instance) => total + Number(instance.submitted_time_played ?? 0), 0))
-const mostPlayed = computed(() => instances.value.slice().sort((a, b) => Number(b.submitted_time_played ?? 0) - Number(a.submitted_time_played ?? 0))[0] ?? null)
+function playtimeSeconds(instance: any): number {
+	return Number(instance.recent_time_played ?? 0) + Number(instance.submitted_time_played ?? 0)
+}
+
+const totalPlaytime = computed(() => instances.value.reduce((total, instance) => total + playtimeSeconds(instance), 0))
+const mostPlayed = computed(() => {
+	const instance = instances.value.slice().sort((a, b) => playtimeSeconds(b) - playtimeSeconds(a))[0]
+	return instance ? { instance, seconds: playtimeSeconds(instance) } : null
+})
 
 function formatPlaytime(seconds: number) {
 	const minutes = Math.max(0, Math.round(seconds / 60))
@@ -23,8 +30,15 @@ async function load() {
 	loading.value = true
 	try {
 		instances.value = await listInstances()
-		const counts = await Promise.all(instances.value.map((instance) => get_installed_project_ids(instance.id).catch(() => [])))
-		totalMods.value = new Set(counts.flat()).size
+		const modIds = await Promise.all(
+			instances.value.map(async (instance) => {
+				const items = await get_content_items(instance.id).catch(() => [])
+				return items
+					.filter((item) => item.project_type === 'mod')
+					.map((item) => item.project?.id ?? item.id)
+			}),
+		)
+		totalMods.value = new Set(modIds.flat()).size
 	} catch (error) {
 		handleError(error)
 	} finally {
@@ -43,7 +57,7 @@ onMounted(load)
 		</div>
 		<div class="bread-stats-grid">
 			<div class="bread-stat-card"><ClockIcon /><span>Total playtime</span><strong>{{ formatPlaytime(totalPlaytime) }}</strong></div>
-			<div class="bread-stat-card"><ChartIcon /><span>Most played</span><strong>{{ mostPlayed?.name ?? '—' }}</strong><small v-if="mostPlayed">{{ formatPlaytime(mostPlayed.submitted_time_played) }}</small></div>
+			<div class="bread-stat-card"><ChartIcon /><span>Most played</span><strong>{{ mostPlayed?.instance.name ?? '—' }}</strong><small v-if="mostPlayed">{{ formatPlaytime(mostPlayed.seconds) }}</small></div>
 			<div class="bread-stat-card"><PackageIcon /><span>Installed mods</span><strong>{{ totalMods }}</strong></div>
 		</div>
 		<p v-if="loading" class="text-secondary">Loading local instance stats…</p>
