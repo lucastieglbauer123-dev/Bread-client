@@ -12,6 +12,7 @@
 - Fixed KJ theme persistence so selecting Purple flame can be saved and restored across launches.
 - Fixed the KJ theme save path so the frontend's purple-flame identifier is accepted by the settings API.
 - Fixed KJ theme restoration on relaunch by keeping the purple-flame wire name consistent between Rust and the frontend.
+- Updated the title-screen injector to refresh existing Minecraft jars when Bread artwork changes, so the BreadClient wordmark reaches already-installed instances.
 - Added a new Play dashboard layout with a featured instance, quick actions, library board, and activity rail; the original grouped layout remains selectable in Behavior settings.
 - Fixed CurseForge mod searches by allowing the frontend's authenticated API requests through the Tauri HTTP capability and CSP.
 - New instances can optionally share a Bread-managed resource-pack folder; existing instances remain isolated.

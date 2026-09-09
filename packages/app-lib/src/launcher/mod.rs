@@ -39,6 +39,7 @@ pub mod download;
 pub mod quick_play_version;
 
 const BREAD_TITLE_SCREEN_MARKER: &str = "META-INF/bread-title-screen";
+const BREAD_TITLE_SCREEN_MARKER_CONTENT: &[u8] = b"Bread Client title screen v2";
 
 /// Embed Bread's title artwork directly into the downloaded Minecraft client jar.
 /// This keeps the branding active for every launch without exposing a removable
@@ -51,7 +52,14 @@ async fn apply_bread_title_screen(client_path: &std::path::Path) -> crate::Resul
 			crate::ErrorKind::LauncherError(format!("Could not read Minecraft client jar: {error}"))
 		})?;
 
-		if archive.by_name(BREAD_TITLE_SCREEN_MARKER).is_ok() {
+		let marker_is_current = if let Ok(mut marker) = archive.by_name(BREAD_TITLE_SCREEN_MARKER) {
+			let mut marker_content = Vec::new();
+			marker.read_to_end(&mut marker_content)?;
+			marker_content == BREAD_TITLE_SCREEN_MARKER_CONTENT
+		} else {
+			false
+		};
+		if marker_is_current {
 			return Ok(());
 		}
 
@@ -104,7 +112,7 @@ async fn apply_bread_title_screen(client_path: &std::path::Path) -> crate::Resul
 			writer.start_file(BREAD_TITLE_SCREEN_MARKER, options).map_err(|error| {
 				crate::ErrorKind::LauncherError(format!("Could not mark Bread title artwork: {error}"))
 			})?;
-			writer.write_all(b"Bread Client title screen")?;
+			writer.write_all(BREAD_TITLE_SCREEN_MARKER_CONTENT)?;
 			writer.finish().map_err(|error| {
 				crate::ErrorKind::LauncherError(format!("Could not finish Minecraft client jar: {error}"))
 			})?;
