@@ -9,6 +9,8 @@ export const BREAD_CHANGELOG: ChangelogEntry[] = [
 	{
 		date: '2026-09-09',
 		items: [
+			'Reworked the launcher shell into labelled Workspace, Tools, and Utilities navigation groups with animated active states and route transitions.',
+			'Added animated, responsive card entry and focus treatment to the Bread library workspace.',
 			'New Minecraft title screen.',
 			'Added a BreadClient wordmark to the Minecraft title logo and replaced vanilla splash text with Bread Client messages.',
 			'Added a clearly labelled Classic layout toggle to Settings → Appearance for switching between the new workspace and the compact layout.',

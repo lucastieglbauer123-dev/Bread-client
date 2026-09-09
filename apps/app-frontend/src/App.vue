@@ -2161,7 +2161,10 @@ provideAppUpdateDownloadProgress(appUpdateDownload)
 					<AccountsCard ref="accounts" />
 				</suspense>
 			</div>
-			<div class="bread-nav-links">
+			<nav class="bread-sidebar-navigation" aria-label="Main navigation">
+				<section class="bread-sidebar-nav-group bread-sidebar-nav-group--primary">
+					<p class="bread-sidebar-nav-label">Workspace</p>
+					<div class="bread-nav-links">
 			<NavButton
 				v-tooltip.right="formatMessage(messages.home)"
 				to="/"
@@ -2209,8 +2212,11 @@ provideAppUpdateDownloadProgress(appUpdateDownload)
 			>
 				<ShirtIcon />
 			</NavButton>
-			</div>
-			<div class="bread-nav-secondary">
+					</div>
+				</section>
+				<section class="bread-sidebar-nav-group bread-sidebar-nav-group--tools">
+					<p class="bread-sidebar-nav-label">Tools</p>
+					<div class="bread-nav-secondary">
 			<NavButton v-tooltip.right="formatMessage(appMessages.skinSelectorLabel)" to="/skins">
 				<ShirtIcon />
 			</NavButton>
@@ -2221,7 +2227,9 @@ provideAppUpdateDownloadProgress(appUpdateDownload)
 			>
 				<ImagesIcon />
 			</NavButton>
-			</div>
+					</div>
+				</section>
+			</nav>
 			<div class="bread-quick-switcher">
 				<suspense>
 					<QuickInstanceSwitcher />
@@ -2236,7 +2244,8 @@ provideAppUpdateDownloadProgress(appUpdateDownload)
 				<PlusIcon />
 			</NavButton>
 			<div class="flex flex-grow"></div>
-			<div class="bread-sidebar-footer">
+			<section class="bread-sidebar-footer" aria-label="Launcher utilities">
+				<p class="bread-sidebar-nav-label">Utilities</p>
 				<NavButton
 					v-tooltip.right="formatMessage(messages.whatsNew)"
 					to="/whats-new"
@@ -2272,7 +2281,7 @@ provideAppUpdateDownloadProgress(appUpdateDownload)
 						<em>Explore themes</em>
 					</span>
 				</button>
-			</div>
+			</section>
 			<Teleport to="body">
 				<div v-if="notificationsOpen" class="bread-notification-backdrop" @click="notificationsOpen = false" />
 				<div v-if="notificationsOpen" class="bread-notification-popover" role="dialog" aria-label="Notifications" tabindex="-1">
@@ -2585,6 +2594,13 @@ provideAppUpdateDownloadProgress(appUpdateDownload)
 	display: none;
 }
 
+.bread-sidebar-navigation {
+	display: flex;
+	flex-direction: column;
+	gap: var(--bread-space-4);
+}
+
+.bread-sidebar-nav-group,
 .bread-nav-links,
 .bread-nav-secondary,
 .bread-sidebar-footer {
@@ -2593,11 +2609,29 @@ provideAppUpdateDownloadProgress(appUpdateDownload)
 	gap: var(--bread-space-2);
 }
 
-.bread-nav-secondary {
-	display: none;
-	margin-top: var(--bread-space-4);
+.bread-sidebar-nav-group {
+	position: relative;
+	padding: 0.25rem 0;
+}
+
+.bread-sidebar-nav-group--tools {
 	padding-top: var(--bread-space-3);
 	border-top: 1px solid var(--bread-color-border-subtle);
+}
+
+.bread-sidebar-nav-label {
+	margin: 0 0 0.2rem;
+	padding: 0 0.75rem;
+	color: var(--bread-color-text-subtle);
+	font-size: 0.64rem;
+	font-weight: 800;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+}
+
+.bread-nav-secondary {
+	display: flex;
+	display: none;
 }
 
 .bread-quick-switcher,
@@ -2607,6 +2641,8 @@ provideAppUpdateDownloadProgress(appUpdateDownload)
 
 .bread-sidebar-footer {
 	gap: var(--bread-space-2);
+	padding-top: var(--bread-space-4);
+	border-top: 1px solid var(--bread-color-border-subtle);
 }
 
 .bread-nav-item {
@@ -2625,13 +2661,42 @@ provideAppUpdateDownloadProgress(appUpdateDownload)
 	font-weight: 600;
 	cursor: pointer;
 	pointer-events: auto;
-	transition: background-color 120ms ease, color 120ms ease, transform 120ms ease;
+	position: relative;
+	overflow: hidden;
+	transition: background-color 180ms ease, color 180ms ease, transform 180ms cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 180ms ease;
+}
+
+.bread-nav-item::before {
+	content: '';
+	position: absolute;
+	left: 0;
+	top: 0.45rem;
+	bottom: 0.45rem;
+	width: 0.2rem;
+	border-radius: var(--bread-radius-pill);
+	background: var(--bread-color-brand-bright);
+	opacity: 0;
+	transform: translateX(-0.25rem) scaleY(0.4);
+	transition: opacity 180ms ease, transform 180ms ease;
 }
 
 .bread-nav-item:not(.bread-nav-item--placeholder):hover {
 	background: var(--bread-color-surface-raised);
 	color: var(--bread-color-text-primary);
-	transform: translateX(2px);
+	transform: translateX(0.25rem);
+	box-shadow: 0 0.45rem 1rem rgb(0 0 0 / 12%);
+}
+
+.bread-nav-item:has([aria-current='page']),
+.bread-nav-button.router-link-active {
+	background: color-mix(in srgb, var(--bread-color-brand) 18%, var(--bread-color-surface-raised));
+	color: var(--bread-color-text-primary);
+}
+
+.bread-nav-item:has([aria-current='page'])::before,
+.bread-nav-button.router-link-active::before {
+	opacity: 1;
+	transform: translateX(0) scaleY(1);
 }
 
 .bread-nav-item:focus-visible,
@@ -2830,7 +2895,8 @@ provideAppUpdateDownloadProgress(appUpdateDownload)
 
 .bread-make-yours:hover {
 	border-color: var(--bread-color-brand);
-	transform: translateY(-1px);
+	transform: translateY(-2px);
+	box-shadow: 0 0.6rem 1.2rem rgb(0 0 0 / 15%);
 }
 
 .bread-make-yours__icon {

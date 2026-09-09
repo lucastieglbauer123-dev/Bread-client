@@ -374,7 +374,12 @@ watch(selectedLibraryInstances, (selectedInstances) => {
 						<p v-if="libraryGroupsLoaded && isSearching && modernInstances.length === 0" class="bread-library-modern__empty">
 							{{ formatMessage(messages.noSearchResults) }}
 						</p>
-						<div v-else class="bread-library-modern__grid">
+						<TransitionGroup
+							v-else
+							tag="div"
+							name="bread-library-card"
+							class="bread-library-modern__grid"
+						>
 							<div
 								v-for="item in modernGrid"
 								:key="item.instance.id"
@@ -397,10 +402,10 @@ watch(selectedLibraryInstances, (selectedInstances) => {
 									@contextmenu.prevent.stop="
 										(event: MouseEvent) =>
 											openModernInstanceContextMenu(event, item.instance.id, item.groupId)
-									"
+								"
 								/>
 							</div>
-						</div>
+						</TransitionGroup>
 					</section>
 				</main>
 
@@ -877,12 +882,41 @@ watch(selectedLibraryInstances, (selectedInstances) => {
 
 .bread-library-modern__grid {
 	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(min(17rem, 100%), 1fr));
+	grid-template-columns: repeat(auto-fill, minmax(min(17rem, 100%), 1fr));
+	align-items: start;
 	gap: var(--bread-space-4);
 }
 
 .bread-library-modern__card-slot {
+	display: flex;
+	min-height: 0;
 	min-width: 0;
+	max-width: 30rem;
+	contain: layout paint;
+	transition: transform 180ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.bread-library-modern__card-slot :deep(.bread-instance-card) {
+	width: 100%;
+	min-width: 0;
+	max-width: 100%;
+	min-height: 0;
+}
+
+.bread-library-card-enter-active,
+.bread-library-card-leave-active,
+.bread-library-card-move {
+	transition: opacity 180ms ease, transform 180ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.bread-library-card-enter-from,
+.bread-library-card-leave-to {
+	opacity: 0;
+	transform: translateY(0.5rem) scale(0.98);
+}
+
+.bread-library-card-leave-active {
+	position: absolute;
 }
 
 .bread-library-modern__empty {
