@@ -16,6 +16,7 @@ export const BREAD_CHANGELOG: ChangelogEntry[] = [
 			'Added an instance Settings → Import tab with local .mrpack preview and import choices.',
 			'Added a one-click icon-only Quick start row to the Play page.',
 			'Added local launcher statistics for total playtime, most-played instance, and installed mods.',
+			'Notifications now open in a fixed overlay with a backdrop and Escape-to-close behavior.',
 		],
 	},
 	{

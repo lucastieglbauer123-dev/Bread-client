@@ -288,6 +288,15 @@ function toggleNotifications() {
 	notificationsOpen.value = !notificationsOpen.value
 }
 
+function closeNotificationsOnEscape(event) {
+	if (event.key === 'Escape') notificationsOpen.value = false
+}
+
+watch(notificationsOpen, (open) => {
+	if (open) window.addEventListener('keydown', closeNotificationsOnEscape)
+	else window.removeEventListener('keydown', closeNotificationsOnEscape)
+})
+
 function dismissNotification(id) {
 	notificationManager.removeNotification(id)
 }
@@ -2257,7 +2266,9 @@ provideAppUpdateDownloadProgress(appUpdateDownload)
 					</span>
 				</button>
 			</div>
-			<div v-if="notificationsOpen" class="bread-notification-popover" role="dialog" aria-label="Notifications">
+			<Teleport to="body">
+				<div v-if="notificationsOpen" class="bread-notification-backdrop" @click="notificationsOpen = false" />
+				<div v-if="notificationsOpen" class="bread-notification-popover" role="dialog" aria-label="Notifications" tabindex="-1">
 				<div class="bread-notification-popover__header">
 					<strong>{{ formatMessage(messages.notifications) }}</strong>
 					<button
@@ -2288,7 +2299,8 @@ provideAppUpdateDownloadProgress(appUpdateDownload)
 						</button>
 					</div>
 				</div>
-			</div>
+				</div>
+			</Teleport>
 			<span v-tooltip.right="profileButtonTooltip" class="bread-modrinth-account inline-flex">
 				<IconButton
 					v-if="credentials === undefined"
@@ -2713,10 +2725,10 @@ provideAppUpdateDownloadProgress(appUpdateDownload)
 }
 
 .bread-notification-popover {
-	position: absolute;
-	left: calc(var(--left-bar-width) - 0.5rem);
+	position: fixed;
+	left: max(1rem, calc(var(--left-bar-width) + 0.5rem));
 	bottom: 1rem;
-	width: min(24rem, calc(100vw - var(--left-bar-width) - 2rem));
+	width: min(24rem, calc(100vw - var(--left-bar-width) - 2.5rem));
 	max-height: min(32rem, calc(100vh - 2rem));
 	overflow: hidden;
 	border: 1px solid var(--bread-color-border-strong);
@@ -2724,6 +2736,13 @@ provideAppUpdateDownloadProgress(appUpdateDownload)
 	background: var(--bread-color-surface-panel);
 	box-shadow: 0 1rem 2.5rem rgb(0 0 0 / 35%);
 	z-index: 20;
+}
+
+.bread-notification-backdrop {
+	position: fixed;
+	inset: 0;
+	z-index: 19;
+	background: rgb(0 0 0 / 18%);
 }
 
 .bread-notification-popover__header,
