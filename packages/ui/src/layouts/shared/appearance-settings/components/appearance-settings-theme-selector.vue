@@ -40,7 +40,7 @@ const themeLabels = defineMessages({
 	},
 	purple: {
 		id: 'settings.display.theme.purple',
-		defaultMessage: 'Purple and black',
+		defaultMessage: 'Purple and black · for the one and only csm',
 	},
 	'purple-flame': {
 		id: 'settings.display.theme.purple-flame',
