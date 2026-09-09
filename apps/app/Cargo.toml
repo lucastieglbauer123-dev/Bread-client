@@ -1,7 +1,8 @@
 [package]
 name = "theseus_gui"
-# The actual version is set by the theseus-build workflow on tagging
-version = "1.0.0-local"
+# Keep the executable package version MSI-safe for local and release bundles.
+# The Tauri config still takes the user-facing version from app-frontend/package.json.
+version = "1.0.0"
 edition.workspace = true
 description = "Bread Client is a desktop application for managing your Minecraft mods"
 repository = "https://github.com/modrinth/code/apps/app/"
