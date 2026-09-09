@@ -91,3 +91,9 @@ Each project may have its own file with detailed instructions:
 ## Standards
 
 Standards available at the @standards/ folder.
+
+## Scope and verification
+
+- When a request is described as significant (a “rebuild,” a “redesign,” or “make it actually X” after a prior attempt fell short), do not narrow the scope to the easiest interpretation. If the wording suggests a larger structural change, implement the larger change. If genuinely unsure whether a small fix or larger change is intended, ask before proceeding rather than silently choosing the smaller interpretation.
+- Never report something as done, fixed, or working based only on source code existing or compiling. “Done” means the actual behavior has been verified in the running app against the request. If behavior has not been verified, state that explicitly and do not imply it works.
+- If you catch yourself about to under-deliver relative to what was asked, stop and flag the mismatch before proceeding.
