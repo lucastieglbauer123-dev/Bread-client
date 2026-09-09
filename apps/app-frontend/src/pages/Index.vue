@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { FolderOpenIcon, PlayIcon, PlusIcon } from '@modrinth/assets'
-import { Button, ContextMenu, defineMessages, injectNotificationManager, useVIntl } from '@modrinth/ui'
+import { Avatar, Button, ContextMenu, defineMessages, injectNotificationManager, useVIntl } from '@modrinth/ui'
 import { useQuery } from '@tanstack/vue-query'
 import dayjs from 'dayjs'
 import { computed, inject, onActivated, ref } from 'vue'
@@ -10,6 +10,7 @@ import WelcomeScreen from '@/components/ui/WelcomeScreen.vue'
 import RecentWorldsList from '@/components/ui/world/RecentWorldsList.vue'
 import { useAppSettings } from '@/composables/use-app-settings.ts'
 import { BREAD_PACK_OPTIONS } from '@/helpers/bread-packs'
+import { getInstanceIconUrl, run } from '@/helpers/instance'
 import { instanceListQueryOptions } from '@/pages/instance/query-options'
 import { useRootBreadcrumb } from '@/providers/breadcrumbs'
 import { injectOnboardingChecklist } from '@/providers/onboarding-checklist'
@@ -96,6 +97,14 @@ function openPageContextMenu(event: MouseEvent) {
 		},
 	])
 }
+
+async function launchQuickstart(instance) {
+	try {
+		await run(instance.id)
+	} catch (error) {
+		handleError(error)
+	}
+}
 </script>
 
 <template>
@@ -106,6 +115,19 @@ function openPageContextMenu(event: MouseEvent) {
 		class="bread-library-page flex flex-col gap-4 p-6"
 		@contextmenu="openPageContextMenu"
 	>
+		<section v-if="instances.length" class="bread-quickstart" aria-label="Quick start">
+			<button
+				v-for="instance in instances.slice(0, 8)"
+				:key="instance.id"
+				type="button"
+				class="bread-quickstart__item"
+				:title="`Launch ${instance.name}`"
+				:aria-label="`Launch ${instance.name}`"
+				@click="launchQuickstart(instance)"
+			>
+				<Avatar :src="getInstanceIconUrl(instance.icon_path)" :tint-by="instance.id" size="40px" pad-transparent-corners />
+			</button>
+		</section>
 		<LibrarySection :instances="instances" />
 		<section v-if="BREAD_PACK_OPTIONS.length" class="bread-pack-suggestions">
 			<div class="bread-pack-suggestions__heading">
@@ -177,6 +199,36 @@ function openPageContextMenu(event: MouseEvent) {
 	background:
 		linear-gradient(180deg, color-mix(in srgb, var(--bread-color-surface-panel) 30%, transparent), transparent 18rem),
 		var(--bread-color-surface);
+}
+
+.bread-quickstart {
+	display: flex;
+	align-items: center;
+	gap: var(--bread-space-3);
+	min-height: 3rem;
+	padding: var(--bread-space-2) var(--bread-space-3);
+	border: 1px solid var(--bread-color-border-subtle);
+	border-radius: var(--bread-radius-lg);
+	background: color-mix(in srgb, var(--bread-color-surface-panel) 70%, transparent);
+	overflow-x: auto;
+}
+
+.bread-quickstart__item {
+	display: grid;
+	place-items: center;
+	flex: 0 0 auto;
+	padding: 0;
+	border: 0;
+	border-radius: var(--bread-radius-md);
+	background: transparent;
+	cursor: pointer;
+	transition: transform 120ms ease, filter 120ms ease;
+}
+
+.bread-quickstart__item:hover,
+.bread-quickstart__item:focus-visible {
+	transform: translateY(-2px);
+	filter: brightness(1.14);
 }
 
 .bread-installation-found {
