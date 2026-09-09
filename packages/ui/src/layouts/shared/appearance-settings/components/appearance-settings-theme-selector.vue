@@ -42,6 +42,10 @@ const themeLabels = defineMessages({
 		id: 'settings.display.theme.purple',
 		defaultMessage: 'Purple and black',
 	},
+	'purple-flame': {
+		id: 'settings.display.theme.purple-flame',
+		defaultMessage: 'Purple flames · KJ',
+	},
 	amber: {
 		id: 'settings.display.theme.amber',
 		defaultMessage: 'Amber and turquoise',
@@ -147,6 +151,7 @@ function getPreviewClass(option: T): string {
 		&.standard-mode,
 		&.bread-mode,
 		&.purple-mode,
+		&.purple-flame-mode,
 		&.amber-mode {
 			border-color: var(--bread-color-border-subtle);
 		}

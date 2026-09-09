@@ -61,6 +61,14 @@ const messages = defineMessages({
 		id: 'app.settings.bread.restore.button',
 		defaultMessage: 'Restore standard',
 	},
+	originalThemes: {
+		id: 'app.settings.bread.original-themes',
+		defaultMessage: 'Switch to original themes',
+	},
+	originalThemesDescription: {
+		id: 'app.settings.bread.original-themes.description',
+		defaultMessage: 'Show the original launcher themes alongside Bread themes.',
+	},
 	accentLime: {
 		id: 'app.settings.bread.accent.lime',
 		defaultMessage: 'Lime accent',
@@ -134,6 +142,16 @@ function loadAccent(): BreadAccent {
 
 const selectedAccent = ref<BreadAccent>(loadAccent())
 
+function loadOriginalThemes(): boolean {
+	try {
+		return window.localStorage.getItem('bread-show-original-themes') === 'true'
+	} catch {
+		return false
+	}
+}
+
+const showOriginalThemes = ref(loadOriginalThemes())
+
 function applyAccent(accent: BreadAccent): void {
 	const colors = accentPalette[accent]
 	const root = document.documentElement
@@ -165,6 +183,15 @@ function setAccent(accent: BreadAccent): void {
 function restoreStandard(): void {
 	setTheme('bread')
 	setAccent('orange')
+}
+
+function setShowOriginalThemes(enabled: boolean): void {
+	showOriginalThemes.value = enabled
+	try {
+		window.localStorage.setItem('bread-show-original-themes', String(enabled))
+	} catch {
+		// storage blocked or full
+	}
 }
 
 watch(selectedAccent, (accent) => applyAccent(accent), { immediate: true })
@@ -225,12 +252,14 @@ const { saved, current, changes, saving, hasChanges, reset, save } = useSavable(
 	},
 )
 
-const themeOptions = computed(() =>
-	theme.options.filter(
+const themeOptions = computed(() => {
+	const breadThemes = new Set(['system', 'standard', 'bread', 'purple', 'purple-flame', 'amber'])
+	return theme.options.filter(
 		(option) =>
-			option !== 'retro' || settings.value.developer_mode || current.value.theme === 'retro',
-	),
-)
+			(showOriginalThemes.value || breadThemes.has(option)) &&
+			(option !== 'retro' || settings.value.developer_mode || current.value.theme === 'retro'),
+	)
+})
 
 const preferredDarkTheme = computed(() =>
 	isDarkTheme(current.value.theme) ? current.value.theme : theme.preferredDark,
@@ -323,6 +352,21 @@ provideAppearanceSettings({
 			</h1>
 			<p>{{ formatMessage(messages.breadDescription) }}</p>
 		</header>
+
+		<section class="bread-settings-section bread-original-themes-section">
+			<div>
+				<h2>{{ formatMessage(messages.originalThemes) }}</h2>
+				<p>{{ formatMessage(messages.originalThemesDescription) }}</p>
+			</div>
+			<label class="bread-settings-toggle">
+				<input
+					type="checkbox"
+					:checked="showOriginalThemes"
+					@change="setShowOriginalThemes($event.target.checked)"
+				/>
+				<span aria-hidden="true" />
+			</label>
+		</section>
 
 		<AppearanceSettingsLayout class="bread-native-appearance-settings" />
 
@@ -475,6 +519,76 @@ provideAppearanceSettings({
 		.theme-icon {
 			display: none;
 		}
+	}
+}
+
+.bread-settings-section {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--bread-space-6);
+	padding: var(--bread-space-5) 0;
+	border-bottom: 1px solid var(--bread-color-border-subtle);
+
+	h2 {
+		margin: 0;
+		font-size: 1rem;
+	}
+
+	p {
+		max-width: 34rem;
+		margin: var(--bread-space-1) 0 0;
+		color: var(--bread-color-text-muted);
+		font-size: 0.8125rem;
+	}
+}
+
+.bread-settings-toggle {
+	position: relative;
+	flex: 0 0 auto;
+	width: 2.75rem;
+	height: 1.5rem;
+	cursor: pointer;
+
+	input {
+		position: absolute;
+		opacity: 0;
+	}
+
+	span {
+		display: block;
+		width: 100%;
+		height: 100%;
+		border-radius: var(--bread-radius-pill);
+		background: var(--bread-color-surface-raised);
+		box-shadow: inset 0 0 0 1px var(--bread-color-border-subtle);
+		transition: background-color 120ms ease;
+
+		&::after {
+			content: '';
+			display: block;
+			width: 1.1rem;
+			height: 1.1rem;
+			margin: 0.2rem;
+			border-radius: 50%;
+			background: var(--bread-color-text-muted);
+			transition: transform 120ms ease, background-color 120ms ease;
+		}
+	}
+
+	input:checked + span {
+		background: var(--bread-color-brand);
+		box-shadow: none;
+
+		&::after {
+			background: var(--bread-color-brand-contrast);
+			transform: translateX(1.25rem);
+		}
+	}
+
+	input:focus-visible + span {
+		outline: 2px solid var(--bread-color-brand-bright);
+		outline-offset: 2px;
 	}
 }
 

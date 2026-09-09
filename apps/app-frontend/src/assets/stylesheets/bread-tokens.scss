@@ -259,6 +259,52 @@ html.purple-mode,
 	);
 }
 
+html.purple-flame-mode,
+.purple-flame-mode {
+	@include bread-theme(
+		#100914,
+		#1b1026,
+		#150c1e,
+		#29143b,
+		#36204b,
+		#44285b,
+		#563670,
+		#73498d,
+		#523367,
+		#9560b4,
+		#fff6ff,
+		#ceb7d8,
+		#9c82aa,
+		#d9a1ff,
+		#edc9ff,
+		#f5ddff,
+		#24102f
+	);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+	.purple-flame-mode body::before {
+		content: '';
+		position: fixed;
+		inset: auto 0 0;
+		height: 32vh;
+		pointer-events: none;
+		z-index: 0;
+		opacity: 0.2;
+		background:
+			radial-gradient(ellipse at 12% 100%, rgb(190 100 255 / 42%), transparent 55%),
+			radial-gradient(ellipse at 48% 100%, rgb(122 55 206 / 35%), transparent 52%),
+			radial-gradient(ellipse at 84% 100%, rgb(230 147 255 / 32%), transparent 54%);
+		filter: blur(1.2rem);
+		animation: bread-purple-flame 8s ease-in-out infinite alternate;
+	}
+
+	@keyframes bread-purple-flame {
+		from { transform: translateY(0) scaleX(1); }
+		to { transform: translateY(-0.5rem) scaleX(1.04); }
+	}
+}
+
 html.amber-mode,
 .amber-mode {
 	@include bread-theme(
