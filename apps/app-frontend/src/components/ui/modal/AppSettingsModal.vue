@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import {
 	CoffeeIcon,
+	ChartIcon,
 	GaugeIcon,
 	HeartHandshakeIcon,
 	LanguagesIcon,
@@ -37,6 +38,7 @@ const PerformanceSettings = defineAsyncComponent(() => import('@/components/ui/s
 const InstancesSyncedSettings = defineAsyncComponent(() => import('@/components/ui/settings/instances/InstancesSyncedSettings.vue'))
 const JavaSettings = defineAsyncComponent(() => import('@/components/ui/settings/instances/JavaSettings.vue'))
 const ResourceManagementSettings = defineAsyncComponent(() => import('@/components/ui/settings/instances/ResourceManagementSettings.vue'))
+const StatsSettings = defineAsyncComponent(() => import('@/components/ui/settings/instances/StatsSettings.vue'))
 import { useAppSettings } from '@/composables/use-app-settings.ts'
 import { get, set } from '@/helpers/settings.ts'
 import {
@@ -165,6 +167,15 @@ const tabs = [
 		category: tabCategories.instances,
 		icon: GaugeIcon,
 		content: ResourceManagementSettings,
+	},
+	{
+		name: defineMessage({
+			id: 'app.settings.tabs.stats',
+			defaultMessage: 'Stats',
+		}),
+		category: tabCategories.instances,
+		icon: ChartIcon,
+		content: StatsSettings,
 	},
 ]
 
