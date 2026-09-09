@@ -28,6 +28,7 @@ use daedalus::modded::{LoaderVersion, Manifest};
 use regex::Regex;
 use serde::Deserialize;
 use std::fmt::Write;
+use std::io::{Cursor, Read as IoRead, Write as IoWrite};
 use std::path::PathBuf;
 use tokio::process::Command;
 
@@ -36,6 +37,88 @@ pub(crate) mod hooks;
 
 pub mod download;
 pub mod quick_play_version;
+
+const BREAD_TITLE_SCREEN_MARKER: &str = "META-INF/bread-title-screen";
+
+/// Embed Bread's title artwork directly into the downloaded Minecraft client jar.
+/// This keeps the branding active for every launch without exposing a removable
+/// resource-pack entry in either Minecraft or the launcher content browser.
+async fn apply_bread_title_screen(client_path: &std::path::Path) -> crate::Result<()> {
+	let client_path = client_path.to_owned();
+	tokio::task::spawn_blocking(move || {
+		let bytes = std::fs::read(&client_path)?;
+		let mut archive = zip::ZipArchive::new(Cursor::new(bytes)).map_err(|error| {
+			crate::ErrorKind::LauncherError(format!("Could not read Minecraft client jar: {error}"))
+		})?;
+
+		if archive.by_name(BREAD_TITLE_SCREEN_MARKER).is_ok() {
+			return Ok(());
+		}
+
+		let override_bytes = include_bytes!("../../assets/bread-title-screen.zip");
+		let mut title_pack = zip::ZipArchive::new(Cursor::new(override_bytes)).map_err(|error| {
+			crate::ErrorKind::LauncherError(format!("Could not read Bread title artwork: {error}"))
+		})?;
+		let mut overrides = Vec::new();
+		for index in 0..title_pack.len() {
+			let mut file = title_pack.by_index(index).map_err(|error| {
+				crate::ErrorKind::LauncherError(format!("Could not read Bread title artwork: {error}"))
+			})?;
+			if file.is_dir() || file.name() == "pack.mcmeta" {
+				continue;
+			}
+			let name = file.name().to_owned();
+			let mut data = Vec::new();
+			file.read_to_end(&mut data)?;
+			overrides.push((name, data));
+		}
+
+		let mut entries = Vec::with_capacity(archive.len());
+		for index in 0..archive.len() {
+			let mut file = archive.by_index(index).map_err(|error| {
+				crate::ErrorKind::LauncherError(format!("Could not read Minecraft client jar: {error}"))
+			})?;
+			let name = file.name().to_owned();
+			if name == BREAD_TITLE_SCREEN_MARKER
+				|| overrides.iter().any(|(override_name, _)| override_name == &name)
+			{
+				continue;
+			}
+			let mut data = Vec::new();
+			file.read_to_end(&mut data)?;
+			entries.push((name, data));
+		}
+		drop(archive);
+
+		let mut output = Cursor::new(Vec::new());
+		{
+			let mut writer = zip::ZipWriter::new(&mut output);
+			let options = zip::write::SimpleFileOptions::default()
+				.compression_method(zip::CompressionMethod::Deflated);
+			for (name, data) in entries.into_iter().chain(overrides.into_iter()) {
+				writer.start_file(name, options).map_err(|error| {
+					crate::ErrorKind::LauncherError(format!("Could not write Bread title artwork: {error}"))
+				})?;
+				writer.write_all(&data)?;
+			}
+			writer.start_file(BREAD_TITLE_SCREEN_MARKER, options).map_err(|error| {
+				crate::ErrorKind::LauncherError(format!("Could not mark Bread title artwork: {error}"))
+			})?;
+			writer.write_all(b"Bread Client title screen")?;
+			writer.finish().map_err(|error| {
+				crate::ErrorKind::LauncherError(format!("Could not finish Minecraft client jar: {error}"))
+			})?;
+		}
+
+		let temp_path = client_path.with_extension("jar.bread-tmp");
+		std::fs::write(&temp_path, output.into_inner())?;
+		std::fs::rename(&temp_path, &client_path)?;
+		Ok::<(), crate::Error>(())
+	})
+	.await
+	.map_err(|error| crate::ErrorKind::LauncherError(format!("Bread title screen task failed: {error}")))??;
+	Ok(())
+}
 
 // All nones -> disallowed
 // 1+ true -> allowed
@@ -902,12 +985,13 @@ pub async fn launch_minecraft(
     let java_version =
         crate::api::jre::check_jre(java_version.path.clone().into()).await?;
 
-    let client_path = state
-        .directories
-        .version_dir(&version_jar)
-        .join(format!("{version_jar}.jar"));
+	let client_path = state
+		.directories
+		.version_dir(&version_jar)
+		.join(format!("{version_jar}.jar"));
+	apply_bread_title_screen(&client_path).await?;
 
-    let args = version_info.arguments.clone().unwrap_or_default();
+	let args = version_info.arguments.clone().unwrap_or_default();
     let mut command = match wrapper {
         Some(hook) => {
             let mut cmd = shlex::split(hook)
