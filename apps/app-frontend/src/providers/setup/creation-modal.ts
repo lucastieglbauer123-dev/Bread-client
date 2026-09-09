@@ -181,6 +181,7 @@ export function setupCreationModal(
 				loaderVersion,
 				iconPath,
 				iconConfig: iconPath ? getGeneratedIconConfig?.(iconPath) : null,
+				sharedGlobalResources: config.sharedGlobalResources.value,
 			})
 			const instanceId = installJobInstanceId(job)
 			if (instanceId && config.selectedBreadPack.value.length > 0) {

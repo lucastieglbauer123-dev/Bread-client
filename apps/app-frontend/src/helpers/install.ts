@@ -58,6 +58,8 @@ export interface InstallCreateInstanceRequest {
 	iconPath: string | null
 	iconConfig?: InstanceIconConfig | null
 	link?: InstanceLink | null
+	/** Opt-in for linking this new instance's resourcepacks to Bread's shared store. */
+	sharedGlobalResources?: boolean
 }
 
 export interface InstallPostInstallEdit {

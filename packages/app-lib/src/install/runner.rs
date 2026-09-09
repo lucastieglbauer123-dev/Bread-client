@@ -24,13 +24,62 @@ use crate::event::emit::emit_instance;
 use crate::state::instances::adapters::sqlite::content_rows;
 use crate::state::instances::commands::resolve_icon_path;
 use crate::state::{
-    ContentSourceKind, InstanceIconConfig, InstanceInstallStage, InstanceLink,
+    ContentSourceKind, Instance, InstanceIconConfig, InstanceInstallStage, InstanceLink,
     ModLoader, State,
 };
 use crate::util::fetch::DownloadReason;
 use std::collections::HashSet;
 use std::path::PathBuf;
 use uuid::Uuid;
+
+/// Link only newly-created instances to Bread's shared resource-pack store.
+/// The default remains fully isolated; an existing resourcepacks directory is
+/// never replaced so existing instances cannot be migrated accidentally.
+async fn link_shared_resourcepacks(instance: &Instance, state: &State) {
+    let shared = state
+        .directories
+        .config_dir
+        .join("shared-minecraft")
+        .join("resourcepacks");
+    let local = state
+        .directories
+        .instances_dir()
+        .join(&instance.path)
+        .join("resourcepacks");
+
+    if tokio::fs::symlink_metadata(&local).await.is_ok() {
+        tracing::warn!(
+            instance_id = %instance.id,
+            "Resourcepacks directory already exists; leaving it isolated"
+        );
+        return;
+    }
+    if let Err(error) = tokio::fs::create_dir_all(&shared).await {
+        tracing::warn!(instance_id = %instance.id, %error, "Could not create shared resource-pack directory");
+        return;
+    }
+
+    let result = {
+        #[cfg(windows)]
+        {
+            std::os::windows::fs::symlink_dir(&shared, &local)
+        }
+        #[cfg(unix)]
+        {
+            std::os::unix::fs::symlink(&shared, &local)
+        }
+        #[cfg(not(any(windows, unix)))]
+        {
+            Err(std::io::Error::new(
+                std::io::ErrorKind::Unsupported,
+                "directory links are not supported on this platform",
+            ))
+        }
+    };
+    if let Err(error) = result {
+        tracing::warn!(instance_id = %instance.id, %error, "Could not link shared resource packs; instance remains isolated");
+    }
+}
 
 pub async fn create_instance(
     name: String,
@@ -39,6 +88,7 @@ pub async fn create_instance(
     loader_version: Option<String>,
     icon_path: Option<String>,
     icon_config: Option<InstanceIconConfig>,
+    shared_global_resources: bool,
     link: InstanceLink,
 ) -> crate::Result<InstallJobSnapshot> {
     start(InstallRequest::CreateInstance {
@@ -48,6 +98,7 @@ pub async fn create_instance(
         loader_version,
         icon_path,
         icon_config,
+        shared_global_resources,
         link,
     })
     .await
@@ -440,6 +491,7 @@ async fn prepare_initial_instance(
             loader_version,
             icon_path,
             icon_config,
+            shared_global_resources,
             link,
         } => {
             let metadata = crate::api::instance::create(
@@ -452,6 +504,9 @@ async fn prepare_initial_instance(
                 link,
             )
             .await?;
+            if shared_global_resources {
+                link_shared_resourcepacks(&metadata.instance, state).await;
+            }
             set_display(
                 job_state,
                 metadata.instance.name,
@@ -816,6 +871,7 @@ async fn run_request(
             loader_version: _,
             icon_path: _,
             icon_config: _,
+            shared_global_resources: _,
             link: _,
         } => {
             let Some(instance_id) = current_instance_id(job_state) else {

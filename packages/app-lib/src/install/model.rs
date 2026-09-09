@@ -164,6 +164,8 @@ pub enum InstallRequest {
         icon_path: Option<String>,
         #[serde(default)]
         icon_config: Option<InstanceIconConfig>,
+        #[serde(default)]
+        shared_global_resources: bool,
         link: InstanceLink,
     },
     CreateModpackInstance {

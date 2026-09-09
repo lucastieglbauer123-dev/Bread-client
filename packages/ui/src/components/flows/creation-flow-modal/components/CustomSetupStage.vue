@@ -139,6 +139,22 @@
 			</span>
 		</div>
 
+		<div v-if="ctx.flowType === 'instance'" class="bread-shared-resources-option">
+			<label class="flex cursor-pointer items-start gap-3">
+				<input
+					v-model="ctx.sharedGlobalResources.value"
+					type="checkbox"
+					class="mt-0.5 size-4 accent-[var(--bread-color-brand)]"
+				/>
+				<span class="flex flex-col gap-0.5">
+					<strong class="font-semibold text-contrast">Share resource packs across instances</strong>
+					<span class="text-xs text-secondary">
+						New packs will use Bread's shared resource-pack folder. Existing instances stay isolated.
+					</span>
+				</span>
+			</label>
+		</div>
+
 		<!-- Loader chips -->
 		<div v-if="!hideLoaderChips" class="flex flex-col gap-2">
 			<span class="font-semibold text-contrast">{{

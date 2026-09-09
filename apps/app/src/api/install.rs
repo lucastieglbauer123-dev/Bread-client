@@ -49,6 +49,8 @@ pub struct InstallCreateInstanceRequest {
     pub icon_path: Option<String>,
     pub icon_config: Option<theseus::data::InstanceIconConfig>,
     pub link: Option<InstanceLink>,
+    #[serde(default)]
+    pub shared_global_resources: bool,
 }
 
 #[derive(Deserialize)]
@@ -92,6 +94,7 @@ pub async fn install_create_instance(
         request.loader_version,
         request.icon_path,
         request.icon_config,
+        request.shared_global_resources,
         match request.link {
             Some(link) => link.into_core()?,
             None => theseus::data::InstanceLink::Unmanaged,

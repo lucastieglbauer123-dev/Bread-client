@@ -3,6 +3,7 @@
 ## 2026-09-09
 
 - Fixed CurseForge mod searches by allowing the frontend's authenticated API requests through the Tauri HTTP capability and CSP.
+- New instances can optionally share a Bread-managed resource-pack folder; existing instances remain isolated.
 - Replaced the inactive Downloads and Files sidebar entries with Recent Activity and Crash Reports views.
 - Crash report links now open the matching instance log directly.
 - Added the purple flame theme for KJ and a switch for showing the original launcher themes.

@@ -212,6 +212,8 @@ export interface CreationFlowContextValue {
 	// Optional launcher-provided presets
 	breadPacks: BreadPackOption[]
 	selectedBreadPack: Ref<string[]>
+	/** Link this new instance's resourcepacks directory to Bread's shared store. */
+	sharedGlobalResources: Ref<boolean>
 
 	// Project search state (persisted across stage navigation)
 	projectSearchProjectId: Ref<string | undefined>
@@ -379,6 +381,7 @@ export function createCreationFlowContext(
 	const modpackFilePath = ref<string | null>(null)
 	const projectInstall = ref<ProjectInstallSelection | null>(null)
 	const selectedBreadPack = ref<string[]>([])
+	const sharedGlobalResources = ref(false)
 
 	// Bread packs are resolved for Fabric instances only. Clear a pending pack
 	// as soon as the user switches to another loader so the create handler can
@@ -524,6 +527,7 @@ export function createCreationFlowContext(
 		modpackFilePath.value = null
 		projectInstall.value = null
 		selectedBreadPack.value = []
+		sharedGlobalResources.value = false
 		projectSearchProjectId.value = undefined
 		projectSearchOptions.value = []
 		projectSearchHits.value = {}
@@ -706,6 +710,7 @@ export function createCreationFlowContext(
 		projectInstall,
 		breadPacks,
 		selectedBreadPack,
+		sharedGlobalResources,
 		projectSearchProjectId,
 		projectSearchOptions,
 		projectSearchHits,
