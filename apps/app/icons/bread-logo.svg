@@ -1,18 +1,19 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" role="img" aria-labelledby="title">
 	<title>Bread Client</title>
-	<rect width="1024" height="1024" rx="224" fill="#111411" />
-	<rect x="24" y="24" width="976" height="976" rx="208" fill="none" stroke="#303630" stroke-width="16" />
+	<rect width="1024" height="1024" rx="224" fill="#17100b" />
+	<rect x="24" y="24" width="976" height="976" rx="208" fill="none" stroke="#49301e" stroke-width="16" />
 	<g transform="rotate(-3 512 512)">
 		<path
-			d="M176 430c0-111 90-201 201-201h270c111 0 201 90 201 201v264c0 72-58 130-130 130H306c-72 0-130-58-130-130V430Z"
-			fill="#d9fc58"
+			d="M152 454c0-130 105-235 235-235h250c130 0 235 105 235 235v225c0 82-66 149-149 149H301c-82 0-149-66-149-149V454Z"
+			fill="#f3a936"
 		/>
 		<path
-			d="M176 650h672v44c0 72-58 130-130 130H306c-72 0-130-58-130-130v-44Z"
-			fill="#a9cb3a"
+			d="M152 645h720v34c0 82-66 149-149 149H301c-82 0-149-66-149-149v-34Z"
+			fill="#b86d21"
 		/>
-		<rect x="302" y="336" width="38" height="126" rx="19" transform="rotate(34 302 336)" fill="#6d8d21" />
-		<rect x="493" y="320" width="38" height="126" rx="19" transform="rotate(34 493 320)" fill="#6d8d21" />
-		<rect x="684" y="336" width="38" height="126" rx="19" transform="rotate(34 684 336)" fill="#6d8d21" />
+		<path d="M265 376c34-36 68-36 102 0" fill="none" stroke="#8b4d1e" stroke-width="34" stroke-linecap="round" />
+		<path d="M461 346c34-36 68-36 102 0" fill="none" stroke="#8b4d1e" stroke-width="34" stroke-linecap="round" />
+		<path d="M657 376c34-36 68-36 102 0" fill="none" stroke="#8b4d1e" stroke-width="34" stroke-linecap="round" />
+		<path d="M225 505c130 34 445 34 574 0" fill="none" stroke="#ffd071" stroke-width="18" stroke-linecap="round" opacity=".68" />
 	</g>
 </svg>

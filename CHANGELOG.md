@@ -36,3 +36,4 @@
 - Bread pack installs now continue after individual lookup, compatibility, download, or install failures; skipped slugs and reasons are shown in a persistent notification.
 - Pack resolution falls back to an exact compatible CurseForge Fabric file when Modrinth has no usable project or version.
 - Hardened the shell, modal rows, tabs, and responsive grids against clipping and pointer-event regressions.
+- Refreshed the Bread loaf mark across the Windows icon set and added a standalone 1024px PNG export.

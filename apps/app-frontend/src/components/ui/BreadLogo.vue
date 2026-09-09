@@ -42,8 +42,8 @@ withDefaults(
 	flex: 0 0 auto;
 	transform: rotate(-3deg);
 	border-radius: 0.56rem 0.56rem 0.44rem 0.44rem;
-	background: var(--bread-color-brand-bright, #d9fc58);
-	box-shadow: inset 0 -0.25rem var(--bread-color-brand, #cbed57);
+	background: var(--bread-color-brand-bright, #ffc45a);
+	box-shadow: inset 0 -0.25rem color-mix(in srgb, var(--bread-color-brand, #f3a936) 75%, #7f4316);
 }
 
 .bread-logo__mark i {
@@ -52,7 +52,7 @@ withDefaults(
 	width: 0.2rem;
 	height: 0.5rem;
 	border-radius: 9999px;
-	background: #6d8d21;
+	background: #8b4d1e;
 	transform: rotate(34deg);
 }
 

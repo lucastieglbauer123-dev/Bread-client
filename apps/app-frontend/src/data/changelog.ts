@@ -24,6 +24,7 @@ export const BREAD_CHANGELOG: ChangelogEntry[] = [
 			'Hardened merged pack installs so the same CurseForge project is never downloaded twice.',
 			'Discord Rich Presence now uses Bread Client identity with idle, launching, and timed playing states.',
 			'Verified the Windows taskbar icon points at the Bread icon set.',
+			'Refreshed the Bread loaf mark across the Windows icon set and added a standalone 1024px PNG export.',
 		],
 	},
 	{
