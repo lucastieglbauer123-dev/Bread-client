@@ -10,6 +10,7 @@ export const BREAD_CHANGELOG: ChangelogEntry[] = [
 		date: '2026-09-09',
 		items: [
 			'New Minecraft title screen.',
+			'Added a BreadClient wordmark to the Minecraft title logo and replaced vanilla splash text with Bread Client messages.',
 			'Confirmed the standalone Bread logo export is available as a 1024 × 1024 PNG.',
 			'Kept the executable package metadata MSI-safe while the bundle version remains sourced from the Bread Client package.',
 			'Consolidated Bread sign-in to the onboarding action; the sidebar account card remains the single Minecraft account control.',

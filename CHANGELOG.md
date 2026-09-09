@@ -3,6 +3,7 @@
 ## 2026-09-09
 
 - New Minecraft title screen.
+- Added a BreadClient wordmark to the Minecraft title logo and replaced vanilla splash text with Bread Client messages.
 - Confirmed the standalone Bread logo export is available at `bread-logo-export.png` (1024 × 1024).
 - Kept the executable package metadata MSI-safe (`1.0.0`) while the bundle version remains sourced from the Bread Client frontend package.
 - Consolidated Bread sign-in to the onboarding action; the sidebar account card remains the single Minecraft account control.
