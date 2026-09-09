@@ -19,6 +19,7 @@ export const BREAD_CHANGELOG: ChangelogEntry[] = [
 			'Notifications now open in a fixed overlay with a backdrop and Escape-to-close behavior.',
 			'Added smooth route transitions and an optional original-layout fallback in Behavior settings.',
 			'Added local custom theme imports for background images and JSON palettes.',
+			'Hardened merged pack installs so the same CurseForge project is never downloaded twice.',
 		],
 	},
 	{

@@ -156,6 +156,12 @@ export async function installBreadPack(
 		fileId: number
 		downloadUrl: string
 	}[] = []
+	const curseForgeIds = new Set<number>()
+	const addCurseForgeResolved = (resolvedMod: (typeof curseForgeResolved)[number]) => {
+		if (curseForgeIds.has(resolvedMod.modId)) return
+		curseForgeIds.add(resolvedMod.modId)
+		curseForgeResolved.push(resolvedMod)
+	}
 	for (const slug of slugs) {
 		try {
 			const project = (await get_project(slug, 'must_revalidate')) as Labrinth.Projects.v2.Project
@@ -164,7 +170,7 @@ export async function installBreadPack(
 			continue
 		} catch (error) {
 			try {
-				curseForgeResolved.push(await resolveCurseForgeMod(slug, gameVersion))
+				addCurseForgeResolved(await resolveCurseForgeMod(slug, gameVersion))
 			} catch (curseForgeError) {
 				skipped.push({
 					slug,
@@ -204,7 +210,7 @@ export async function installBreadPack(
 			resolved.push({ slug, project, version })
 		} catch (error) {
 			try {
-				curseForgeResolved.push(await resolveCurseForgeMod(slug, gameVersion))
+				addCurseForgeResolved(await resolveCurseForgeMod(slug, gameVersion))
 			} catch (curseForgeError) {
 				skipped.push({
 					slug,
