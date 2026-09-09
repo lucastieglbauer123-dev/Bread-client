@@ -937,4 +937,15 @@ const loaderVersionOptions = computed<ComboboxOption<string>[]>(() => {
 	color: var(--bread-color-brand-bright, var(--color-brand));
 	font-weight: 600;
 }
+
+.bread-shared-resources-option {
+	border: 1px solid var(--bread-color-border-subtle, var(--color-surface-5));
+	border-radius: var(--bread-radius-md, 0.75rem);
+	background: var(--bread-color-surface-muted, var(--color-surface-2));
+	padding: 0.8rem;
+}
+
+.bread-shared-resources-option input {
+	accent-color: var(--bread-color-brand, var(--color-brand));
+}
 </style>
