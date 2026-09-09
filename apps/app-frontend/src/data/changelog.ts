@@ -14,6 +14,7 @@ export const BREAD_CHANGELOG: ChangelogEntry[] = [
 			'Kept the executable package metadata MSI-safe while the bundle version remains sourced from the Bread Client package.',
 			'Consolidated Bread sign-in to the onboarding action; the sidebar account card remains the single Minecraft account control.',
 			'Fixed the KJ purple flame theme so its animated flame wash renders above the launcher shell while preserving the Standard, Bread, csm purple, and Amber palettes.',
+			'Fixed KJ theme persistence so selecting Purple flame can be saved and restored across launches.',
 			'Added a new Play dashboard layout with a featured instance, quick actions, library board, and activity rail; the original grouped layout remains selectable in Behavior settings.',
 			'Fixed CurseForge mod searches by allowing the frontend API requests through the Tauri HTTP capability and CSP.',
 			'New instances can optionally share a Bread-managed resource-pack folder; existing instances remain isolated.',
