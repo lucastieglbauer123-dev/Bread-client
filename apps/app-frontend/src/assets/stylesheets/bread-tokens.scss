@@ -283,25 +283,21 @@ html.purple-flame-mode,
 }
 
 @media (prefers-reduced-motion: no-preference) {
-	.purple-flame-mode body::before {
-		content: '';
-		position: fixed;
-		inset: auto 0 0;
-		height: 32vh;
-		pointer-events: none;
-		z-index: 0;
-		opacity: 0.2;
+	/* Keep the flame visible above the opaque app shell. The previous body pseudo-
+	   element sat behind .app-grid-layout and was therefore invisible in Tauri. */
+	.purple-flame-mode .app-contents {
 		background:
-			radial-gradient(ellipse at 12% 100%, rgb(190 100 255 / 42%), transparent 55%),
-			radial-gradient(ellipse at 48% 100%, rgb(122 55 206 / 35%), transparent 52%),
-			radial-gradient(ellipse at 84% 100%, rgb(230 147 255 / 32%), transparent 54%);
-		filter: blur(1.2rem);
+			radial-gradient(ellipse at 12% 100%, rgb(190 100 255 / 16%), transparent 44%),
+			radial-gradient(ellipse at 48% 100%, rgb(122 55 206 / 13%), transparent 42%),
+			radial-gradient(ellipse at 84% 100%, rgb(230 147 255 / 12%), transparent 46%),
+			var(--bread-color-surface);
+		background-size: 140% 140%, 130% 130%, 140% 140%, auto;
 		animation: bread-purple-flame 8s ease-in-out infinite alternate;
 	}
 
 	@keyframes bread-purple-flame {
-		from { transform: translateY(0) scaleX(1); }
-		to { transform: translateY(-0.5rem) scaleX(1.04); }
+		from { background-position: 0% 100%, 50% 100%, 100% 100%, 0 0; }
+		to { background-position: 8% 92%, 44% 86%, 92% 94%, 0 0; }
 	}
 }
 
