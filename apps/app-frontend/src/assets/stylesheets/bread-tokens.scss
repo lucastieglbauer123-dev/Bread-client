@@ -327,3 +327,11 @@ html.amber-mode,
 		#092622
 	);
 }
+
+body {
+	background-color: var(--bread-color-bg);
+	background-image: var(--bread-custom-background, none);
+	background-position: center;
+	background-size: cover;
+	background-attachment: fixed;
+}

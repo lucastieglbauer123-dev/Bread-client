@@ -8,6 +8,7 @@ import {
 	provideAppearanceSettings,
 	useVIntl,
 	useSavable,
+	injectFilePicker,
 } from '@modrinth/ui'
 import { computed, inject, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 
@@ -19,6 +20,7 @@ import { appSettingsModalContextKey } from '@/providers/app-settings-modal'
 const theme = useTheme()
 const { formatMessage } = useVIntl()
 const auth = injectAuth()
+const filePicker = injectFilePicker()
 const { updatePreferences } = injectUserPreferences()
 const settingsModal = inject(appSettingsModalContextKey, null)
 const os = await getOS()
@@ -151,6 +153,39 @@ function loadOriginalThemes(): boolean {
 }
 
 const showOriginalThemes = ref(loadOriginalThemes())
+const customBackground = ref(localStorage.getItem('bread-custom-background') ?? '')
+
+function applyCustomBackground() {
+	if (customBackground.value) {
+		document.documentElement.style.setProperty('--bread-custom-background', `url("${customBackground.value}")`)
+	} else {
+		document.documentElement.style.removeProperty('--bread-custom-background')
+	}
+}
+
+async function importBackground() {
+	const picked = await filePicker.pickImage()
+	if (!picked?.previewUrl) return
+	customBackground.value = picked.previewUrl
+	localStorage.setItem('bread-custom-background', customBackground.value)
+	applyCustomBackground()
+}
+
+async function importPalette() {
+	const picked = await filePicker.pickFiles?.({ multiple: false })
+	const text = await picked?.[0]?.file?.text()
+	if (!text) return
+	try {
+		const palette = JSON.parse(text)
+		const root = document.documentElement
+		for (const key of ['bg', 'surface', 'surfacePanel', 'surfaceRaised', 'border', 'borderStrong', 'text', 'textMuted', 'brand', 'brandBright', 'brandHover', 'brandContrast']) {
+			if (typeof palette[key] === 'string') root.style.setProperty(`--bread-color-${key.replace(/[A-Z]/g, (match) => `-${match.toLowerCase()}`)}`, palette[key])
+		}
+		localStorage.setItem('bread-custom-palette', JSON.stringify(palette))
+	} catch {
+		// Invalid palette files are ignored; the current theme remains active.
+	}
+}
 
 function applyAccent(accent: BreadAccent): void {
 	const colors = accentPalette[accent]
@@ -195,6 +230,7 @@ function setShowOriginalThemes(enabled: boolean): void {
 }
 
 watch(selectedAccent, (accent) => applyAccent(accent), { immediate: true })
+onMounted(applyCustomBackground)
 
 type AppearanceSettingsState = {
 	theme: ColorTheme
@@ -366,6 +402,17 @@ provideAppearanceSettings({
 				/>
 				<span aria-hidden="true" />
 			</label>
+		</section>
+
+		<section class="bread-settings-section bread-custom-theme-section">
+			<div>
+				<h2>Custom theme</h2>
+				<p>Import a local background image or a JSON palette. Customizations stay on this device.</p>
+			</div>
+			<div class="bread-custom-theme-actions">
+				<Button type="outlined" @click="importBackground">Import background</Button>
+				<Button type="outlined" @click="importPalette">Import palette</Button>
+			</div>
 		</section>
 
 		<AppearanceSettingsLayout class="bread-native-appearance-settings" />
@@ -590,6 +637,12 @@ provideAppearanceSettings({
 		outline: 2px solid var(--bread-color-brand-bright);
 		outline-offset: 2px;
 	}
+}
+
+.bread-custom-theme-actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--bread-space-2);
 }
 
 .bread-settings-section {
