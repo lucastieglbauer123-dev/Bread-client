@@ -14,10 +14,12 @@ import {
 	ChevronLeftIcon,
 	ChevronRightIcon,
 	CompassIcon,
+	BugIcon,
 	ImagesIcon,
 	LogInIcon,
 	LogOutIcon,
 	NewspaperIcon,
+	HistoryIcon,
 	PlayIcon,
 	PlusIcon,
 	RefreshCwIcon,
@@ -117,6 +119,7 @@ import {
 import { debugAnalytics, initAnalytics, trackEvent } from '@/helpers/analytics'
 import { check_reachable } from '@/helpers/auth.js'
 import { BREAD_PACK_OPTIONS } from '@/helpers/bread-packs'
+import { recordActivity } from '@/helpers/activity'
 import { get_user, get_user_many, get_version } from '@/helpers/cache.js'
 import { markFirstPaint } from '@/helpers/startup-metrics'
 import { install_create_modpack_instance, install_get_modpack_preview } from '@/helpers/install'
@@ -601,11 +604,11 @@ const messages = defineMessages({
 	},
 	downloads: {
 		id: 'app.nav.downloads',
-		defaultMessage: 'Downloads',
+		defaultMessage: 'Recent activity',
 	},
 	files: {
 		id: 'app.nav.files',
-		defaultMessage: 'Files',
+		defaultMessage: 'Crash reports',
 	},
 	notifications: {
 		id: 'app.nav.notifications',
@@ -1503,6 +1506,32 @@ provide('accountsCard', accounts)
 
 useAppEvent('command', handleCommand, appEvents)
 useAppEvent('notification', handleLiveNotification, appEvents)
+useAppEvent(
+	'process',
+	(event) => {
+		if (event.event === 'launched') {
+			recordActivity({ kind: 'played', instanceId: event.instance_id })
+		}
+	},
+	appEvents,
+)
+useAppEvent(
+	'instance',
+	(event) => {
+		if (event.event === 'created') {
+			recordActivity({ kind: 'created', instanceId: event.instance_id })
+		} else if (event.event === 'content_install_finished') {
+			recordActivity({
+				kind: 'installed',
+				instanceId: event.instance_id,
+				detail: `${event.project_ids.length} project${event.project_ids.length === 1 ? '' : 's'} installed`,
+			})
+		} else if (event.event === 'content_install_failed') {
+			recordActivity({ kind: 'crashed', instanceId: event.instance_id, detail: event.message })
+		}
+	},
+	appEvents,
+)
 
 async function markLiveNotificationRead(notification) {
 	try {
@@ -2140,14 +2169,22 @@ provideAppUpdateDownloadProgress(appUpdateDownload)
 			>
 				<CompassIcon />
 			</NavButton>
-			<div class="bread-nav-item bread-nav-item--placeholder" aria-disabled="true">
-				<RefreshCwIcon />
-				<span>{{ formatMessage(messages.downloads) }}</span>
-			</div>
-			<div class="bread-nav-item bread-nav-item--placeholder" aria-disabled="true">
-				<ImagesIcon />
-				<span>{{ formatMessage(messages.files) }}</span>
-			</div>
+			<NavButton
+				v-tooltip.right="formatMessage(messages.downloads)"
+				to="/activity"
+				:label="formatMessage(messages.downloads)"
+				:is-primary="(route) => route.path.startsWith('/activity')"
+			>
+				<HistoryIcon />
+			</NavButton>
+			<NavButton
+				v-tooltip.right="formatMessage(messages.files)"
+				to="/crash-reports"
+				:label="formatMessage(messages.files)"
+				:is-primary="(route) => route.path.startsWith('/crash-reports')"
+			>
+				<BugIcon />
+			</NavButton>
 			<NavButton
 				v-tooltip.right="formatMessage(appMessages.skinSelectorLabel)"
 				to="/skins"

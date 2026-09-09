@@ -20,10 +20,12 @@ import { delete_logs_by_filename, get_output_by_filename } from '@/helpers/logs.
 
 import { injectInstancePage } from '../instance-context'
 import { instanceKeys } from '../query-options'
+import { useRoute } from 'vue-router'
 
 const client = injectModrinthClient()
 const { handleError } = injectNotificationManager()
 const instancePage = injectInstancePage()
+const route = useRoute()
 const instanceId = instancePage.instanceId
 const {
 	liveConsole,
@@ -98,6 +100,16 @@ const logSources = computed(() =>
 		name: l?.name ?? `Log ${i}`,
 		live: l?.live ?? false,
 	})),
+)
+
+watch(
+	[filteredLogs, () => route.query.log],
+	([availableLogs, requestedFilename]) => {
+		if (typeof requestedFilename !== 'string') return
+		const index = availableLogs.findIndex((log) => log.filename === requestedFilename)
+		if (index >= 0) selectedLogIndex.value = index
+	},
+	{ immediate: true },
 )
 
 const activeConsole = computed(() => (isLive.value ? liveConsole : historicalConsole))

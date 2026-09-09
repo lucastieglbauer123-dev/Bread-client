@@ -61,6 +61,16 @@ export default new createRouter({
 			component: () => import('@/pages/Skins.vue'),
 		},
 		{
+			path: '/activity',
+			name: 'Recent activity',
+			component: () => import('@/pages/RecentActivity.vue'),
+		},
+		{
+			path: '/crash-reports',
+			name: 'Crash reports',
+			component: () => import('@/pages/CrashReports.vue'),
+		},
+		{
 			path: '/whats-new',
 			name: "What's new",
 			component: () => import('@/pages/WhatsNew.vue'),

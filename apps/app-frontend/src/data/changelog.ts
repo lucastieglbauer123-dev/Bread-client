@@ -10,6 +10,8 @@ export const BREAD_CHANGELOG: ChangelogEntry[] = [
 		date: '2026-09-09',
 		items: [
 			'Fixed CurseForge mod searches by allowing the frontend API requests through the Tauri HTTP capability and CSP.',
+			'Replaced the inactive Downloads and Files sidebar entries with Recent Activity and Crash Reports views.',
+			'Crash report links now open the matching instance log directly.',
 		],
 	},
 	{
