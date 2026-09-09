@@ -3,7 +3,6 @@ import {
 	CoffeeIcon,
 	ChartIcon,
 	GaugeIcon,
-	HeartHandshakeIcon,
 	LanguagesIcon,
 	ModrinthIcon,
 	PaintbrushIcon,
@@ -11,7 +10,6 @@ import {
 	Settings2Icon,
 	ShieldIcon,
 	ToggleRightIcon,
-	UserIcon,
 } from '@modrinth/assets'
 import {
 	commonMessages,
@@ -28,8 +26,6 @@ import { platform as getOsPlatform, version as getOsVersion } from '@tauri-apps/
 import { computed, defineAsyncComponent, provide, ref, watch } from 'vue'
 
 const PrivacySettings = defineAsyncComponent(() => import('@/components/ui/settings/account/PrivacySettings.vue'))
-const ProfileSettings = defineAsyncComponent(() => import('@/components/ui/settings/account/ProfileSettings.vue'))
-const SocialSettings = defineAsyncComponent(() => import('@/components/ui/settings/account/SocialSettings.vue'))
 const AppearanceSettings = defineAsyncComponent(() => import('@/components/ui/settings/display/AppearanceSettings.vue'))
 const BehaviorSettings = defineAsyncComponent(() => import('@/components/ui/settings/display/BehaviorSettings.vue'))
 const FeatureFlagSettings = defineAsyncComponent(() => import('@/components/ui/settings/display/FeatureFlagSettings.vue'))
@@ -119,18 +115,6 @@ const tabs = [
 		icon: ToggleRightIcon,
 		content: FeatureFlagSettings,
 		developerOnly: true,
-	},
-	{
-		name: commonSettingsMessages.profile,
-		category: tabCategories.account,
-		icon: UserIcon,
-		content: ProfileSettings,
-	},
-	{
-		name: commonSettingsMessages.social,
-		category: tabCategories.account,
-		icon: HeartHandshakeIcon,
-		content: SocialSettings,
 	},
 	{
 		name: defineMessage({
@@ -237,10 +221,6 @@ function show() {
 }
 
 function showProfile(): void {
-	const profileTabIndex = availableTabs.value.findIndex((tab) => tab.content === ProfileSettings)
-	if (profileTabIndex >= 0) {
-		modal.value?.setTab(profileTabIndex)
-	}
 	modal.value?.show()
 }
 
