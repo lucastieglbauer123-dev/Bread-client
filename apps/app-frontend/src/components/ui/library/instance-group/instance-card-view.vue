@@ -36,11 +36,11 @@ const versionRef = ref<HTMLElement | null>(null)
 		}"
 	>
 		<div
-			class="relative flex shrink-0 items-center overflow-clip"
+			class="bread-instance-card__media relative flex shrink-0 items-center overflow-clip"
 			:class="
 				compactMode
-					? 'size-10 rounded-[var(--bread-radius-md)]'
-					: 'aspect-[2/1] w-full min-w-0 rounded-[var(--bread-radius-lg)]'
+					? 'bread-instance-card__media--compact size-10 rounded-[var(--bread-radius-md)]'
+					: 'bread-instance-card__media--full aspect-[2/1] w-full min-w-0 rounded-[var(--bread-radius-lg)]'
 			"
 		>
 			<Avatar
@@ -86,10 +86,26 @@ const versionRef = ref<HTMLElement | null>(null)
 
 <style scoped>
 .bread-instance-card {
+	min-width: 0;
+	max-width: 100%;
+	min-height: 0;
 	background: var(--bread-color-surface-subtle) !important;
 	border-color: var(--bread-color-border-subtle) !important;
 	border-radius: var(--bread-radius-lg) !important;
 	box-shadow: 0 0.35rem 0 rgb(0 0 0 / 20%), 0 0.75rem 1.5rem rgb(0 0 0 / 8%);
+}
+
+.bread-instance-card__media--full {
+	width: 100%;
+	min-width: 0;
+	min-height: 7rem;
+	max-height: 18rem;
+}
+
+.bread-instance-card__media--full :deep(img),
+.bread-instance-card__media--full :deep(svg) {
+	max-width: 100%;
+	max-height: 100%;
 }
 
 .bread-instance-card:hover {

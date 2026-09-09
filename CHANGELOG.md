@@ -2,6 +2,7 @@
 
 ## 2026-09-09
 
+- Fixed the recurring giant library card by constraining card media and grid tracks at their layout boundary.
 - Reworked the launcher shell into labelled Workspace, Tools, and Utilities navigation groups with animated active states and route transitions.
 - Added animated, responsive card entry and focus treatment to the Bread library workspace.
 - New Minecraft title screen.

@@ -789,6 +789,7 @@ watch(selectedLibraryInstances, (selectedInstances) => {
 .bread-library-modern__feature-card :deep(.bread-instance-card) {
 	height: 100%;
 	min-height: 14rem;
+	max-height: 25rem;
 	border-radius: var(--bread-radius-lg) !important;
 }
 
