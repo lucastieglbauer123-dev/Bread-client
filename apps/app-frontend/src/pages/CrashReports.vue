@@ -16,17 +16,26 @@ const instanceNames = computed(() => Object.fromEntries(instances.value.map((ins
 
 async function loadReports() {
 	loading.value = true
+	reports.value = []
 	try {
 		instances.value = await listInstances()
-		const results = await Promise.all(
+		const results = await Promise.allSettled(
 			instances.value.map(async (instance) => {
-				const logs = await get_logs(instance.id, true)
+				// Reading reports must never request content clearing: that flag is intended
+				// only for the log viewer and made this overview mutate the log state.
+				const logs = await get_logs(instance.id, false)
 				return logs
 					.filter((log) => String(log.log_type).toLowerCase().includes('crash'))
 					.map((log) => ({ ...log, instanceId: instance.id }))
 			}),
 		)
-		reports.value = results.flat().sort((a, b) => Number(b.age ?? 0) - Number(a.age ?? 0))
+		reports.value = results
+			.flatMap((result) => {
+				if (result.status === 'fulfilled') return result.value
+				handleError(result.reason)
+				return []
+			})
+			.sort((a, b) => Number(b.age ?? 0) - Number(a.age ?? 0))
 	} catch (error) {
 		handleError(error)
 	} finally {
@@ -63,7 +72,7 @@ onMounted(loadReports)
 				<RouterLink :to="`/instance/${report.instanceId}/logs?log=${encodeURIComponent(report.filename)}`" class="bread-activity-item__link">Open log</RouterLink>
 			</article>
 		</section>
-		<div v-else class="bread-global-empty"><BugIcon /><h2>No crash reports</h2><p>Your instances are looking healthy.</p></div>
+		<div v-else class="bread-global-empty" role="status"><BugIcon /><h2>Nothing here yet!</h2><p>Your instances are looking healthy.</p></div>
 	</div>
 </template>
 

@@ -9,6 +9,7 @@ export const BREAD_CHANGELOG: ChangelogEntry[] = [
 	{
 		date: '2026-09-09',
 		items: [
+			'Crash reports now read logs without clearing them, isolate per-instance failures, and show a friendly empty state.',
 			'Fixed the recurring giant library card by constraining the card media and grid tracks at their layout boundary.',
 			'Reworked the launcher shell into labelled Workspace, Tools, and Utilities navigation groups with animated active states and route transitions.',
 			'Added animated, responsive card entry and focus treatment to the Bread library workspace.',
