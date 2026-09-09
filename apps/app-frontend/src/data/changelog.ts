@@ -17,6 +17,7 @@ export const BREAD_CHANGELOG: ChangelogEntry[] = [
 			'Added a one-click icon-only Quick start row to the Play page.',
 			'Added local launcher statistics for total playtime, most-played instance, and installed mods.',
 			'Notifications now open in a fixed overlay with a backdrop and Escape-to-close behavior.',
+			'Added smooth route transitions and an optional original-layout fallback in Behavior settings.',
 		],
 	},
 	{

@@ -235,6 +235,13 @@ const credentials = ref()
 const storedModrinthAccounts = ref([])
 let credentialsRefreshId = 0
 const sidebarToggled = ref(true)
+const legacyUi = ref(false)
+function syncUiMode() {
+	legacyUi.value = window.localStorage.getItem('bread-legacy-ui') === 'true'
+}
+syncUiMode()
+window.addEventListener('bread-ui-mode-changed', syncUiMode)
+onUnmounted(() => window.removeEventListener('bread-ui-mode-changed', syncUiMode))
 watch(
 	() => appSettings.toggleSidebar,
 	(toggleSidebar) => {
@@ -2422,6 +2429,7 @@ provideAppUpdateDownloadProgress(appUpdateDownload)
 		:class="{
 			'sidebar-enabled': sidebarVisible,
 			'disable-advanced-rendering': !appTheme.advancedRendering,
+			'bread-legacy-ui': legacyUi,
 		}"
 	>
 		<div class="app-viewport flex-grow router-view">
@@ -2472,9 +2480,11 @@ provideAppUpdateDownloadProgress(appUpdateDownload)
 			<RouterView v-else v-slot="{ Component }">
 				<template v-if="Component">
 					<Suspense @pending="onSuspensePending" @resolve="onSuspenseResolve">
-						<KeepAlive include="LibraryPage">
-							<component :is="Component"></component>
-						</KeepAlive>
+						<Transition name="bread-route" mode="out-in">
+							<KeepAlive include="LibraryPage">
+								<component :is="Component"></component>
+							</KeepAlive>
+						</Transition>
 					</Suspense>
 				</template>
 			</RouterView>
@@ -3040,6 +3050,30 @@ provideAppUpdateDownloadProgress(appUpdateDownload)
 .app-viewport > * {
 	min-width: 0;
 	max-width: 100%;
+}
+
+.bread-route-enter-active,
+.bread-route-leave-active {
+	transition: opacity 160ms ease, transform 160ms ease;
+}
+
+.bread-route-enter-from { opacity: 0; transform: translateY(0.35rem); }
+.bread-route-leave-to { opacity: 0; transform: translateY(-0.25rem); }
+
+.bread-legacy-ui .bread-instance-card,
+.bread-legacy-ui .bread-pack-suggestion,
+.bread-legacy-ui .bread-installation-found,
+.bread-legacy-ui .bread-quickstart {
+	border-radius: var(--bread-radius-sm);
+}
+
+.bread-legacy-ui .bread-library-page {
+	background: var(--bread-color-surface);
+}
+
+.bread-legacy-ui .bread-nav-item:hover,
+.bread-legacy-ui .bread-nav-button:hover {
+	transform: none;
 }
 
 .app-contents::before {
