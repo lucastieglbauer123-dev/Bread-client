@@ -1,17 +1,19 @@
 <script setup lang="ts">
-import { StarIcon } from '@modrinth/assets'
-import { ContextMenu, defineMessages, useVIntl } from '@modrinth/ui'
-import { computed, nextTick, onDeactivated, onUnmounted, ref, toRef, watch } from 'vue'
+import { HistoryIcon, PlusIcon, StarIcon } from '@modrinth/assets'
+import { Button, ContextMenu, defineMessages, useVIntl } from '@modrinth/ui'
+import { computed, inject, nextTick, onDeactivated, onUnmounted, ref, toRef, watch } from 'vue'
 import Draggable from 'vuedraggable'
 
 import IconEditorModal from '@/components/ui/instance_settings/icon-editor-modal/index.vue'
 import GroupInstancesModal from '@/components/ui/library/group-instances-modal.vue'
+import InstanceCard from '@/components/ui/library/instance-group/instance-card.vue'
 import InstanceGroup from '@/components/ui/library/instance-group/index.vue'
 import InstanceGroupDnd from '@/components/ui/library/instance-group/instance-group-dnd.vue'
 import LibraryToolbar from '@/components/ui/library/library-toolbar/index.vue'
 import LibrarySelectionActionBar from '@/components/ui/library/LibrarySelectionActionBar.vue'
 import {
 	getLibraryInstanceSelectionKey,
+	type InstanceCard as InstanceCardExposed,
 	type InstanceGroup as InstanceGroupType,
 	provideLibrary,
 } from '@/components/ui/library/use-library'
@@ -21,9 +23,11 @@ import type { GameInstance } from '@/helpers/types'
 
 const props = defineProps<{
 	instances: GameInstance[]
+	legacy?: boolean
 }>()
 
 const { formatMessage } = useVIntl()
+const showCreationModal = inject<() => void>('showCreationModal')
 const messages = defineMessages({
 	library: { id: 'app.library.title', defaultMessage: 'Your instances' },
 	libraryDescription: {
@@ -59,6 +63,7 @@ const {
 	selectedLibraryInstances,
 	setSelectedLibraryInstances,
 	toggleLibraryInstanceSelection,
+	handleInstanceContextMenu,
 } = provideLibrary(toRef(props, 'instances'))
 
 const hasActiveFilters = computed(() =>
@@ -89,6 +94,20 @@ const GROUP_REORDERING_CLASS = 'instance-group-reordering'
 const canDragReorderGroups = computed(
 	() => !reorderingGroups.value && draggableGroups.value.length > 1,
 )
+const modernInstanceComponents = new Map<string, InstanceCardExposed>()
+const modernInstances = computed(() => {
+	const seen = new Set<string>()
+	return visibleInstanceGroups.value.flatMap((group) =>
+		group.instances.flatMap((instance) => {
+			if (seen.has(instance.id)) return []
+			seen.add(instance.id)
+			return [{ instance, groupId: group.id }]
+		}),
+	)
+})
+const modernHero = computed(() => modernInstances.value[0])
+const modernGrid = computed(() => modernInstances.value.slice(1))
+const modernGroups = computed(() => visibleInstanceGroups.value.filter((group) => group.instances.length > 0))
 
 watch(
 	visibleReorderableGroups,
@@ -232,6 +251,19 @@ function setIconEditorModal(component: unknown) {
 	iconEditorModal.value = component as InstanceType<typeof IconEditorModal> | null
 }
 
+function setModernInstanceComponent(instanceId: string, component: unknown) {
+	if (component) {
+		modernInstanceComponents.set(instanceId, component as InstanceCardExposed)
+	} else {
+		modernInstanceComponents.delete(instanceId)
+	}
+}
+
+function openModernInstanceContextMenu(event: MouseEvent, instanceId: string, groupId: string) {
+	const instanceComponent = modernInstanceComponents.get(instanceId)
+	if (instanceComponent) handleInstanceContextMenu(event, instanceComponent, groupId)
+}
+
 watch(selectedLibraryInstances, (selectedInstances) => {
 	if (selectedInstances.size === 0) {
 		anchorInstance.value = null
@@ -249,7 +281,151 @@ watch(selectedLibraryInstances, (selectedInstances) => {
 
 <template>
 	<InstanceGroupDnd :instances="instances">
-		<section data-library-page-background class="bread-library flex flex-col gap-4 pb-16 min-h-[500px]">
+		<section
+			v-if="!legacy"
+			data-library-page-background
+			class="bread-library-modern"
+		>
+			<header class="bread-library-modern__header">
+				<div class="bread-library-modern__eyebrow">BREAD WORKSPACE</div>
+				<div class="bread-library-modern__header-row">
+					<div>
+						<h1>Play your way</h1>
+						<p>Everything you play, tuned to your world.</p>
+					</div>
+					<div class="bread-library-modern__count">
+						<strong>{{ modernInstances.length }}</strong>
+						<span>instances ready</span>
+					</div>
+				</div>
+				<div class="bread-library-modern__toolbar">
+					<LibraryToolbar />
+				</div>
+			</header>
+
+			<div class="bread-library-modern__layout">
+				<main class="bread-library-modern__main">
+					<section class="bread-library-modern__feature-grid" aria-label="Play controls">
+						<article v-if="modernHero" class="bread-library-modern__feature">
+							<div class="bread-library-modern__feature-heading">
+								<div>
+									<span>FEATURED INSTANCE</span>
+									<h2>{{ modernHero.instance.name }}</h2>
+									<p>{{ modernHero.instance.loader }} {{ modernHero.instance.game_version }}</p>
+								</div>
+								<span class="bread-library-modern__status">READY</span>
+							</div>
+							<InstanceCard
+								:ref="
+									(component: unknown) =>
+										setModernInstanceComponent(modernHero!.instance.id, component)
+								"
+								:instance="modernHero.instance"
+								:instance-group-id="modernHero.groupId"
+								:is-selection-anchor="
+									anchorInstance?.groupId === modernHero.groupId &&
+									anchorInstance?.instanceId === modernHero.instance.id
+								"
+								class="bread-library-modern__feature-card"
+								@toggle-selection="
+									(shiftKey: boolean) =>
+										handleToggleInstance(modernHero!.groupId, modernHero!.instance.id, shiftKey)
+								"
+								@contextmenu.prevent.stop="
+									(event: MouseEvent) =>
+										openModernInstanceContextMenu(
+											event,
+											modernHero!.instance.id,
+											modernHero!.groupId,
+										)
+								"
+							/>
+						</article>
+						<article class="bread-library-modern__command-card">
+							<div class="bread-library-modern__command-heading">
+								<span>QUICK ACTIONS</span>
+								<h2>What are you building?</h2>
+							</div>
+							<button type="button" @click="showCreationModal?.()">
+								<PlusIcon />
+								<span><strong>New instance</strong><small>Start with a clean world</small></span>
+							</button>
+							<RouterLink to="/browse/modpack">
+								<span class="bread-library-modern__command-icon">↗</span>
+								<span><strong>Discover content</strong><small>Find your next adventure</small></span>
+							</RouterLink>
+							<RouterLink to="/activity">
+								<HistoryIcon />
+								<span><strong>Recent activity</strong><small>Pick up where you left off</small></span>
+							</RouterLink>
+						</article>
+					</section>
+
+					<section class="bread-library-modern__instances">
+						<div class="bread-library-modern__section-heading">
+							<div>
+								<span class="bread-library-modern__eyebrow">YOUR LIBRARY</span>
+								<h2>All instances</h2>
+							</div>
+							<span v-if="modernGroups.length" class="bread-library-modern__group-count">
+								{{ modernGroups.length }} groups
+							</span>
+						</div>
+						<p v-if="libraryGroupsLoaded && isSearching && modernInstances.length === 0" class="bread-library-modern__empty">
+							{{ formatMessage(messages.noSearchResults) }}
+						</p>
+						<div v-else class="bread-library-modern__grid">
+							<div
+								v-for="item in modernGrid"
+								:key="item.instance.id"
+								class="bread-library-modern__card-slot"
+							>
+								<InstanceCard
+									:ref="
+										(component: unknown) => setModernInstanceComponent(item.instance.id, component)
+									"
+									:instance="item.instance"
+									:instance-group-id="item.groupId"
+									:is-selection-anchor="
+										anchorInstance?.groupId === item.groupId &&
+										anchorInstance?.instanceId === item.instance.id
+									"
+									@toggle-selection="
+										(shiftKey: boolean) =>
+											handleToggleInstance(item.groupId, item.instance.id, shiftKey)
+									"
+									@contextmenu.prevent.stop="
+										(event: MouseEvent) =>
+											openModernInstanceContextMenu(event, item.instance.id, item.groupId)
+									"
+								/>
+							</div>
+						</div>
+					</section>
+				</main>
+
+				<aside class="bread-library-modern__rail">
+					<section class="bread-library-modern__rail-card">
+						<span class="bread-library-modern__eyebrow">LIBRARY PULSE</span>
+						<h2>Your worlds at a glance</h2>
+						<div class="bread-library-modern__metrics">
+							<div><strong>{{ instances.length }}</strong><span>installed</span></div>
+							<div><strong>{{ modernGroups.length }}</strong><span>groups</span></div>
+							<div><strong>{{ modernHero ? modernHero.instance.loader : '—' }}</strong><span>featured loader</span></div>
+						</div>
+					</section>
+					<section class="bread-library-modern__rail-card bread-library-modern__rail-card--accent">
+						<div class="bread-library-modern__rail-mark">+</div>
+						<h2>Make a world that feels yours.</h2>
+						<p>Use a Bread pack or tune every mod yourself.</p>
+						<Button type="colored" color="brand" size="sm" @click="showCreationModal?.()">
+							Create instance
+					</Button>
+					</section>
+				</aside>
+			</div>
+		</section>
+		<section v-else data-library-page-background class="bread-library flex flex-col gap-4 pb-16 min-h-[500px]">
 			<div class="bread-library-heading">
 				<div>
 					<h2 class="m-0 text-3xl font-semibold text-contrast">
@@ -435,6 +611,386 @@ watch(selectedLibraryInstances, (selectedInstances) => {
 	color: var(--bread-color-brand-bright);
 	font-size: 0.82rem;
 	font-weight: 700;
+}
+
+.bread-library-modern {
+	min-height: 500px;
+	padding: var(--bread-space-3) 0 var(--bread-space-8);
+	color: var(--bread-color-text);
+}
+
+.bread-library-modern__header {
+	padding: var(--bread-space-5);
+	border: 1px solid var(--bread-color-border-subtle);
+	border-radius: var(--bread-radius-xl);
+	background:
+		radial-gradient(circle at 85% 0%, rgb(243 169 54 / 16%), transparent 18rem),
+		linear-gradient(135deg, var(--bread-color-surface-panel), var(--bread-color-surface-subtle));
+	box-shadow: 0 1rem 2rem rgb(0 0 0 / 12%);
+}
+
+.bread-library-modern__eyebrow {
+	color: var(--bread-color-brand-bright);
+	font-size: 0.68rem;
+	font-weight: 800;
+	letter-spacing: 0.16em;
+	text-transform: uppercase;
+}
+
+.bread-library-modern__header-row {
+	display: flex;
+	align-items: flex-end;
+	justify-content: space-between;
+	gap: var(--bread-space-4);
+	margin-top: var(--bread-space-2);
+}
+
+.bread-library-modern h1,
+.bread-library-modern h2,
+.bread-library-modern p {
+	margin: 0;
+}
+
+.bread-library-modern h1,
+.bread-library-modern h2 {
+	font-family: var(--bread-font-display);
+	letter-spacing: -0.04em;
+}
+
+.bread-library-modern h1 {
+	margin-top: 0.25rem;
+	font-size: clamp(1.8rem, 3vw, 2.8rem);
+}
+
+.bread-library-modern__header-row p {
+	margin-top: 0.3rem;
+	color: var(--bread-color-text-muted);
+	font-size: 0.9rem;
+}
+
+.bread-library-modern__count {
+	display: flex;
+	align-items: flex-end;
+	gap: 0.5rem;
+	color: var(--bread-color-text-muted);
+	font-size: 0.72rem;
+	text-transform: uppercase;
+}
+
+.bread-library-modern__count strong {
+	color: var(--bread-color-text);
+	font-family: var(--bread-font-display);
+	font-size: 2rem;
+	line-height: 1;
+}
+
+.bread-library-modern__toolbar {
+	margin-top: var(--bread-space-5);
+	padding-top: var(--bread-space-4);
+	border-top: 1px solid var(--bread-color-border-subtle);
+}
+
+.bread-library-modern__toolbar :deep(.bread-library-toolbar__filters),
+.bread-library-modern__toolbar :deep(.bread-library-toolbar__secondary-action) {
+	display: none;
+}
+
+.bread-library-modern__layout {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) minmax(15rem, 19rem);
+	gap: var(--bread-space-5);
+	margin-top: var(--bread-space-5);
+}
+
+.bread-library-modern__main,
+.bread-library-modern__rail {
+	min-width: 0;
+}
+
+.bread-library-modern__main {
+	display: flex;
+	flex-direction: column;
+	gap: var(--bread-space-5);
+}
+
+.bread-library-modern__feature-grid {
+	display: grid;
+	grid-template-columns: minmax(0, 1.45fr) minmax(15rem, 0.8fr);
+	gap: var(--bread-space-4);
+}
+
+.bread-library-modern__feature,
+.bread-library-modern__command-card,
+.bread-library-modern__rail-card,
+.bread-library-modern__instances {
+	border: 1px solid var(--bread-color-border-subtle);
+	border-radius: var(--bread-radius-xl);
+	background: var(--bread-color-surface-panel);
+}
+
+.bread-library-modern__feature {
+	display: flex;
+	min-width: 0;
+	flex-direction: column;
+	gap: var(--bread-space-3);
+	padding: var(--bread-space-4);
+	background:
+		linear-gradient(150deg, color-mix(in srgb, var(--bread-color-brand) 12%, transparent), transparent 45%),
+		var(--bread-color-surface-panel);
+}
+
+.bread-library-modern__feature-heading {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	gap: 1rem;
+}
+
+.bread-library-modern__feature-heading span:first-child,
+.bread-library-modern__command-heading span {
+	color: var(--bread-color-brand-bright);
+	font-size: 0.65rem;
+	font-weight: 800;
+	letter-spacing: 0.14em;
+}
+
+.bread-library-modern__feature-heading h2 {
+	margin-top: 0.3rem;
+	font-size: 1.35rem;
+}
+
+.bread-library-modern__feature-heading p {
+	margin-top: 0.2rem;
+	color: var(--bread-color-text-muted);
+	font-size: 0.78rem;
+	text-transform: capitalize;
+}
+
+.bread-library-modern__status {
+	padding: 0.28rem 0.5rem;
+	border: 1px solid color-mix(in srgb, var(--bread-color-brand) 50%, transparent);
+	border-radius: var(--bread-radius-pill);
+	background: color-mix(in srgb, var(--bread-color-brand) 14%, transparent);
+	color: var(--bread-color-brand-bright) !important;
+	font-size: 0.62rem !important;
+	letter-spacing: 0.08em !important;
+}
+
+.bread-library-modern__feature-card {
+	min-height: 14rem;
+	flex: 1;
+}
+
+.bread-library-modern__feature-card :deep(.bread-instance-card) {
+	height: 100%;
+	min-height: 14rem;
+	border-radius: var(--bread-radius-lg) !important;
+}
+
+.bread-library-modern__command-card {
+	display: flex;
+	flex-direction: column;
+	gap: 0.55rem;
+	padding: var(--bread-space-4);
+	background: var(--bread-color-surface-subtle);
+}
+
+.bread-library-modern__command-heading {
+	margin-bottom: 0.35rem;
+}
+
+.bread-library-modern__command-heading h2 {
+	margin-top: 0.35rem;
+	font-size: 1.1rem;
+}
+
+.bread-library-modern__command-card button,
+.bread-library-modern__command-card a {
+	display: flex;
+	align-items: center;
+	gap: 0.7rem;
+	width: 100%;
+	padding: 0.65rem 0.7rem;
+	border: 1px solid var(--bread-color-border-subtle);
+	border-radius: var(--bread-radius-md);
+	background: color-mix(in srgb, var(--bread-color-surface-panel) 80%, transparent);
+	color: var(--bread-color-text);
+	text-align: left;
+	text-decoration: none;
+	cursor: pointer;
+	transition: border-color 140ms ease, transform 140ms ease, background 140ms ease;
+}
+
+.bread-library-modern__command-card button:hover,
+.bread-library-modern__command-card a:hover {
+	border-color: var(--bread-color-brand);
+	background: var(--bread-color-surface-elevated);
+	transform: translateX(2px);
+}
+
+.bread-library-modern__command-card svg,
+.bread-library-modern__command-icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 1.8rem;
+	height: 1.8rem;
+	flex: 0 0 auto;
+	border-radius: var(--bread-radius-sm);
+	background: color-mix(in srgb, var(--bread-color-brand) 18%, transparent);
+	color: var(--bread-color-brand-bright);
+}
+
+.bread-library-modern__command-card span:not(.bread-library-modern__command-icon) {
+	display: flex;
+	min-width: 0;
+	flex-direction: column;
+	gap: 0.12rem;
+}
+
+.bread-library-modern__command-card small {
+	color: var(--bread-color-text-muted);
+	font-size: 0.68rem;
+}
+
+.bread-library-modern__instances {
+	padding: var(--bread-space-4);
+}
+
+.bread-library-modern__section-heading {
+	display: flex;
+	align-items: flex-end;
+	justify-content: space-between;
+	gap: 1rem;
+	margin-bottom: var(--bread-space-3);
+}
+
+.bread-library-modern__section-heading h2 {
+	margin-top: 0.25rem;
+	font-size: 1.35rem;
+}
+
+.bread-library-modern__group-count {
+	color: var(--bread-color-text-muted);
+	font-size: 0.75rem;
+}
+
+.bread-library-modern__grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(min(17rem, 100%), 1fr));
+	gap: var(--bread-space-4);
+}
+
+.bread-library-modern__card-slot {
+	min-width: 0;
+}
+
+.bread-library-modern__empty {
+	padding: 2rem 0;
+	color: var(--bread-color-text-muted);
+	text-align: center;
+}
+
+.bread-library-modern__rail {
+	display: flex;
+	flex-direction: column;
+	gap: var(--bread-space-4);
+}
+
+.bread-library-modern__rail-card {
+	padding: var(--bread-space-4);
+}
+
+.bread-library-modern__rail-card h2 {
+	margin-top: 0.4rem;
+	font-size: 1.1rem;
+}
+
+.bread-library-modern__metrics {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 0.6rem;
+	margin-top: var(--bread-space-4);
+}
+
+.bread-library-modern__metrics div {
+	display: flex;
+	min-width: 0;
+	flex-direction: column;
+	gap: 0.1rem;
+	padding: 0.65rem;
+	border: 1px solid var(--bread-color-border-subtle);
+	border-radius: var(--bread-radius-md);
+	background: var(--bread-color-surface-subtle);
+}
+
+.bread-library-modern__metrics strong {
+	overflow: hidden;
+	color: var(--bread-color-text);
+	font-family: var(--bread-font-display);
+	font-size: 1.2rem;
+	text-overflow: ellipsis;
+	text-transform: capitalize;
+	white-space: nowrap;
+}
+
+.bread-library-modern__metrics span,
+.bread-library-modern__rail-card p {
+	color: var(--bread-color-text-muted);
+	font-size: 0.7rem;
+}
+
+.bread-library-modern__rail-card--accent {
+	background:
+		radial-gradient(circle at 100% 0%, rgb(243 169 54 / 18%), transparent 12rem),
+		var(--bread-color-surface-subtle);
+}
+
+.bread-library-modern__rail-mark {
+	display: grid;
+	width: 2rem;
+	height: 2rem;
+	place-items: center;
+	border-radius: var(--bread-radius-md);
+	background: var(--bread-color-brand);
+	color: var(--bread-color-brand-contrast);
+	font-size: 1.2rem;
+	font-weight: 800;
+}
+
+.bread-library-modern__rail-card--accent p {
+	margin: 0.5rem 0 1rem;
+	line-height: 1.45;
+}
+
+.bread-library-modern__rail-card--accent :deep([data-button]) {
+	width: 100%;
+	justify-content: center;
+}
+
+@media (max-width: 70rem) {
+	.bread-library-modern__layout {
+		grid-template-columns: 1fr;
+	}
+
+	.bread-library-modern__rail {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+
+@media (max-width: 46rem) {
+	.bread-library-modern__header-row,
+	.bread-library-modern__feature-grid,
+	.bread-library-modern__rail {
+		grid-template-columns: 1fr;
+		flex-direction: column;
+		align-items: stretch;
+	}
+
+	.bread-library-modern__count {
+		align-self: flex-start;
+	}
 }
 
 .bread-library :deep(.bread-library-toolbar__secondary-action),

@@ -3,7 +3,7 @@ import { FolderOpenIcon, PlayIcon, PlusIcon } from '@modrinth/assets'
 import { Avatar, Button, ContextMenu, defineMessages, injectNotificationManager, useVIntl } from '@modrinth/ui'
 import { useQuery } from '@tanstack/vue-query'
 import dayjs from 'dayjs'
-import { computed, inject, onActivated, ref } from 'vue'
+import { computed, inject, onActivated, onMounted, onUnmounted, ref } from 'vue'
 
 import LibrarySection from '@/components/ui/library/index.vue'
 import WelcomeScreen from '@/components/ui/WelcomeScreen.vue'
@@ -25,6 +25,15 @@ const { hasCreatedInstance, isReady } = injectOnboardingChecklist()
 const showCreationModal = inject<(packId?: string) => void>('showCreationModal')
 const pageOptions = ref<InstanceType<typeof ContextMenu>>()
 const appSettings = useAppSettings()
+const legacyUi = ref(false)
+
+function syncLayoutMode() {
+	legacyUi.value = window.localStorage.getItem('bread-legacy-ui') === 'true'
+}
+
+syncLayoutMode()
+onMounted(() => window.addEventListener('bread-ui-mode-changed', syncLayoutMode))
+onUnmounted(() => window.removeEventListener('bread-ui-mode-changed', syncLayoutMode))
 
 const messages = defineMessages({
 	home: {
@@ -128,7 +137,7 @@ async function launchQuickstart(instance) {
 				<Avatar :src="getInstanceIconUrl(instance.icon_path)" :tint-by="instance.id" size="40px" pad-transparent-corners />
 			</button>
 		</section>
-		<LibrarySection :instances="instances" />
+		<LibrarySection :instances="instances" :legacy="legacyUi" />
 		<section v-if="BREAD_PACK_OPTIONS.length" class="bread-pack-suggestions">
 			<div class="bread-pack-suggestions__heading">
 				<div>

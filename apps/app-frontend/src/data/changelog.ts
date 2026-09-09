@@ -9,6 +9,7 @@ export const BREAD_CHANGELOG: ChangelogEntry[] = [
 	{
 		date: '2026-09-09',
 		items: [
+			'Added a new Play dashboard layout with a featured instance, quick actions, library board, and activity rail; the original grouped layout remains selectable in Behavior settings.',
 			'Fixed CurseForge mod searches by allowing the frontend API requests through the Tauri HTTP capability and CSP.',
 			'New instances can optionally share a Bread-managed resource-pack folder; existing instances remain isolated.',
 			'Updated the purple theme label with its custom description for csm.',
