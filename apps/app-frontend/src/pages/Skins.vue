@@ -220,6 +220,7 @@ const client = injectModrinthClient()
 const appSettings = useAppSettings()
 const skins = ref<Skin[]>([])
 const capes = ref<Cape[]>([])
+const skinsLoading = ref(true)
 const offline = ref(!navigator.onLine)
 
 const accountsCard = inject('accountsCard') as Ref<typeof AccountsCard>
@@ -1003,8 +1004,13 @@ watch(isSkinManagementReadOnly, (readOnly) => {
 onMounted(() => {
 	window.addEventListener('offline', onOffline)
 	window.addEventListener('online', onOnline)
-	userCheckInterval = window.setInterval(checkUserChanges, 250)
+	userCheckInterval = window.setInterval(checkUserChanges, 2_000)
 	void setupAddSkinDragDropListener()
+	void Promise.all([loadCapes(), loadCurrentUser()])
+		.then(() => loadSkins())
+		.finally(() => {
+			skinsLoading.value = false
+		})
 })
 
 onUnmounted(() => {
@@ -1052,8 +1058,6 @@ async function checkUserChanges() {
 	}
 }
 
-await Promise.all([loadCapes(), loadCurrentUser()])
-await loadSkins()
 </script>
 
 <template>
@@ -1079,7 +1083,11 @@ await loadSkins()
 		@proceed="deleteSkin"
 	/>
 
-	<div class="skin-layout box-border grow p-4" :class="{ 'pb-40': !currentUser }">
+	<div class="skin-layout box-border grow p-4" :class="{ 'pb-40': !currentUser }" :aria-busy="skinsLoading">
+		<div v-if="skinsLoading" class="bread-skins-loading" role="status">
+			<SpinnerIcon class="animate-spin" />
+			<span>Preparing your skin wardrobe…</span>
+		</div>
 		<div class="sticky top-6 self-start p-2 pt-0">
 			<h1 class="m-0 text-2xl font-bold flex items-center gap-2">
 				{{ formatMessage(appMessages.skinSelectorLabel) }}
@@ -1341,7 +1349,29 @@ await loadSkins()
 	}
 }
 
+.bread-skins-loading {
+	position: absolute;
+	top: 1rem;
+	right: 1rem;
+	display: inline-flex;
+	align-items: center;
+	gap: 0.5rem;
+	padding: 0.45rem 0.7rem;
+	border: 1px solid var(--bread-color-border-subtle);
+	border-radius: var(--bread-radius-pill);
+	background: var(--bread-color-surface-panel);
+	color: var(--bread-color-text-muted);
+	font-size: 0.8rem;
+	z-index: 2;
+}
+
+.bread-skins-loading svg {
+	width: 1rem;
+	color: var(--bread-color-brand-bright);
+}
+
 .skin-layout {
+	position: relative;
 	display: grid;
 	grid-template-columns: minmax(0, 1fr) minmax(0, 2.5fr);
 	gap: 2.5rem;

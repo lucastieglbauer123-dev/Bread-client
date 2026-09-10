@@ -12,6 +12,7 @@ export const BREAD_CHANGELOG: ChangelogEntry[] = [
 			'Introduced a framed Bread workspace shell with animated route transitions and recovery after failed async navigation.',
 			'Navigation failures now keep the last working screen interactive and offer an in-place retry instead of leaving a blank GUI.',
 			'Crash report discovery now reads metadata-only logs, tolerates unsupported files, and recognizes crash filenames reliably.',
+			'Skin Selector now paints its layout immediately and loads skins, capes, and account data in the background.',
 		],
 	},
 	{
