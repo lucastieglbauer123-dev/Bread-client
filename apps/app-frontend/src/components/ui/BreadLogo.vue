@@ -6,7 +6,7 @@
 </template>
 
 <script setup lang="ts">
-import breadLogoMark from '@/assets/bread-logo-mark.svg'
+import breadLogoMark from '@/assets/bread-logo-mark.svg?url'
 
 withDefaults(
 	defineProps<{

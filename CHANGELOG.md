@@ -2,6 +2,7 @@
 
 ## 2026-09-10
 
+- Fixed the sidebar Bread logo image source so the amber loaf renders correctly.
 - Fixed Microsoft login callback capture for both Azure-registered redirect URIs, using the exact URI returned in the authorization request for token exchange.
 - Rebuilt the launcher workspace around a framed Bread dashboard with distinct discovery, wardrobe, activity, instance, and settings surfaces.
 - Introduced a framed Bread workspace shell with animated route transitions and recovery after failed async navigation.
