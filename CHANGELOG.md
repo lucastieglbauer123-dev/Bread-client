@@ -1,5 +1,9 @@
 # Bread Client changelog
 
+## 2026-09-10
+
+- Introduced a framed Bread workspace shell with animated route transitions and recovery after failed async navigation.
+
 ## 2026-09-09
 
 - Launcher stats now combine recent and submitted playtime and count installed Fabric mods from content metadata.

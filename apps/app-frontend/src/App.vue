@@ -947,6 +947,23 @@ router.afterEach((to, from, failure) => {
 	}, 100)
 })
 
+router.onError((error) => {
+	console.error('Navigation failed', error)
+	if (initialLoadToken) {
+		loading.end(initialLoadToken)
+		initialLoadToken = null
+	}
+	if (routerToken) {
+		loading.end(routerToken)
+		routerToken = null
+	}
+	if (suspenseToken) {
+		loading.end(suspenseToken)
+		suspenseToken = null
+	}
+	suspensePending = false
+})
+
 function onSuspensePending() {
 	suspensePending = true
 	if (suspenseToken) loading.end(suspenseToken)
@@ -2217,9 +2234,6 @@ provideAppUpdateDownloadProgress(appUpdateDownload)
 				<section class="bread-sidebar-nav-group bread-sidebar-nav-group--tools">
 					<p class="bread-sidebar-nav-label">Tools</p>
 					<div class="bread-nav-secondary">
-			<NavButton v-tooltip.right="formatMessage(appMessages.skinSelectorLabel)" to="/skins">
-				<ShirtIcon />
-			</NavButton>
 			<NavButton
 				v-if="globalSyncedOptionsQuery.data.value?.screenshots"
 				v-tooltip.right="formatMessage(messages.screenshots)"
@@ -2423,17 +2437,25 @@ provideAppUpdateDownloadProgress(appUpdateDownload)
 				{{ formatMessage(messages.authUnreachableBody) }}
 			</Admonition>
 			<HostingUpdateRequired v-if="hostingUpdateRequired" />
-			<RouterView v-else v-slot="{ Component }">
-				<template v-if="Component">
-					<Suspense @pending="onSuspensePending" @resolve="onSuspenseResolve">
-						<Transition name="bread-route" mode="out-in">
-							<KeepAlive include="LibraryPage">
-								<component :is="Component"></component>
-							</KeepAlive>
-						</Transition>
-					</Suspense>
-				</template>
-			</RouterView>
+			<div v-else class="bread-route-shell" :class="{ 'bread-route-shell--legacy': legacyUi }">
+				<div class="bread-route-shell__rail" aria-hidden="true">
+					<span class="bread-route-shell__rail-dot"></span>
+					<span class="bread-route-shell__rail-line"></span>
+				</div>
+				<div class="bread-route-shell__content">
+					<RouterView v-slot="{ Component }">
+						<template v-if="Component">
+							<Suspense @pending="onSuspensePending" @resolve="onSuspenseResolve">
+								<Transition name="bread-route" mode="out-in">
+									<KeepAlive include="LibraryPage">
+										<component :is="Component" :key="route.fullPath"></component>
+									</KeepAlive>
+								</Transition>
+							</Suspense>
+						</template>
+					</RouterView>
+				</div>
+			</div>
 		</div>
 		<div
 			class="app-sidebar mt-px shrink-0 flex flex-col border-0 border-l-[1px] border-[--brand-gradient-border] border-solid"
@@ -3051,13 +3073,77 @@ provideAppUpdateDownloadProgress(appUpdateDownload)
 	max-width: 100%;
 }
 
-.bread-route-enter-active,
-.bread-route-leave-active {
-	transition: opacity 160ms ease, transform 160ms ease;
+.bread-route-shell {
+	position: relative;
+	min-height: 100%;
+	padding: var(--bread-space-4);
+	background:
+		radial-gradient(circle at 84% 4%, color-mix(in srgb, var(--bread-color-brand) 11%, transparent), transparent 24rem),
+		var(--bread-color-surface);
 }
 
-.bread-route-enter-from { opacity: 0; transform: translateY(0.35rem); }
-.bread-route-leave-to { opacity: 0; transform: translateY(-0.25rem); }
+.bread-route-shell__content {
+	position: relative;
+	min-height: calc(100% - (var(--bread-space-4) * 2));
+	border: 1px solid var(--bread-color-border-subtle);
+	border-radius: var(--bread-radius-xl);
+	background: color-mix(in srgb, var(--bread-color-surface) 92%, transparent);
+	box-shadow: 0 1.25rem 3rem rgb(0 0 0 / 12%);
+	overflow: clip;
+}
+
+.bread-route-shell__rail {
+	position: absolute;
+	top: 2rem;
+	left: 0.55rem;
+	bottom: 2rem;
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+	gap: 0.5rem;
+	width: 0.35rem;
+	pointer-events: none;
+}
+
+.bread-route-shell__rail-dot {
+	width: 0.35rem;
+	height: 0.35rem;
+	border-radius: 50%;
+	background: var(--bread-color-brand-bright);
+	box-shadow: 0 0 0 0.3rem color-mix(in srgb, var(--bread-color-brand) 15%, transparent);
+}
+
+.bread-route-shell__rail-line {
+	width: 1px;
+	height: 100%;
+	background: linear-gradient(var(--bread-color-brand), transparent 80%);
+	opacity: 0.6;
+}
+
+.bread-route-shell--legacy {
+	padding: 0;
+	background: var(--bread-color-surface);
+}
+
+.bread-route-shell--legacy .bread-route-shell__content {
+	min-height: 100%;
+	border: 0;
+	border-radius: 0;
+	box-shadow: none;
+	background: var(--bread-color-surface);
+}
+
+.bread-route-shell--legacy .bread-route-shell__rail {
+	display: none;
+}
+
+.bread-route-enter-active,
+.bread-route-leave-active {
+	transition: opacity 220ms ease, transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.bread-route-enter-from { opacity: 0; transform: translateY(0.65rem) scale(0.99); }
+.bread-route-leave-to { opacity: 0; transform: translateY(-0.35rem) scale(0.995); }
 
 .bread-legacy-ui .bread-instance-card,
 .bread-legacy-ui .bread-pack-suggestion,

@@ -7,6 +7,12 @@ export interface ChangelogEntry {
 /** User-facing entries mirrored in the repository CHANGELOG.md. */
 export const BREAD_CHANGELOG: ChangelogEntry[] = [
 	{
+		date: '2026-09-10',
+		items: [
+			'Introduced a framed Bread workspace shell with animated route transitions and recovery after failed async navigation.',
+		],
+	},
+	{
 		date: '2026-09-09',
 		items: [
 			'Launcher stats now combine recent and submitted playtime and count installed Fabric mods from content metadata.',
