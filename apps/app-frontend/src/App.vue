@@ -2197,7 +2197,14 @@ provideAppUpdateDownloadProgress(appUpdateDownload)
 			class="app-grid-navbar bg-bg-raised flex flex-col p-[0.5rem] pt-0 gap-[0.25rem] w-[--left-bar-width]"
 		>
 			<div class="bread-sidebar-identity">
-				<BreadLogo variant="sidebar" class="bread-sidebar-logo" />
+				<div class="bread-sidebar-brand-row">
+					<BreadLogo variant="sidebar" class="bread-sidebar-logo" />
+					<span class="bread-sidebar-brand-caption">WORKSPACE OS</span>
+				</div>
+				<div class="bread-sidebar-identity-meta">
+					<span>LOCAL PROFILE</span>
+					<span class="bread-sidebar-live-dot">READY</span>
+				</div>
 				<div class="bread-account-selector">
 					<suspense>
 						<AccountsCard ref="accounts" />
@@ -2206,7 +2213,13 @@ provideAppUpdateDownloadProgress(appUpdateDownload)
 			</div>
 			<nav class="bread-sidebar-navigation" aria-label="Main navigation">
 				<section class="bread-sidebar-nav-group bread-sidebar-nav-group--primary">
-					<p class="bread-sidebar-nav-label">Workspace</p>
+					<div class="bread-sidebar-nav-heading">
+						<div>
+							<p class="bread-sidebar-nav-label">Workspace</p>
+							<span class="bread-sidebar-nav-caption">Build and manage your worlds</span>
+						</div>
+						<span class="bread-sidebar-nav-index">01</span>
+					</div>
 					<div class="bread-nav-links">
 			<NavButton
 				v-tooltip.right="formatMessage(messages.home)"
@@ -2258,7 +2271,13 @@ provideAppUpdateDownloadProgress(appUpdateDownload)
 					</div>
 				</section>
 				<section class="bread-sidebar-nav-group bread-sidebar-nav-group--tools">
-					<p class="bread-sidebar-nav-label">Tools</p>
+					<div class="bread-sidebar-nav-heading">
+						<div>
+							<p class="bread-sidebar-nav-label">Tools</p>
+							<span class="bread-sidebar-nav-caption">Polish the details</span>
+						</div>
+						<span class="bread-sidebar-nav-index">02</span>
+					</div>
 					<div class="bread-nav-secondary">
 			<NavButton
 				v-if="globalSyncedOptionsQuery.data.value?.screenshots"
@@ -2271,6 +2290,10 @@ provideAppUpdateDownloadProgress(appUpdateDownload)
 				</section>
 			</nav>
 			<div class="bread-quick-switcher">
+				<div class="bread-quick-switcher__heading">
+					<span>ACTIVE INSTANCE</span>
+					<kbd>Q</kbd>
+				</div>
 				<suspense>
 					<QuickInstanceSwitcher />
 				</suspense>
@@ -2278,6 +2301,7 @@ provideAppUpdateDownloadProgress(appUpdateDownload)
 			<NavButton
 				class="bread-sidebar-create-button"
 				v-tooltip.right="formatMessage(messages.createNewInstance)"
+				:label="formatMessage(messages.createNewInstance)"
 				:to="() => installationModal?.show()"
 				:disabled="offline"
 			>
@@ -2285,7 +2309,13 @@ provideAppUpdateDownloadProgress(appUpdateDownload)
 			</NavButton>
 			<div class="flex flex-grow"></div>
 			<section class="bread-sidebar-footer" aria-label="Launcher utilities">
-				<p class="bread-sidebar-nav-label">Utilities</p>
+				<div class="bread-sidebar-nav-heading">
+					<div>
+						<p class="bread-sidebar-nav-label">Utilities</p>
+						<span class="bread-sidebar-nav-caption">Keep your client tidy</span>
+					</div>
+					<span class="bread-sidebar-nav-index">03</span>
+				</div>
 				<NavButton
 					v-tooltip.right="formatMessage(messages.whatsNew)"
 					to="/whats-new"
@@ -2642,16 +2672,82 @@ provideAppUpdateDownloadProgress(appUpdateDownload)
 	z-index: 2;
 	min-width: 0;
 	overflow-y: auto;
-	padding: 0.75rem 1rem 1rem;
+	padding: 0.8rem 0.7rem 0.7rem;
 	border-right: 1px solid var(--bread-color-border-subtle);
-	background: linear-gradient(180deg, var(--bread-color-surface-panel), var(--bread-color-surface-muted));
+	background:
+		radial-gradient(circle at 50% -5%, color-mix(in srgb, var(--bread-color-brand) 12%, transparent), transparent 14rem),
+		linear-gradient(180deg, var(--bread-color-surface-panel), var(--bread-color-surface-muted));
 	box-shadow: inset -1px 0 rgb(255 239 218 / 3%);
 }
 
 .bread-sidebar-identity {
 	display: flex;
 	flex-direction: column;
-	gap: var(--bread-space-3);
+	gap: 0.65rem;
+	padding: 0.75rem;
+	border: 1px solid var(--bread-color-border-subtle);
+	border-radius: var(--bread-radius-lg);
+	background: color-mix(in srgb, var(--bread-color-surface-raised) 72%, transparent);
+	box-shadow: 0 0.7rem 1.5rem rgb(0 0 0 / 12%);
+}
+
+.bread-sidebar-brand-row {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 0.4rem;
+}
+
+.bread-sidebar-logo {
+	margin: 0;
+	font-size: 1.2rem;
+}
+
+.bread-sidebar-logo .bread-logo__mark {
+	width: 1.9rem;
+	height: 1.9rem;
+}
+
+.bread-sidebar-brand-caption,
+.bread-sidebar-identity-meta,
+.bread-sidebar-nav-caption,
+.bread-sidebar-nav-index,
+.bread-quick-switcher__heading {
+	font-size: 0.6rem;
+	font-weight: 800;
+	letter-spacing: 0.12em;
+	line-height: 1;
+	text-transform: uppercase;
+}
+
+.bread-sidebar-brand-caption {
+	color: var(--bread-color-text-subtle);
+}
+
+.bread-sidebar-identity-meta {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 0.45rem 0.55rem;
+	border-radius: var(--bread-radius-sm);
+	background: var(--bread-color-surface-muted);
+	color: var(--bread-color-text-subtle);
+}
+
+.bread-sidebar-live-dot {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.35rem;
+	color: var(--bread-color-brand-bright);
+}
+
+.bread-sidebar-live-dot::before {
+	content: '';
+	width: 0.35rem;
+	height: 0.35rem;
+	border-radius: 50%;
+	background: currentColor;
+	box-shadow: 0 0 0 0.2rem color-mix(in srgb, currentColor 16%, transparent);
 }
 
 .app-grid-statusbar {
@@ -2672,7 +2768,7 @@ provideAppUpdateDownloadProgress(appUpdateDownload)
 .bread-sidebar-navigation {
 	display: flex;
 	flex-direction: column;
-	gap: var(--bread-space-4);
+	gap: 0.65rem;
 }
 
 .bread-sidebar-nav-group,
@@ -2685,39 +2781,89 @@ provideAppUpdateDownloadProgress(appUpdateDownload)
 }
 
 .bread-sidebar-nav-group {
-	position: relative;
-	padding: 0.25rem 0;
+	padding: 0.7rem;
+	border: 1px solid var(--bread-color-border-subtle);
+	border-radius: var(--bread-radius-lg);
+	background: color-mix(in srgb, var(--bread-color-surface-panel) 76%, transparent);
 }
 
 .bread-sidebar-nav-group--tools {
-	padding-top: var(--bread-space-3);
-	border-top: 1px solid var(--bread-color-border-subtle);
+	padding-top: 0.7rem;
 }
 
 .bread-sidebar-nav-label {
 	margin: 0 0 0.2rem;
-	padding: 0 0.75rem;
-	color: var(--bread-color-text-subtle);
-	font-size: 0.64rem;
+	color: var(--bread-color-text);
+	font-size: 0.72rem;
 	font-weight: 800;
-	letter-spacing: 0.14em;
-	text-transform: uppercase;
+	letter-spacing: 0.04em;
+}
+
+.bread-sidebar-nav-heading {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	gap: 0.5rem;
+	padding: 0 0.2rem 0.35rem;
+}
+
+.bread-sidebar-nav-caption {
+	display: block;
+	color: var(--bread-color-text-subtle);
+	font-size: 0.56rem;
+	font-weight: 600;
+	letter-spacing: 0.02em;
+	line-height: 1.3;
+	text-transform: none;
+}
+
+.bread-sidebar-nav-index {
+	padding: 0.32rem 0.4rem;
+	border: 1px solid var(--bread-color-border-subtle);
+	border-radius: var(--bread-radius-sm);
+	color: var(--bread-color-brand-bright);
+	font-size: 0.55rem;
 }
 
 .bread-nav-secondary {
 	display: flex;
-	display: none;
 }
 
 .bread-quick-switcher,
 .bread-sidebar-create-button {
-	display: none;
+	display: flex;
+}
+
+.bread-quick-switcher {
+	flex-direction: column;
+	gap: 0.4rem;
+	padding: 0.65rem;
+	border: 1px dashed var(--bread-color-border);
+	border-radius: var(--bread-radius-lg);
+	background: color-mix(in srgb, var(--bread-color-surface-raised) 45%, transparent);
+}
+
+.bread-quick-switcher__heading {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	color: var(--bread-color-text-subtle);
+}
+
+.bread-quick-switcher__heading kbd {
+	padding: 0.18rem 0.35rem;
+	border: 1px solid var(--bread-color-border-subtle);
+	border-radius: var(--bread-radius-sm);
+	color: var(--bread-color-text-muted);
+	font-size: 0.6rem;
 }
 
 .bread-sidebar-footer {
-	gap: var(--bread-space-2);
-	padding-top: var(--bread-space-4);
-	border-top: 1px solid var(--bread-color-border-subtle);
+	gap: 0.45rem;
+	padding: 0.7rem;
+	border: 1px solid var(--bread-color-border-subtle);
+	border-radius: var(--bread-radius-lg);
+	background: color-mix(in srgb, var(--bread-color-surface-panel) 76%, transparent);
 }
 
 .bread-nav-item {
@@ -2725,10 +2871,10 @@ provideAppUpdateDownloadProgress(appUpdateDownload)
 	align-items: center;
 	gap: 0.75rem;
 	width: 100%;
-	min-height: 2.75rem;
-	padding: 0 0.75rem;
+	min-height: 2.55rem;
+	padding: 0 0.65rem;
 	border: 0;
-	border-radius: var(--bread-radius-md);
+	border-radius: var(--bread-radius-sm);
 	background: transparent;
 	color: var(--bread-color-text-muted);
 	text-align: left;
@@ -2756,7 +2902,7 @@ provideAppUpdateDownloadProgress(appUpdateDownload)
 }
 
 .bread-nav-item:not(.bread-nav-item--placeholder):hover {
-	background: var(--bread-color-surface-raised);
+	background: color-mix(in srgb, var(--bread-color-brand) 9%, var(--bread-color-surface-raised));
 	color: var(--bread-color-text-primary);
 	transform: translateX(0.25rem);
 	box-shadow: 0 0.45rem 1rem rgb(0 0 0 / 12%);
@@ -2764,8 +2910,9 @@ provideAppUpdateDownloadProgress(appUpdateDownload)
 
 .bread-nav-item:has([aria-current='page']),
 .bread-nav-button.router-link-active {
-	background: color-mix(in srgb, var(--bread-color-brand) 18%, var(--bread-color-surface-raised));
+	background: linear-gradient(90deg, color-mix(in srgb, var(--bread-color-brand) 24%, var(--bread-color-surface-raised)), var(--bread-color-surface-raised));
 	color: var(--bread-color-text-primary);
+	box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--bread-color-brand) 22%, transparent), 0 0.35rem 0.75rem rgb(0 0 0 / 10%);
 }
 
 .bread-nav-item:has([aria-current='page'])::before,
@@ -2976,6 +3123,30 @@ provideAppUpdateDownloadProgress(appUpdateDownload)
 
 .bread-sidebar-footer .bread-nav-button {
 	margin-top: 0.25rem;
+}
+
+.bread-sidebar-create-button {
+	align-items: center;
+	justify-content: center;
+	min-height: 2.9rem;
+	padding: 0 0.8rem;
+	border: 0;
+	border-radius: var(--bread-radius-md);
+	background: var(--bread-color-brand);
+	color: var(--bread-color-brand-contrast);
+	box-shadow: 0 0.55rem 1.1rem var(--bread-color-brand-shadow);
+}
+
+.bread-sidebar-create-button:hover {
+	background: var(--bread-color-brand-bright);
+	color: var(--bread-color-brand-contrast);
+	transform: translateY(-1px);
+}
+
+.bread-sidebar-create-button::after {
+	content: 'New instance';
+	font-size: 0.8rem;
+	font-weight: 800;
 }
 
 .bread-make-yours {

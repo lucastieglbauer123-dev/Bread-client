@@ -3,6 +3,7 @@
 ## 2026-09-11
 
 - Replaced the Minecraft title-screen Bread Client wordmark with a compact centered bread mark so it no longer collides with the Java Edition sign.
+- Rebuilt the launcher sidebar as a structured workspace rail with profile state, grouped navigation cards, an active-instance switcher, a prominent create action, and utility controls.
 
 ## 2026-09-10
 
