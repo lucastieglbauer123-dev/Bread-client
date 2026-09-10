@@ -1,5 +1,9 @@
 use crate::api::Result;
 use chrono::{Duration, Utc};
+use std::sync::{
+    Arc,
+    atomic::{AtomicU64, Ordering},
+};
 use tauri::plugin::TauriPlugin;
 use tauri::{Manager, Runtime, UserAttentionType};
 use theseus::prelude::*;
@@ -51,6 +55,32 @@ fn matched_auth_reply_url(url: &Url) -> Option<&'static str> {
         })
 }
 
+fn redacted_navigation_url(url: &Url) -> String {
+    let mut redacted_url = url.clone();
+
+    if url.query().is_some() {
+        let mut query = url::form_urlencoded::Serializer::new(String::new());
+        for (key, value) in url.query_pairs() {
+            if matches!(
+                key.as_ref(),
+                "code"
+                    | "state"
+                    | "client_secret"
+                    | "access_token"
+                    | "refresh_token"
+                    | "id_token"
+            ) {
+                query.append_pair(&key, "[redacted]");
+            } else {
+                query.append_pair(&key, &value);
+            }
+        }
+        redacted_url.set_query(Some(&query.finish()));
+    }
+
+    redacted_url.to_string()
+}
+
 /// Authenticate a user with Hydra - part 1
 /// This begins the authentication flow quasi-synchronously, returning a URL to visit (that the user will sign in at)
 #[tauri::command]
@@ -65,6 +95,8 @@ pub async fn login<R: Runtime>(
         window.close()?;
     }
 
+    let navigation_sequence = Arc::new(AtomicU64::new(0));
+    let navigation_sequence_for_handler = Arc::clone(&navigation_sequence);
     let window = tauri::WebviewWindowBuilder::new(
         &app,
         "signin",
@@ -77,6 +109,13 @@ pub async fn login<R: Runtime>(
             },
         )?),
     )
+    .on_navigation(move |url| {
+        let sequence =
+            navigation_sequence_for_handler.fetch_add(1, Ordering::Relaxed) + 1;
+        let url = redacted_navigation_url(url);
+        tracing::info!(sequence, url = %url, "Microsoft login WebView2 navigation");
+        true
+    })
     .title("Sign into Bread Client")
     .always_on_top(true)
     .min_inner_size(500.0, 500.0)

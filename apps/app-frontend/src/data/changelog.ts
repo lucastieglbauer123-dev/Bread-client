@@ -11,6 +11,7 @@ export const BREAD_CHANGELOG: ChangelogEntry[] = [
 		items: [
 			'Fixed the sidebar Bread logo image source so the amber loaf renders correctly.',
 			'Updated the Minecraft sign-in window title to Bread Client branding.',
+			'Added ordered, redacted WebView2 navigation logging for Microsoft sign-in diagnostics.',
 			'Fixed Microsoft login callback capture for both Azure-registered redirect URIs and matched the token exchange to the returned authorization URI.',
 			'Added Breadbound, a larger verified Fabric pack for performance, shaders, navigation, and quality-of-life tools.',
 			'Existing Minecraft installations now refresh their Bread title artwork when the logo assets are updated.',

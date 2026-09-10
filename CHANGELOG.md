@@ -4,6 +4,7 @@
 
 - Fixed the sidebar Bread logo image source so the amber loaf renders correctly.
 - Updated the Minecraft sign-in window title to Bread Client branding.
+- Added ordered, redacted WebView2 navigation logging for Microsoft sign-in diagnostics.
 - Fixed Microsoft login callback capture for both Azure-registered redirect URIs, using the exact URI returned in the authorization request for token exchange.
 - Rebuilt the launcher workspace around a framed Bread dashboard with distinct discovery, wardrobe, activity, instance, and settings surfaces.
 - Introduced a framed Bread workspace shell with animated route transitions and recovery after failed async navigation.
