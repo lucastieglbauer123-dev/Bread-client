@@ -837,7 +837,7 @@ impl DeviceTokenPair {
     }
 }
 
-const MICROSOFT_CLIENT_ID: &str = "00000000402b5328";
+const MICROSOFT_CLIENT_ID: &str = "c4502edb-87c6-40cb-b595-64a280cf8906";
 const AUTH_REPLY_URL: &str = "https://login.live.com/oauth20_desktop.srf";
 const REQUESTED_SCOPE: &str = "service::user.auth.xboxlive.com::MBI_SSL";
 pub const MINECRAFT_SERVICES_USER_AGENT: &str =
