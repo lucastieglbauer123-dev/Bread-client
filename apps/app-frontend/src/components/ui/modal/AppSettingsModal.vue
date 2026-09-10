@@ -4,7 +4,6 @@ import {
 	ChartIcon,
 	GaugeIcon,
 	LanguagesIcon,
-	ModrinthIcon,
 	PaintbrushIcon,
 	RefreshCwIcon,
 	Settings2Icon,
@@ -42,6 +41,7 @@ import {
 	type UnsavedChangesController,
 } from '@/providers/app-settings-modal'
 import { injectAppUpdateDownloadProgress } from '@/providers/download-progress.ts'
+import BreadLogo from '@/components/ui/BreadLogo.vue'
 
 // TODO: Apply COMPONENT_STRUCTURE.md here and extract out common setting option components
 const appSettings = useAppSettings()
@@ -345,7 +345,7 @@ const messages = defineMessages({
 						}"
 						@click="devModeCount"
 					>
-						<ModrinthIcon aria-hidden="true" class="w-6 h-6" />
+						<BreadLogo variant="sidebar" aria-hidden="true" class="bread-settings-footer-logo" />
 					</button>
 					<div class="max-w-[200px]">
 						<p class="m-0">
@@ -362,3 +362,19 @@ const messages = defineMessages({
 		</template>
 	</TabbedModal>
 </template>
+
+<style scoped>
+.bread-settings-footer-logo {
+	margin: 0;
+	font-size: 0.75rem;
+}
+
+.bread-settings-footer-logo :deep(.bread-logo__mark) {
+	width: 1.5rem;
+	height: 1.35rem;
+}
+
+.bread-settings-footer-logo :deep(.bread-logo__wordmark) {
+	display: none;
+}
+</style>

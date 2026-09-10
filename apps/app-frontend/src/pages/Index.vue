@@ -124,7 +124,25 @@ async function launchQuickstart(instance) {
 		class="bread-library-page flex flex-col gap-4 p-6"
 		@contextmenu="openPageContextMenu"
 	>
+		<section class="bread-home-intro" aria-labelledby="bread-home-title">
+			<div>
+				<p class="bread-home-intro__eyebrow">Bread workspace</p>
+				<h1 id="bread-home-title">Build your next world.</h1>
+				<p>Keep your instances, ideas, and adventures in one warm little home base.</p>
+			</div>
+			<div class="bread-home-intro__actions">
+				<span><strong>{{ instances.length }}</strong> worlds ready</span>
+				<Button type="colored" color="brand" size="sm" @click="showCreationModal?.()">
+					<PlusIcon /> New world
+				</Button>
+			</div>
+		</section>
 		<section v-if="instances.length" class="bread-quickstart" aria-label="Quick start">
+			<div class="bread-quickstart__heading">
+				<span>Quick launch</span>
+				<small>Jump straight into a world</small>
+			</div>
+			<div class="bread-quickstart__items">
 			<button
 				v-for="instance in instances.slice(0, 8)"
 				:key="instance.id"
@@ -136,6 +154,7 @@ async function launchQuickstart(instance) {
 			>
 				<Avatar :src="getInstanceIconUrl(instance.icon_path)" :tint-by="instance.id" size="40px" pad-transparent-corners />
 			</button>
+			</div>
 		</section>
 		<LibrarySection :instances="instances" :legacy="legacyUi" />
 		<section v-if="BREAD_PACK_OPTIONS.length" class="bread-pack-suggestions">
@@ -207,19 +226,105 @@ async function launchQuickstart(instance) {
 	min-height: 100%;
 	background:
 		linear-gradient(180deg, color-mix(in srgb, var(--bread-color-surface-panel) 30%, transparent), transparent 18rem),
-		var(--bread-color-surface);
+	var(--bread-color-surface);
+}
+
+.bread-home-intro {
+	display: flex;
+	align-items: flex-end;
+	justify-content: space-between;
+	gap: var(--bread-space-5);
+	padding: var(--bread-space-5);
+	border: 1px solid var(--bread-color-border-subtle);
+	border-radius: var(--bread-radius-xl);
+	background:
+		radial-gradient(circle at 88% 0%, color-mix(in srgb, var(--bread-color-brand) 18%, transparent), transparent 18rem),
+		linear-gradient(135deg, var(--bread-color-surface-panel), var(--bread-color-surface-subtle));
+	box-shadow: 0 1rem 2rem rgb(0 0 0 / 12%);
+}
+
+.bread-home-intro__eyebrow {
+	margin: 0 0 var(--bread-space-2);
+	color: var(--bread-color-brand-bright);
+	font-size: 0.68rem;
+	font-weight: 800;
+	letter-spacing: 0.16em;
+	text-transform: uppercase;
+}
+
+.bread-home-intro h1 {
+	margin: 0;
+	font-family: var(--bread-font-display);
+	font-size: clamp(1.8rem, 4vw, 2.75rem);
+	letter-spacing: -0.045em;
+}
+
+.bread-home-intro p:last-child {
+	margin: 0.4rem 0 0;
+	color: var(--bread-color-text-muted);
+	font-size: 0.9rem;
+}
+
+.bread-home-intro__actions {
+	display: flex;
+	align-items: flex-end;
+	flex-direction: column;
+	gap: var(--bread-space-3);
+	flex: 0 0 auto;
+	color: var(--bread-color-text-muted);
+	font-size: 0.75rem;
+	text-transform: uppercase;
+}
+
+.bread-home-intro__actions strong {
+	margin-right: 0.25rem;
+	color: var(--bread-color-text);
+	font-family: var(--bread-font-display);
+	font-size: 1.5rem;
+}
+
+.bread-home-intro__actions :deep(svg) {
+	width: 1rem;
+	height: 1rem;
 }
 
 .bread-quickstart {
 	display: flex;
-	align-items: center;
+	align-items: stretch;
 	gap: var(--bread-space-3);
-	min-height: 3rem;
+	min-height: 3.5rem;
 	padding: var(--bread-space-2) var(--bread-space-3);
 	border: 1px solid var(--bread-color-border-subtle);
 	border-radius: var(--bread-radius-lg);
 	background: color-mix(in srgb, var(--bread-color-surface-panel) 70%, transparent);
 	overflow-x: auto;
+}
+
+.bread-quickstart__heading {
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	min-width: 7rem;
+	padding-right: var(--bread-space-3);
+	border-right: 1px solid var(--bread-color-border-subtle);
+}
+
+.bread-quickstart__heading span {
+	color: var(--bread-color-text);
+	font-size: 0.8rem;
+	font-weight: 700;
+}
+
+.bread-quickstart__heading small {
+	margin-top: 0.15rem;
+	color: var(--bread-color-text-muted);
+	font-size: 0.65rem;
+}
+
+.bread-quickstart__items {
+	display: flex;
+	align-items: center;
+	gap: var(--bread-space-3);
 }
 
 .bread-quickstart__item {
@@ -346,6 +451,23 @@ async function launchQuickstart(instance) {
 @media (max-width: 800px) {
 	.bread-pack-suggestions__grid {
 		grid-template-columns: 1fr;
+	}
+}
+
+@media (max-width: 36rem) {
+	.bread-home-intro {
+		align-items: flex-start;
+		flex-direction: column;
+	}
+
+	.bread-home-intro__actions {
+		align-items: flex-start;
+		flex-direction: row;
+		flex-wrap: wrap;
+	}
+
+	.bread-quickstart__heading {
+		min-width: 5.5rem;
 	}
 }
 

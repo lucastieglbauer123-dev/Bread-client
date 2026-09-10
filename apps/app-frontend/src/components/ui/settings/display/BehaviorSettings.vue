@@ -279,6 +279,7 @@ onBeforeUnmount(() => {
 })
 </script>
 <template>
+	<div class="bread-behavior-settings">
 	<section class="border-0 border-b border-solid border-divider pb-6">
 		<div class="flex items-center justify-between gap-4">
 			<div>
@@ -430,4 +431,31 @@ onBeforeUnmount(() => {
 			</div>
 		</div>
 	</section>
+	</div>
 </template>
+
+<style scoped>
+.bread-behavior-settings {
+	display: grid;
+	gap: 1rem;
+}
+
+.bread-behavior-settings :deep(section) {
+	margin-top: 0;
+	padding: 1.25rem;
+	border: 1px solid var(--bread-color-border-subtle);
+	border-radius: var(--bread-radius-xl);
+	background: var(--bread-color-surface-panel);
+}
+
+.bread-behavior-settings :deep(section > div) {
+	gap: 0.75rem;
+}
+
+.bread-behavior-settings :deep(section > div > div) {
+	padding: 0.75rem;
+	border: 1px solid var(--bread-color-border-subtle);
+	border-radius: var(--bread-radius-md);
+	background: var(--bread-color-surface-subtle);
+}
+</style>

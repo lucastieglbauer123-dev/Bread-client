@@ -30,6 +30,10 @@
 				ref="sharedInstanceReportModal"
 				@reported="handleSharedInstanceReported"
 			/>
+			<div class="bread-instance-context" aria-label="Instance workspace">
+				<span>Instance workspace</span>
+				<strong>{{ instance.loader }} · {{ instance.game_version }}</strong>
+			</div>
 			<InstancePageHeader
 				:instance="instance"
 				:icon-src="icon"
@@ -968,6 +972,26 @@ onUnmounted(() => {
 	border-bottom: 1px solid var(--bread-color-border-subtle);
 }
 
+.bread-instance-context {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 1rem;
+	margin-bottom: var(--bread-space-3);
+	padding: 0.35rem 0;
+	color: var(--bread-color-text-subtle);
+	font-size: 0.68rem;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+}
+
+.bread-instance-context strong {
+	color: var(--bread-color-brand-bright);
+	font-size: 0.72rem;
+	letter-spacing: 0.04em;
+	text-transform: none;
+}
+
 .bread-instance-header-wrap :deep(.bread-instance-header) {
 	padding-bottom: var(--bread-space-5);
 	border-bottom-color: transparent;
@@ -1058,6 +1082,7 @@ onUnmounted(() => {
 
 .bread-instance-body {
 	padding-bottom: var(--bread-space-12);
+	background: linear-gradient(180deg, color-mix(in srgb, var(--bread-color-surface-panel) 25%, transparent), transparent 14rem);
 }
 
 .bread-instance-body :deep(.content-table),

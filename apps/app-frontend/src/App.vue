@@ -2185,11 +2185,13 @@ provideAppUpdateDownloadProgress(appUpdateDownload)
 		<div
 			class="app-grid-navbar bg-bg-raised flex flex-col p-[0.5rem] pt-0 gap-[0.25rem] w-[--left-bar-width]"
 		>
-			<BreadLogo variant="sidebar" class="bread-sidebar-logo" />
-			<div class="bread-account-selector">
-				<suspense>
-					<AccountsCard ref="accounts" />
-				</suspense>
+			<div class="bread-sidebar-identity">
+				<BreadLogo variant="sidebar" class="bread-sidebar-logo" />
+				<div class="bread-account-selector">
+					<suspense>
+						<AccountsCard ref="accounts" />
+					</suspense>
+				</div>
 			</div>
 			<nav class="bread-sidebar-navigation" aria-label="Main navigation">
 				<section class="bread-sidebar-nav-group bread-sidebar-nav-group--primary">
@@ -2374,7 +2376,10 @@ provideAppUpdateDownloadProgress(appUpdateDownload)
 						/>
 					</IconButton>
 				</div>
-				<Breadcrumbs />
+				<div class="bread-topbar-context" data-tauri-drag-region>
+					<span class="bread-topbar-context__eyebrow">Bread workspace</span>
+					<Breadcrumbs />
+				</div>
 			</div>
 			<section data-tauri-drag-region class="flex shrink-0 ml-auto items-center">
 				<IconButton
@@ -2602,7 +2607,7 @@ provideAppUpdateDownloadProgress(appUpdateDownload)
 .app-grid-layout,
 .app-contents {
 	--top-bar-height: 3.25rem;
-	--left-bar-width: 15.25rem;
+	--left-bar-width: 16rem;
 	--right-bar-width: 18rem;
 }
 
@@ -2629,6 +2634,12 @@ provideAppUpdateDownloadProgress(appUpdateDownload)
 	border-right: 1px solid var(--bread-color-border-subtle);
 	background: linear-gradient(180deg, var(--bread-color-surface-panel), var(--bread-color-surface-muted));
 	box-shadow: inset -1px 0 rgb(255 239 218 / 3%);
+}
+
+.bread-sidebar-identity {
+	display: flex;
+	flex-direction: column;
+	gap: var(--bread-space-3);
 }
 
 .app-grid-statusbar {
@@ -2899,7 +2910,7 @@ provideAppUpdateDownloadProgress(appUpdateDownload)
 }
 
 .bread-account-selector {
-	margin-bottom: var(--bread-space-4);
+	margin-bottom: var(--bread-space-2);
 	padding: 0.25rem;
 	border: 1px solid var(--bread-color-border-subtle);
 	border-radius: var(--bread-radius-lg);
@@ -2924,6 +2935,31 @@ provideAppUpdateDownloadProgress(appUpdateDownload)
 
 .bread-account-selector :deep(.text-secondary) {
 	color: var(--bread-color-text-subtle);
+}
+
+.bread-topbar-context {
+	display: flex;
+	min-width: 0;
+	align-items: center;
+	gap: var(--bread-space-3);
+}
+
+.bread-topbar-context__eyebrow {
+	flex: 0 0 auto;
+	padding: 0.3rem 0.55rem;
+	border: 1px solid var(--bread-color-border-subtle);
+	border-radius: var(--bread-radius-pill);
+	background: color-mix(in srgb, var(--bread-color-brand) 10%, transparent);
+	color: var(--bread-color-brand-bright);
+	font-size: 0.62rem;
+	font-weight: 800;
+	letter-spacing: 0.12em;
+	line-height: 1;
+	text-transform: uppercase;
+}
+
+.bread-topbar-context :deep(.breadcrumbs) {
+	min-width: 0;
 }
 
 .bread-sidebar-footer .bread-nav-button {
@@ -3106,10 +3142,13 @@ provideAppUpdateDownloadProgress(appUpdateDownload)
 .bread-route-shell {
 	position: relative;
 	min-height: 100%;
-	padding: var(--bread-space-4);
+	padding: var(--bread-space-5);
 	background:
+		linear-gradient(90deg, color-mix(in srgb, var(--bread-color-brand) 5%, transparent) 1px, transparent 1px),
+		linear-gradient(color-mix(in srgb, var(--bread-color-brand) 5%, transparent) 1px, transparent 1px),
 		radial-gradient(circle at 84% 4%, color-mix(in srgb, var(--bread-color-brand) 11%, transparent), transparent 24rem),
 		var(--bread-color-surface);
+	background-size: 4rem 4rem, 4rem 4rem, auto, auto;
 }
 
 .bread-route-shell__content {
@@ -3120,6 +3159,18 @@ provideAppUpdateDownloadProgress(appUpdateDownload)
 	background: color-mix(in srgb, var(--bread-color-surface) 92%, transparent);
 	box-shadow: 0 1.25rem 3rem rgb(0 0 0 / 12%);
 	overflow: clip;
+	animation: bread-route-arrive 360ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes bread-route-arrive {
+	from {
+		opacity: 0;
+		transform: translateY(0.4rem);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
 }
 
 .bread-route-loading {

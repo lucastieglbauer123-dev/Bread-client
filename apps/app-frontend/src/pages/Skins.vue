@@ -1088,10 +1088,17 @@ async function checkUserChanges() {
 			<SpinnerIcon class="animate-spin" />
 			<span>Preparing your skin wardrobe…</span>
 		</div>
-		<div class="sticky top-6 self-start p-2 pt-0">
-			<h1 class="m-0 text-2xl font-bold flex items-center gap-2">
-				{{ formatMessage(appMessages.skinSelectorLabel) }}
-			</h1>
+		<header class="skin-wardrobe-header">
+			<div>
+				<p class="skin-wardrobe-header__eyebrow">Personal loadout</p>
+				<h1>{{ formatMessage(appMessages.skinSelectorLabel) }}</h1>
+				<p>Preview, tune, and save the look you carry into every world.</p>
+			</div>
+			<span class="skin-wardrobe-header__status">{{ skins.length }} looks</span>
+		</header>
+		<div class="skin-layout__grid">
+		<section class="skin-layout__preview-column">
+			<h2 class="skin-layout__panel-title">Preview</h2>
 			<div
 				class="ml-5 mt-4 flex h-[calc(80vh-1rem)] items-center justify-center max-[700px]:h-[calc(50vh-1rem)]"
 			>
@@ -1248,9 +1255,9 @@ async function checkUserChanges() {
 					</template>
 				</SkinPreviewRenderer>
 			</div>
-		</div>
+		</section>
 
-		<div class="pt-2">
+		<section class="skin-layout__collection-column pt-2">
 			<VirtualSkinSectionList
 				ref="skinSectionList"
 				:saved-skins="savedSkins"
@@ -1270,6 +1277,7 @@ async function checkUserChanges() {
 				@add-skin-dragleave="onAddSkinDragLeave"
 				@add-skin-drop="onAddSkinDrop"
 			/>
+		</section>
 		</div>
 	</div>
 
@@ -1372,20 +1380,112 @@ async function checkUserChanges() {
 
 .skin-layout {
 	position: relative;
-	display: grid;
-	grid-template-columns: minmax(0, 1fr) minmax(0, 2.5fr);
-	gap: 2.5rem;
+	display: flex;
+	flex-direction: column;
+	gap: var(--bread-space-5);
 	min-height: 100%;
 	background: var(--bread-color-surface);
 	color: var(--bread-color-text);
 
-	h1 {
+	h1,
+	h2 {
 		font-family: var(--bread-font-display);
 		letter-spacing: -0.03em;
 	}
 
 	@media (max-width: 700px) {
+		gap: var(--bread-space-4);
+	}
+}
+
+.skin-wardrobe-header {
+	display: flex;
+	align-items: flex-end;
+	justify-content: space-between;
+	gap: var(--bread-space-5);
+	padding: var(--bread-space-5);
+	border: 1px solid var(--bread-color-border-subtle);
+	border-radius: var(--bread-radius-xl);
+	background:
+		radial-gradient(circle at 88% 0%, color-mix(in srgb, var(--bread-color-brand) 17%, transparent), transparent 15rem),
+		var(--bread-color-surface-panel);
+}
+
+.skin-wardrobe-header h1,
+.skin-wardrobe-header p {
+	margin: 0;
+}
+
+.skin-wardrobe-header h1 {
+	font-size: clamp(1.7rem, 4vw, 2.35rem);
+}
+
+.skin-wardrobe-header > div > p:last-child {
+	margin-top: 0.35rem;
+	color: var(--bread-color-text-muted);
+	font-size: 0.86rem;
+}
+
+.skin-wardrobe-header__eyebrow {
+	margin-bottom: var(--bread-space-2) !important;
+	color: var(--bread-color-brand-bright);
+	font-size: 0.65rem;
+	font-weight: 800;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+}
+
+.skin-wardrobe-header__status {
+	padding: 0.35rem 0.6rem;
+	border: 1px solid var(--bread-color-border);
+	border-radius: var(--bread-radius-pill);
+	color: var(--bread-color-text-muted);
+	font-size: 0.75rem;
+}
+
+.skin-layout__grid {
+	display: grid;
+	grid-template-columns: minmax(16rem, 0.85fr) minmax(0, 2.15fr);
+	gap: var(--bread-space-5);
+}
+
+.skin-layout__preview-column,
+.skin-layout__collection-column {
+	min-width: 0;
+	padding: var(--bread-space-4);
+	border: 1px solid var(--bread-color-border-subtle);
+	border-radius: var(--bread-radius-xl);
+	background: var(--bread-color-surface-panel);
+}
+
+.skin-layout__preview-column {
+	position: sticky;
+	top: var(--bread-space-5);
+}
+
+.skin-layout__panel-title {
+	margin: 0;
+	color: var(--bread-color-text);
+	font-size: 1rem;
+}
+
+.skin-layout__collection-column {
+	padding-top: var(--bread-space-5);
+}
+
+@media (max-width: 700px) {
+	.skin-layout__grid {
 		grid-template-columns: 1fr;
+	}
+
+	.skin-layout__preview-column {
+		position: relative;
+		top: auto;
+	}
+
+	.skin-wardrobe-header {
+		align-items: flex-start;
+		flex-direction: column;
 	}
 }
 </style>

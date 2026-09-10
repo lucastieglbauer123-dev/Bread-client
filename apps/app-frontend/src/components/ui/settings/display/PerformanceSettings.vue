@@ -132,7 +132,7 @@ async function clearCache(): Promise<void> {
 </script>
 
 <template>
-	<div class="flex flex-col gap-8">
+	<div class="bread-performance-settings flex flex-col gap-8">
 		<section class="flex flex-col gap-4">
 			<div>
 				<h2 class="m-0 text-lg font-semibold text-contrast">{{ formatMessage(messages.startupTitle) }}</h2>
@@ -191,3 +191,21 @@ async function clearCache(): Promise<void> {
 		</section>
 	</div>
 </template>
+
+<style scoped>
+.bread-performance-settings :deep(section) {
+	padding: 1.25rem;
+	border: 1px solid var(--bread-color-border-subtle);
+	border-radius: var(--bread-radius-xl);
+	background: var(--bread-color-surface-panel);
+}
+
+.bread-performance-settings :deep(section + section) {
+	border-top: 1px solid var(--bread-color-border-subtle);
+}
+
+.bread-performance-settings :deep(.bread-performance-toggle-row),
+.bread-performance-settings :deep(section > div > div) {
+	background: var(--bread-color-surface-subtle);
+}
+</style>

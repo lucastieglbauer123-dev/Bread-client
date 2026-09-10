@@ -1440,22 +1440,32 @@ provideBrowseManager({
 		class="bread-browse-page flex flex-col gap-2 p-6"
 		:class="{ 'bread-browse-page--installing': !!installContext }"
 	>
-		<div v-if="projectType === 'mod'" class="flex items-center gap-2">
-			<Button
-				:type="contentSource === 'modrinth' ? 'colored' : 'outlined'"
-				color="brand"
-				@click="setContentSource('modrinth')"
-			>
-				Modrinth
-			</Button>
-			<Button
-				:type="contentSource === 'curseforge' ? 'colored' : 'outlined'"
-				color="brand"
-				@click="setContentSource('curseforge')"
-			>
-				CurseForge
-			</Button>
-		</div>
+		<header class="bread-browse-header">
+			<div>
+				<p class="bread-browse-header__eyebrow">Discovery deck</p>
+				<h1>Find your next build.</h1>
+				<p>Browse projects, compare versions, and shape the world you want to play.</p>
+			</div>
+			<div v-if="projectType === 'mod'" class="bread-browse-source-switch" role="group" aria-label="Content source">
+				<span>Source</span>
+				<div>
+					<Button
+						:type="contentSource === 'modrinth' ? 'colored' : 'outlined'"
+						color="brand"
+						@click="setContentSource('modrinth')"
+					>
+						Modrinth
+					</Button>
+					<Button
+						:type="contentSource === 'curseforge' ? 'colored' : 'outlined'"
+						color="brand"
+						@click="setContentSource('curseforge')"
+					>
+						CurseForge
+					</Button>
+				</div>
+			</div>
+		</header>
 		<BrowsePageLayout>
 			<template #after>
 				<ContextMenu ref="contextMenuRef" :label="formatMessage(messages.projectActionsLabel)">
@@ -1486,6 +1496,65 @@ provideBrowseManager({
 </template>
 
 <style scoped>
+.bread-browse-header {
+	display: flex;
+	align-items: flex-end;
+	justify-content: space-between;
+	gap: var(--bread-space-5);
+	margin-bottom: var(--bread-space-3);
+	padding: var(--bread-space-5);
+	border: 1px solid var(--bread-color-border-subtle);
+	border-radius: var(--bread-radius-xl);
+	background:
+		radial-gradient(circle at 100% 0%, color-mix(in srgb, var(--bread-color-brand) 16%, transparent), transparent 18rem),
+		var(--bread-color-surface-panel);
+}
+
+.bread-browse-header h1,
+.bread-browse-header p {
+	margin: 0;
+}
+
+.bread-browse-header h1 {
+	font-family: var(--bread-font-display);
+	font-size: clamp(1.6rem, 3vw, 2.2rem);
+	letter-spacing: -0.04em;
+}
+
+.bread-browse-header > div:first-child > p:last-child {
+	margin-top: 0.35rem;
+	color: var(--bread-color-text-muted);
+	font-size: 0.86rem;
+}
+
+.bread-browse-header__eyebrow,
+.bread-browse-source-switch > span {
+	margin-bottom: var(--bread-space-2) !important;
+	color: var(--bread-color-brand-bright);
+	font-size: 0.65rem;
+	font-weight: 800;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+}
+
+.bread-browse-source-switch {
+	display: flex;
+	align-items: flex-end;
+	flex-direction: column;
+	gap: 0.35rem;
+	flex: 0 0 auto;
+}
+
+.bread-browse-source-switch > div {
+	display: flex;
+	gap: 0.4rem;
+}
+
+.bread-browse-source-switch :deep([data-button]) {
+	min-height: 2.35rem;
+	border-radius: var(--bread-radius-md);
+}
+
 /* The install header belongs below the source switcher. Keeping it in normal
  * flow prevents the sticky negative margin from covering the app chrome or
  * cutting off its title/tabs while content is being installed. */
@@ -1497,5 +1566,16 @@ provideBrowseManager({
 
 .bread-browse-page--installing :deep([data-page-header]) {
 	min-width: 0;
+}
+
+@media (max-width: 42rem) {
+	.bread-browse-header {
+		align-items: flex-start;
+		flex-direction: column;
+	}
+
+	.bread-browse-source-switch {
+		align-items: flex-start;
+	}
 }
 </style>

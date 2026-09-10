@@ -9,6 +9,7 @@ export const BREAD_CHANGELOG: ChangelogEntry[] = [
 	{
 		date: '2026-09-10',
 		items: [
+			'Rebuilt the launcher workspace around a framed Bread dashboard with distinct discovery, wardrobe, activity, instance, and settings surfaces.',
 			'Introduced a framed Bread workspace shell with animated route transitions and recovery after failed async navigation.',
 			'Navigation failures now keep the last working screen interactive and offer an in-place retry instead of leaving a blank GUI.',
 			'Crash report discovery now reads metadata-only logs, tolerates unsupported files, and recognizes crash filenames reliably.',
