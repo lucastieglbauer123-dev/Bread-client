@@ -914,6 +914,8 @@ let suspenseToken = null
 const navigationError = ref(null)
 
 let suspensePending = false
+let navigationGeneration = 0
+let suspenseGeneration = 0
 
 const sidebarOverlayScrollbarsOptions = Object.freeze({
 	overflow: {
@@ -923,12 +925,15 @@ const sidebarOverlayScrollbarsOptions = Object.freeze({
 })
 
 router.beforeEach(() => {
+	navigationGeneration += 1
 	suspensePending = false
+	suspenseGeneration = navigationGeneration
 	navigationError.value = null
 	if (routerToken) loading.end(routerToken)
 	routerToken = loading.begin()
 })
 router.afterEach((to, from, failure) => {
+	const completedGeneration = navigationGeneration
 	updateHistoryNavigationState()
 	trackEvent('PageView', {
 		path: to.path,
@@ -937,6 +942,7 @@ router.afterEach((to, from, failure) => {
 	})
 	setTimeout(() => {
 		if (!suspensePending && stateInitialized.value) {
+			if (completedGeneration !== navigationGeneration) return
 			if (initialLoadToken) {
 				loading.end(initialLoadToken)
 				initialLoadToken = null
@@ -950,6 +956,7 @@ router.afterEach((to, from, failure) => {
 })
 
 router.onError((error) => {
+	navigationGeneration += 1
 	console.error('Navigation failed', error)
 	navigationError.value = error instanceof Error ? error.message : 'This screen could not be opened.'
 	if (initialLoadToken) {
@@ -968,12 +975,15 @@ router.onError((error) => {
 })
 
 function onSuspensePending() {
+	suspenseGeneration = navigationGeneration
 	suspensePending = true
 	if (suspenseToken) loading.end(suspenseToken)
 	suspenseToken = loading.begin()
 }
 
 function onSuspenseResolve() {
+	if (suspenseGeneration !== navigationGeneration) return
+	suspensePending = false
 	if (suspenseToken) {
 		loading.end(suspenseToken)
 		suspenseToken = null
@@ -2455,7 +2465,11 @@ provideAppUpdateDownloadProgress(appUpdateDownload)
 					</div>
 					<RouterView v-slot="{ Component }">
 						<template v-if="Component">
-							<Suspense @pending="onSuspensePending" @resolve="onSuspenseResolve">
+							<Suspense
+								:key="route.fullPath"
+								@pending="onSuspensePending"
+								@resolve="onSuspenseResolve"
+							>
 								<template #fallback>
 									<div class="bread-route-loading" role="status">
 										<SpinnerIcon class="animate-spin" />
