@@ -39,7 +39,7 @@ pub mod download;
 pub mod quick_play_version;
 
 const BREAD_TITLE_SCREEN_MARKER: &str = "META-INF/bread-title-screen";
-const BREAD_TITLE_SCREEN_MARKER_CONTENT: &[u8] = b"Bread Client title screen v2";
+const BREAD_TITLE_SCREEN_MARKER_CONTENT: &[u8] = b"Bread Client title screen v3";
 
 /// Embed Bread's title artwork directly into the downloaded Minecraft client jar.
 /// This keeps the branding active for every launch without exposing a removable

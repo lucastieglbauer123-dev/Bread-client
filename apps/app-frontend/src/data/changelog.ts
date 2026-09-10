@@ -10,6 +10,7 @@ export const BREAD_CHANGELOG: ChangelogEntry[] = [
 		date: '2026-09-10',
 		items: [
 			'Added Breadbound, a larger verified Fabric pack for performance, shaders, navigation, and quality-of-life tools.',
+			'Existing Minecraft installations now refresh their Bread title artwork when the logo assets are updated.',
 			'Rebuilt the launcher workspace around a framed Bread dashboard with distinct discovery, wardrobe, activity, instance, and settings surfaces.',
 			'Introduced a framed Bread workspace shell with animated route transitions and recovery after failed async navigation.',
 			'Navigation failures now keep the last working screen interactive and offer an in-place retry instead of leaving a blank GUI.',

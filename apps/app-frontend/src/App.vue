@@ -984,7 +984,7 @@ router.onError((error) => {
 })
 
 
-function onSuspensePending(routeKey: string) {
+function onSuspensePending(routeKey) {
 	if (routeKey !== activeRouteKey) return
 	suspenseGeneration = navigationGeneration
 	suspensePending = true
@@ -992,7 +992,7 @@ function onSuspensePending(routeKey: string) {
 	suspenseToken = loading.begin()
 }
 
-function onSuspenseResolve(routeKey: string) {
+function onSuspenseResolve(routeKey) {
 	if (routeKey !== activeRouteKey || suspenseGeneration !== navigationGeneration) return
 	suspensePending = false
 	if (suspenseToken) {
