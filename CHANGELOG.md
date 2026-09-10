@@ -3,6 +3,7 @@
 ## 2026-09-10
 
 - Introduced a framed Bread workspace shell with animated route transitions and recovery after failed async navigation.
+- Navigation failures now keep the last working screen interactive and offer an in-place retry instead of leaving a blank GUI.
 
 ## 2026-09-09
 

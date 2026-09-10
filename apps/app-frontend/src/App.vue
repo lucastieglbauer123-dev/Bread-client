@@ -911,6 +911,7 @@ loading.setEnabled(false)
 let initialLoadToken = loading.begin()
 let routerToken = null
 let suspenseToken = null
+const navigationError = ref(null)
 
 let suspensePending = false
 
@@ -923,6 +924,7 @@ const sidebarOverlayScrollbarsOptions = Object.freeze({
 
 router.beforeEach(() => {
 	suspensePending = false
+	navigationError.value = null
 	if (routerToken) loading.end(routerToken)
 	routerToken = loading.begin()
 })
@@ -949,6 +951,7 @@ router.afterEach((to, from, failure) => {
 
 router.onError((error) => {
 	console.error('Navigation failed', error)
+	navigationError.value = error instanceof Error ? error.message : 'This screen could not be opened.'
 	if (initialLoadToken) {
 		loading.end(initialLoadToken)
 		initialLoadToken = null
@@ -2443,9 +2446,22 @@ provideAppUpdateDownloadProgress(appUpdateDownload)
 					<span class="bread-route-shell__rail-line"></span>
 				</div>
 				<div class="bread-route-shell__content">
+					<div v-if="navigationError" class="bread-route-error" role="alert">
+						<div>
+							<strong>That screen could not be opened.</strong>
+							<p>{{ navigationError }}</p>
+						</div>
+						<button type="button" @click="router.replace(route.fullPath)">Try again</button>
+					</div>
 					<RouterView v-slot="{ Component }">
 						<template v-if="Component">
 							<Suspense @pending="onSuspensePending" @resolve="onSuspenseResolve">
+								<template #fallback>
+									<div class="bread-route-loading" role="status">
+										<SpinnerIcon class="animate-spin" />
+										<span>Preparing your workspace…</span>
+									</div>
+								</template>
 								<Transition name="bread-route" mode="out-in">
 									<KeepAlive include="LibraryPage">
 										<component :is="Component" :key="route.fullPath"></component>
@@ -3090,6 +3106,58 @@ provideAppUpdateDownloadProgress(appUpdateDownload)
 	background: color-mix(in srgb, var(--bread-color-surface) 92%, transparent);
 	box-shadow: 0 1.25rem 3rem rgb(0 0 0 / 12%);
 	overflow: clip;
+}
+
+.bread-route-loading {
+	min-height: 18rem;
+	display: grid;
+	place-items: center;
+	align-content: center;
+	gap: 0.65rem;
+	color: var(--bread-color-text-muted);
+	font-size: 0.9rem;
+}
+
+.bread-route-loading svg {
+	width: 1.5rem;
+	color: var(--bread-color-brand-bright);
+}
+
+.bread-route-error {
+	position: relative;
+	z-index: 3;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 1rem;
+	margin: var(--bread-space-4) var(--bread-space-4) 0;
+	padding: 0.85rem 1rem;
+	border: 1px solid color-mix(in srgb, var(--bread-color-danger) 55%, transparent);
+	border-radius: var(--bread-radius-md);
+	background: color-mix(in srgb, var(--bread-color-danger) 9%, var(--bread-color-surface-panel));
+	color: var(--bread-color-text-primary);
+}
+
+.bread-route-error p {
+	margin: 0.2rem 0 0;
+	color: var(--bread-color-text-muted);
+	font-size: 0.8rem;
+}
+
+.bread-route-error button {
+	flex: 0 0 auto;
+	padding: 0.45rem 0.75rem;
+	border: 1px solid var(--bread-color-border);
+	border-radius: var(--bread-radius-sm);
+	background: var(--bread-color-surface-raised);
+	color: var(--bread-color-text-primary);
+	font-weight: 700;
+	cursor: pointer;
+}
+
+.bread-route-error button:hover {
+	border-color: var(--bread-color-brand);
+	transform: translateY(-1px);
 }
 
 .bread-route-shell__rail {
