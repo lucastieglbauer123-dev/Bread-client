@@ -9,6 +9,7 @@ export const BREAD_CHANGELOG: ChangelogEntry[] = [
 	{
 		date: '2026-09-10',
 		items: [
+			'Fixed Microsoft login callback capture for both Azure-registered redirect URIs and matched the token exchange to the returned authorization URI.',
 			'Added Breadbound, a larger verified Fabric pack for performance, shaders, navigation, and quality-of-life tools.',
 			'Existing Minecraft installations now refresh their Bread title artwork when the logo assets are updated.',
 			'Rebuilt the launcher workspace around a framed Bread dashboard with distinct discovery, wardrobe, activity, instance, and settings surfaces.',

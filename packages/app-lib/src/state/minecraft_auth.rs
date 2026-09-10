@@ -105,6 +105,7 @@ pub struct MinecraftLoginFlow {
     pub challenge: String,
     pub session_id: String,
     pub auth_request_uri: String,
+    pub redirect_uri: String,
 }
 
 #[tracing::instrument]
@@ -127,11 +128,27 @@ pub async fn login_begin(
     .await
     {
         Ok((session_id, redirect_uri)) => {
+            let auth_request_uri = redirect_uri.value.msa_oauth_redirect;
+            let redirect_uri = extract_registered_redirect_uri(&auth_request_uri)
+                .unwrap_or_else(|| {
+                    tracing::warn!(
+                        "Microsoft authorization URL did not contain one of the registered redirect URIs; falling back to {AUTH_REPLY_URL}"
+                    );
+                    AUTH_REPLY_URL
+                })
+                .to_string();
+
+            tracing::info!(
+                redirect_uri = %redirect_uri,
+                "Microsoft login authorization redirect URI"
+            );
+
             return Ok(MinecraftLoginFlow {
                 verifier,
                 challenge,
                 session_id,
-                auth_request_uri: redirect_uri.value.msa_oauth_redirect,
+                auth_request_uri,
+                redirect_uri,
             });
         }
         Err(err) => return Err(crate::ErrorKind::from(err).into()),
@@ -147,7 +164,8 @@ pub async fn login_finish(
     let (pair, _) =
         DeviceTokenPair::refresh_and_get_device_token(Utc::now(), exec).await?;
 
-    let oauth_token = oauth_token(code, &flow.verifier).await?;
+    let oauth_token =
+        oauth_token(code, &flow.verifier, &flow.redirect_uri).await?;
     let sisu_authorize = sisu_authorize(
         Some(&flow.session_id),
         &oauth_token.value.access_token,
@@ -820,7 +838,10 @@ impl DeviceTokenPair {
 }
 
 const MICROSOFT_CLIENT_ID: &str = "a1dcd8d3-3e91-4f08-bfac-7f86b9f6bbd4";
+const LOOPBACK_AUTH_REPLY_URL: &str = "http://localhost";
 const AUTH_REPLY_URL: &str = "https://login.live.com/oauth20_desktop.srf";
+const REGISTERED_AUTH_REPLY_URLS: [&str; 2] =
+    [LOOPBACK_AUTH_REPLY_URL, AUTH_REPLY_URL];
 const REQUESTED_SCOPE: &str = "service::user.auth.xboxlive.com::MBI_SSL";
 pub const MINECRAFT_SERVICES_USER_AGENT: &str =
     "Modrinth App (support@modrinth.com; https://modrinth.com/app)";
@@ -884,6 +905,20 @@ pub async fn device_token(
 #[serde(rename_all = "PascalCase")]
 struct RedirectUri {
     pub msa_oauth_redirect: String,
+}
+
+fn extract_registered_redirect_uri(
+    auth_request_uri: &str,
+) -> Option<&'static str> {
+    let auth_request_uri = Url::parse(auth_request_uri).ok()?;
+    let redirect_uri = auth_request_uri
+        .query_pairs()
+        .find(|(key, _)| key == "redirect_uri")
+        .map(|(_, value)| value.into_owned())?;
+
+    REGISTERED_AUTH_REPLY_URLS
+        .into_iter()
+        .find(|registered| *registered == redirect_uri)
 }
 
 #[tracing::instrument(skip(key))]
@@ -952,13 +987,14 @@ struct OAuthToken {
 async fn oauth_token(
     code: &str,
     verifier: &str,
+    redirect_uri: &str,
 ) -> Result<RequestWithDate<OAuthToken>, MinecraftAuthenticationError> {
     let mut query = HashMap::new();
     query.insert("client_id", MICROSOFT_CLIENT_ID);
     query.insert("code", code);
     query.insert("code_verifier", verifier);
     query.insert("grant_type", "authorization_code");
-    query.insert("redirect_uri", AUTH_REPLY_URL);
+    query.insert("redirect_uri", redirect_uri);
     query.insert("scope", REQUESTED_SCOPE);
 
     let res = auth_retry(|| {
