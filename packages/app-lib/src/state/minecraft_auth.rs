@@ -837,11 +837,8 @@ impl DeviceTokenPair {
     }
 }
 
-const MICROSOFT_CLIENT_ID: &str = "c4502edb-87c6-40cb-b595-64a280cf8906";
-const LOOPBACK_AUTH_REPLY_URL: &str = "http://localhost";
+const MICROSOFT_CLIENT_ID: &str = "00000000402b5328";
 const AUTH_REPLY_URL: &str = "https://login.live.com/oauth20_desktop.srf";
-const REGISTERED_AUTH_REPLY_URLS: [&str; 2] =
-    [LOOPBACK_AUTH_REPLY_URL, AUTH_REPLY_URL];
 const REQUESTED_SCOPE: &str = "service::user.auth.xboxlive.com::MBI_SSL";
 pub const MINECRAFT_SERVICES_USER_AGENT: &str =
     "Modrinth App (support@modrinth.com; https://modrinth.com/app)";
@@ -919,11 +916,9 @@ fn extract_registered_redirect_uri(
             .query_pairs()
             .find(|(key, _)| key == "redirect_uri")
             .map(|(_, value)| value.into_owned())
-            && let Some(registered) = REGISTERED_AUTH_REPLY_URLS
-                .into_iter()
-                .find(|registered| *registered == redirect_uri)
+            && redirect_uri == AUTH_REPLY_URL
         {
-            return Some(registered);
+            return Some(AUTH_REPLY_URL);
         }
 
         for (_, value) in url.query_pairs() {
