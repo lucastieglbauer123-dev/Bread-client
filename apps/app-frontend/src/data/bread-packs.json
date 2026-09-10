@@ -52,5 +52,36 @@
 			"create-fly",
 			"inventory-profiles-next"
 		]
+	},
+	{
+		"id": "breadbound",
+		"name": "Breadbound",
+		"description": "A full-featured Fabric setup with performance, shaders, navigation, and deep quality-of-life tools.",
+		"slugs": [
+			"sodium",
+			"lithium",
+			"ferrite-core",
+			"modmenu",
+			"iris",
+			"entityculling",
+			"lambdynamiclights",
+			"continuity",
+			"immediatelyfast",
+			"c2me-fabric",
+			"krypton",
+			"debugify",
+			"dynamiccrosshair",
+			"ping-display",
+			"appleskin",
+			"jade",
+			"mouse-tweaks",
+			"shulkerboxtooltip",
+			"betterf3",
+			"xaeros-minimap",
+			"inventory-profiles-next",
+			"reeses-sodium-options",
+			"sodium-extra",
+			"zoomify"
+		]
 	}
 ]

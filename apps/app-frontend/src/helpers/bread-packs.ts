@@ -67,7 +67,16 @@ const modReasons: Record<string, string> = {
 	'xaeros-minimap': 'Adds a detailed minimap with entities, terrain, and waypoints.',
 	'xaeros-world-map': 'Adds a full-screen map of explored terrain and dimensions.',
 	'create-fly': 'Brings Create-style automation content to newer Fabric releases.',
-	'inventory-profiles-next': 'Sorts inventories, moves matching items, and manages gear sets.',
+	immediatelyfast: 'Speeds up common rendering and interface paths.',
+	'c2me-fabric': 'Parallelizes chunk generation and loading for larger worlds.',
+	krypton: 'Reduces network overhead while preserving vanilla behavior.',
+	debugify: 'Fixes known vanilla bugs in the current Minecraft version.',
+	betterf3: 'Replaces the debug overlay with a clearer, configurable layout.',
+	'xaeros-minimap': 'Adds a dependable minimap for navigation and waypoints.',
+	'inventory-profiles-next': 'Saves inventory layouts and streamlines sorting.',
+	'reeses-sodium-options': 'Makes Sodium’s video settings easier to navigate.',
+	'sodium-extra': 'Adds extra performance and visual controls to Sodium.',
+	zoomify: 'Provides a configurable, smooth zoom for exploration and building.',
 }
 
 export const BREAD_PACKS: BreadPackDefinition[] = packDefinitions
