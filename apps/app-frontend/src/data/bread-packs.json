@@ -30,5 +30,27 @@
 		"name": "Quality of Life",
 		"description": "Small, practical improvements for food, storage, crafting, and exploration.",
 		"slugs": ["appleskin", "jade", "emi", "mouse-tweaks", "shulkerboxtooltip"]
+	},
+	{
+		"id": "bread-deluxe",
+		"name": "Bread Deluxe",
+		"description": "A genuinely loaded all-rounder with maps, travel, automation, inventory tools, shaders, and performance polish.",
+		"slugs": [
+			"sodium",
+			"lithium",
+			"ferrite-core",
+			"iris",
+			"entityculling",
+			"lambdynamiclights",
+			"continuity",
+			"appleskin",
+			"jade",
+			"emi",
+			"waystones",
+			"xaeros-minimap",
+			"xaeros-world-map",
+			"create-fly",
+			"inventory-profiles-next"
+		]
 	}
 ]

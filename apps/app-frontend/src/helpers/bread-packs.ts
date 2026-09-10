@@ -63,6 +63,11 @@ const modReasons: Record<string, string> = {
 	emi: 'Provides a fast, searchable item and recipe viewer.',
 	'mouse-tweaks': 'Makes moving and sorting inventory items quicker and easier.',
 	shulkerboxtooltip: 'Previews shulker box contents directly in your inventory.',
+	waystones: 'Adds craftable waystones and scrolls for survival-friendly travel.',
+	'xaeros-minimap': 'Adds a detailed minimap with entities, terrain, and waypoints.',
+	'xaeros-world-map': 'Adds a full-screen map of explored terrain and dimensions.',
+	'create-fly': 'Brings Create-style automation content to newer Fabric releases.',
+	'inventory-profiles-next': 'Sorts inventories, moves matching items, and manages gear sets.',
 }
 
 export const BREAD_PACKS: BreadPackDefinition[] = packDefinitions
