@@ -837,7 +837,10 @@ impl DeviceTokenPair {
     }
 }
 
-const MICROSOFT_CLIENT_ID: &str = "c4502edb-87c6-40cb-b595-64a280cf8906";
+// TEMPORARY: This shared ID is used while Bread Client's own registered ID
+// (a1dcd8d3-3e91-4f08-bfac-7f86b9f6bbd4) awaits Microsoft approval for the
+// XboxLive.signin scope. Once approval is confirmed, swap back to Bread's ID.
+const MICROSOFT_CLIENT_ID: &str = "00000000402b5328";
 const AUTH_REPLY_URL: &str = "https://login.live.com/oauth20_desktop.srf";
 const REQUESTED_SCOPE: &str = "service::user.auth.xboxlive.com::MBI_SSL";
 pub const MINECRAFT_SERVICES_USER_AGENT: &str =
