@@ -155,7 +155,9 @@ pub async fn login<R: Runtime>(
                 } else {
                     format!("Microsoft login failed: {description}")
                 };
-                return Err(theseus::ErrorKind::OtherError(message).into());
+                return Err(theseus::ErrorKind::OtherError(message)
+                    .as_error()
+                    .into());
             }
 
             if let Some((_, code)) =
