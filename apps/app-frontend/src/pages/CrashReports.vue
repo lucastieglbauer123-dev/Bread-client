@@ -21,11 +21,16 @@ async function loadReports() {
 		instances.value = await listInstances()
 		const results = await Promise.allSettled(
 			instances.value.map(async (instance) => {
-				// Reading reports must never request content clearing: that flag is intended
-				// only for the log viewer and made this overview mutate the log state.
-				const logs = await get_logs(instance.id, false)
+				// The overview only needs metadata. Asking the backend to omit file contents
+				// keeps one unsupported log extension from hiding valid crash reports while
+				// leaving the files untouched.
+				const logs = await get_logs(instance.id, true)
 				return logs
-					.filter((log) => String(log.log_type).toLowerCase().includes('crash'))
+					.filter((log) => {
+						const type = String(log.log_type ?? '').toLowerCase()
+						const filename = String(log.filename ?? '').toLowerCase()
+						return type.includes('crash') || filename.startsWith('crash-')
+					})
 					.map((log) => ({ ...log, instanceId: instance.id }))
 			}),
 		)
