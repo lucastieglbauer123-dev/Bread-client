@@ -13,6 +13,7 @@ export const BREAD_CHANGELOG: ChangelogEntry[] = [
 			'Updated the Minecraft sign-in window title to Bread Client branding.',
 			'Added ordered, redacted WebView2 navigation logging for Microsoft sign-in diagnostics.',
 			"Fixed Microsoft login redirect detection for Sisu's nested authorization URL and immediate OAuth error handling.",
+			'Restored the pre-authorized Minecraft OAuth client for the Xbox Live MBI scope.',
 			'Fixed Microsoft login callback capture for both Azure-registered redirect URIs and matched the token exchange to the returned authorization URI.',
 			'Added Breadbound, a larger verified Fabric pack for performance, shaders, navigation, and quality-of-life tools.',
 			'Existing Minecraft installations now refresh their Bread title artwork when the logo assets are updated.',

@@ -837,7 +837,7 @@ impl DeviceTokenPair {
     }
 }
 
-const MICROSOFT_CLIENT_ID: &str = "a1dcd8d3-3e91-4f08-bfac-7f86b9f6bbd4";
+const MICROSOFT_CLIENT_ID: &str = "00000000402b5328";
 const LOOPBACK_AUTH_REPLY_URL: &str = "http://localhost";
 const AUTH_REPLY_URL: &str = "https://login.live.com/oauth20_desktop.srf";
 const REGISTERED_AUTH_REPLY_URLS: [&str; 2] =

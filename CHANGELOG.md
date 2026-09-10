@@ -6,6 +6,7 @@
 - Updated the Minecraft sign-in window title to Bread Client branding.
 - Added ordered, redacted WebView2 navigation logging for Microsoft sign-in diagnostics.
 - Fixed Microsoft login redirect detection for Sisu's nested authorization URL and immediate OAuth error handling.
+- Restored the pre-authorized Minecraft OAuth client for the Xbox Live MBI scope.
 - Fixed Microsoft login callback capture for both Azure-registered redirect URIs, using the exact URI returned in the authorization request for token exchange.
 - Rebuilt the launcher workspace around a framed Bread dashboard with distinct discovery, wardrobe, activity, instance, and settings surfaces.
 - Introduced a framed Bread workspace shell with animated route transitions and recovery after failed async navigation.
