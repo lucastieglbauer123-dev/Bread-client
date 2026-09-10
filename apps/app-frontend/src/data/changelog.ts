@@ -7,6 +7,12 @@ export interface ChangelogEntry {
 /** User-facing entries mirrored in the repository CHANGELOG.md. */
 export const BREAD_CHANGELOG: ChangelogEntry[] = [
 	{
+		date: '2026-09-11',
+		items: [
+			'Replaced the Minecraft title-screen Bread Client wordmark with a compact centered bread mark so it no longer collides with the Java Edition sign.',
+		],
+	},
+	{
 		date: '2026-09-10',
 		items: [
 			'Fixed the sidebar Bread logo image source so the amber loaf renders correctly.',

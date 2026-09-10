@@ -1,5 +1,9 @@
 # Bread Client changelog
 
+## 2026-09-11
+
+- Replaced the Minecraft title-screen Bread Client wordmark with a compact centered bread mark so it no longer collides with the Java Edition sign.
+
 ## 2026-09-10
 
 - Fixed the sidebar Bread logo image source so the amber loaf renders correctly.
