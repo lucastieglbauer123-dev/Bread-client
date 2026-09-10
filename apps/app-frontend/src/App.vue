@@ -96,6 +96,7 @@ import NewIconEditorNotification from '@/components/ui/new-icon-editor-notificat
 import { shouldShowNewIconEditorNotification } from '@/components/ui/new-icon-editor-notification/show-notification'
 import PrideFundraiserBanner from '@/components/ui/PrideFundraiserBanner.vue'
 import QuickInstanceSwitcher from '@/components/ui/QuickInstanceSwitcher.vue'
+import RouteSuspense from '@/components/ui/RouteSuspense.vue'
 import SharedInstanceInviteHandler from '@/components/ui/shared-instances/shared-instance-invite-handler/index.vue'
 import SplashScreen from '@/components/ui/SplashScreen.vue'
 import SurveyPopup from '@/components/ui/SurveyPopup.vue'
@@ -916,6 +917,7 @@ const navigationError = ref(null)
 let suspensePending = false
 let navigationGeneration = 0
 let suspenseGeneration = 0
+let activeRouteKey = route.fullPath
 
 const sidebarOverlayScrollbarsOptions = Object.freeze({
 	overflow: {
@@ -924,16 +926,22 @@ const sidebarOverlayScrollbarsOptions = Object.freeze({
 	},
 })
 
-router.beforeEach(() => {
+router.beforeEach((to) => {
 	navigationGeneration += 1
+	activeRouteKey = to.fullPath
 	suspensePending = false
 	suspenseGeneration = navigationGeneration
 	navigationError.value = null
+	if (suspenseToken) {
+		loading.end(suspenseToken)
+		suspenseToken = null
+	}
 	if (routerToken) loading.end(routerToken)
 	routerToken = loading.begin()
 })
 router.afterEach((to, from, failure) => {
 	const completedGeneration = navigationGeneration
+	activeRouteKey = to.fullPath
 	updateHistoryNavigationState()
 	trackEvent('PageView', {
 		path: to.path,
@@ -957,6 +965,7 @@ router.afterEach((to, from, failure) => {
 
 router.onError((error) => {
 	navigationGeneration += 1
+	activeRouteKey = route.fullPath
 	console.error('Navigation failed', error)
 	navigationError.value = error instanceof Error ? error.message : 'This screen could not be opened.'
 	if (initialLoadToken) {
@@ -974,15 +983,17 @@ router.onError((error) => {
 	suspensePending = false
 })
 
-function onSuspensePending() {
+
+function onSuspensePending(routeKey: string) {
+	if (routeKey !== activeRouteKey) return
 	suspenseGeneration = navigationGeneration
 	suspensePending = true
 	if (suspenseToken) loading.end(suspenseToken)
 	suspenseToken = loading.begin()
 }
 
-function onSuspenseResolve() {
-	if (suspenseGeneration !== navigationGeneration) return
+function onSuspenseResolve(routeKey: string) {
+	if (routeKey !== activeRouteKey || suspenseGeneration !== navigationGeneration) return
 	suspensePending = false
 	if (suspenseToken) {
 		loading.end(suspenseToken)
@@ -2470,8 +2481,9 @@ provideAppUpdateDownloadProgress(appUpdateDownload)
 					</div>
 					<RouterView v-slot="{ Component }">
 						<template v-if="Component">
-							<Suspense
+							<RouteSuspense
 								:key="route.fullPath"
+								:route-key="route.fullPath"
 								@pending="onSuspensePending"
 								@resolve="onSuspenseResolve"
 							>
@@ -2486,7 +2498,7 @@ provideAppUpdateDownloadProgress(appUpdateDownload)
 										<component :is="Component" :key="route.fullPath"></component>
 									</KeepAlive>
 								</Transition>
-							</Suspense>
+							</RouteSuspense>
 						</template>
 					</RouterView>
 				</div>

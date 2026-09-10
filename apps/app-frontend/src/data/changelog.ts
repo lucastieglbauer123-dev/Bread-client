@@ -13,6 +13,7 @@ export const BREAD_CHANGELOG: ChangelogEntry[] = [
 			'Rebuilt the launcher workspace around a framed Bread dashboard with distinct discovery, wardrobe, activity, instance, and settings surfaces.',
 			'Introduced a framed Bread workspace shell with animated route transitions and recovery after failed async navigation.',
 			'Navigation failures now keep the last working screen interactive and offer an in-place retry instead of leaving a blank GUI.',
+			'Fixed rapid navigation from Skin Selector to Crash Reports so stale loading events cannot blank or unlock the new screen.',
 			'Crash report discovery now reads metadata-only logs, tolerates unsupported files, and recognizes crash filenames reliably.',
 			'Skin Selector now paints its layout immediately and loads skins, capes, and account data in the background.',
 			'Added Bread Deluxe, a heavier 15-mod 26.2 Fabric pack with travel, maps, automation, inventory tools, shaders, and performance polish.',
