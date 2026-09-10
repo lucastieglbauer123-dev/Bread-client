@@ -133,16 +133,44 @@ pub async fn login<R: Runtime>(
         }
 
         let current_url = window.url()?;
-        if let Some(redirect_uri) = matched_auth_reply_url(&current_url)
-            && let Some((_, code)) =
-                current_url.query_pairs().find(|x| x.0 == "code")
-        {
-            tracing::info!(redirect_uri, "Microsoft login callback captured");
-            flow.redirect_uri = redirect_uri.to_string();
-            window.close()?;
-            let val = minecraft_auth::finish_login(&code, flow).await?;
+        if let Some(redirect_uri) = matched_auth_reply_url(&current_url) {
+            if let Some((_, error)) =
+                current_url.query_pairs().find(|x| x.0 == "error")
+            {
+                let description = current_url
+                    .query_pairs()
+                    .find(|x| x.0 == "error_description")
+                    .map(|(_, value)| value.into_owned())
+                    .unwrap_or_default();
+                tracing::error!(
+                    redirect_uri,
+                    error = %error,
+                    description = %description,
+                    "Microsoft login callback returned an OAuth error"
+                );
+                window.close()?;
 
-            return Ok(Some(val));
+                let message = if description.is_empty() {
+                    format!("Microsoft login failed: {error}")
+                } else {
+                    format!("Microsoft login failed: {description}")
+                };
+                return Err(theseus::ErrorKind::OtherError(message).into());
+            }
+
+            if let Some((_, code)) =
+                current_url.query_pairs().find(|x| x.0 == "code")
+            {
+                tracing::info!(
+                    redirect_uri,
+                    "Microsoft login callback captured"
+                );
+                flow.redirect_uri = redirect_uri.to_string();
+                window.close()?;
+                let val = minecraft_auth::finish_login(&code, flow).await?;
+
+                return Ok(Some(val));
+            }
         }
 
         tokio::time::sleep(std::time::Duration::from_millis(50)).await;

@@ -910,15 +910,35 @@ struct RedirectUri {
 fn extract_registered_redirect_uri(
     auth_request_uri: &str,
 ) -> Option<&'static str> {
-    let auth_request_uri = Url::parse(auth_request_uri).ok()?;
-    let redirect_uri = auth_request_uri
-        .query_pairs()
-        .find(|(key, _)| key == "redirect_uri")
-        .map(|(_, value)| value.into_owned())?;
+    fn find_redirect_uri(url: &Url, depth: u8) -> Option<&'static str> {
+        if depth > 2 {
+            return None;
+        }
 
-    REGISTERED_AUTH_REPLY_URLS
-        .into_iter()
-        .find(|registered| *registered == redirect_uri)
+        if let Some(redirect_uri) = url
+            .query_pairs()
+            .find(|(key, _)| key == "redirect_uri")
+            .map(|(_, value)| value.into_owned())
+            && let Some(registered) = REGISTERED_AUTH_REPLY_URLS
+                .into_iter()
+                .find(|registered| *registered == redirect_uri)
+        {
+            return Some(registered);
+        }
+
+        for (_, value) in url.query_pairs() {
+            if let Ok(nested_url) = Url::parse(&value)
+                && let Some(redirect_uri) =
+                    find_redirect_uri(&nested_url, depth + 1)
+            {
+                return Some(redirect_uri);
+            }
+        }
+
+        None
+    }
+
+    find_redirect_uri(&Url::parse(auth_request_uri).ok()?, 0)
 }
 
 #[tracing::instrument(skip(key))]
@@ -1675,4 +1695,36 @@ fn generate_oauth_challenge() -> String {
 
     let bytes: Vec<u8> = (0..64).map(|_| rng.r#gen::<u8>()).collect();
     bytes.iter().map(|byte| format!("{byte:02x}")).collect()
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn extracts_direct_registered_redirect_uri() {
+        let auth_request_uri = "https://login.live.com/oauth20_authorize.srf?redirect_uri=https%3A%2F%2Flogin.live.com%2Foauth20_desktop.srf";
+
+        assert_eq!(
+            extract_registered_redirect_uri(auth_request_uri),
+            Some(AUTH_REPLY_URL)
+        );
+    }
+
+    #[test]
+    fn extracts_redirect_uri_from_nested_msa_authorization_url() {
+        let auth_request_uri = "https://sisu.xboxlive.com/client/v65/example/view/splash.html?msa=https%3A%2F%2Flogin.live.com%2Foauth20_authorize.srf%3Fredirect_uri%3Dhttps%253A%252F%252Flogin.live.com%252Foauth20_desktop.srf";
+
+        assert_eq!(
+            extract_registered_redirect_uri(auth_request_uri),
+            Some(AUTH_REPLY_URL)
+        );
+    }
+
+    #[test]
+    fn ignores_unregistered_redirect_uri() {
+        let auth_request_uri = "https://login.live.com/oauth20_authorize.srf?redirect_uri=https%3A%2F%2Fexample.com%2Fcallback";
+
+        assert_eq!(extract_registered_redirect_uri(auth_request_uri), None);
+    }
 }
