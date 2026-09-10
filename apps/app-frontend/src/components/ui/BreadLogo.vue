@@ -1,15 +1,13 @@
 <template>
 	<div class="bread-logo" :class="`bread-logo--${variant}`" role="img" aria-label="Bread Client">
-		<span class="bread-logo__mark" aria-hidden="true">
-			<i></i>
-			<i></i>
-			<i></i>
-		</span>
+		<img :src="breadLogoMark" class="bread-logo__mark" alt="" aria-hidden="true" />
 		<span class="bread-logo__wordmark">Bread Client</span>
 	</div>
 </template>
 
 <script setup lang="ts">
+import breadLogoMark from '@/assets/bread-logo-mark.svg'
+
 withDefaults(
 	defineProps<{
 		variant?: 'header' | 'sidebar' | 'splash'
@@ -35,37 +33,11 @@ withDefaults(
 }
 
 .bread-logo__mark {
-	position: relative;
-	display: inline-block;
+	display: block;
 	width: 1.75rem;
-	height: 1.6rem;
+	height: 1.75rem;
 	flex: 0 0 auto;
-	transform: rotate(-3deg);
-	border-radius: 0.56rem 0.56rem 0.44rem 0.44rem;
-	background: var(--bread-color-brand-bright, #ffc45a);
-	box-shadow: inset 0 -0.25rem color-mix(in srgb, var(--bread-color-brand, #f3a936) 75%, #7f4316);
-}
-
-.bread-logo__mark i {
-	position: absolute;
-	top: 0.32rem;
-	width: 0.2rem;
-	height: 0.5rem;
-	border-radius: 9999px;
-	background: #8b4d1e;
-	transform: rotate(34deg);
-}
-
-.bread-logo__mark i:nth-child(1) {
-	left: 0.45rem;
-}
-
-.bread-logo__mark i:nth-child(2) {
-	left: 0.81rem;
-}
-
-.bread-logo__mark i:nth-child(3) {
-	left: 1.17rem;
+	object-fit: contain;
 }
 
 .bread-logo--splash {
@@ -90,26 +62,6 @@ withDefaults(
 
 .bread-logo--splash .bread-logo__mark {
 	width: 3rem;
-	height: 2.75rem;
-	border-radius: 0.95rem 0.95rem 0.75rem 0.75rem;
-	box-shadow: inset 0 -0.42rem var(--bread-color-brand, #cbed57);
-}
-
-.bread-logo--splash .bread-logo__mark i {
-	top: 0.56rem;
-	width: 0.32rem;
-	height: 0.86rem;
-}
-
-.bread-logo--splash .bread-logo__mark i:nth-child(1) {
-	left: 0.78rem;
-}
-
-.bread-logo--splash .bread-logo__mark i:nth-child(2) {
-	left: 1.39rem;
-}
-
-.bread-logo--splash .bread-logo__mark i:nth-child(3) {
-	left: 2rem;
+	height: 3rem;
 }
 </style>
