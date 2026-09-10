@@ -16,6 +16,7 @@ import { type ColorTheme, isDarkTheme, useTheme } from '@/composables/use-theme.
 import { type AppSettings, get, set } from '@/helpers/settings.ts'
 import { getOS } from '@/helpers/utils'
 import { appSettingsModalContextKey } from '@/providers/app-settings-modal'
+import BreadLogo from '@/components/ui/BreadLogo.vue'
 
 const theme = useTheme()
 const { formatMessage } = useVIntl()
@@ -400,87 +401,192 @@ provideAppearanceSettings({
 <template>
 	<div class="bread-settings-page">
 		<header class="bread-settings-hero">
-			<p class="bread-settings-eyebrow">{{ formatMessage(messages.breadEyebrow) }}</p>
-			<h1>
-				{{ formatMessage(messages.breadHeading) }}
-				<span>{{ formatMessage(messages.breadHeadingAccent) }}</span>
-			</h1>
-			<p>{{ formatMessage(messages.breadDescription) }}</p>
+			<div class="bread-settings-hero__heading">
+				<BreadLogo variant="header" class="bread-settings-hero__logo" aria-hidden="true" />
+				<div>
+					<p class="bread-settings-eyebrow">{{ formatMessage(messages.breadEyebrow) }}</p>
+					<h1>
+						{{ formatMessage(messages.breadHeading) }}
+						<span>{{ formatMessage(messages.breadHeadingAccent) }}</span>
+					</h1>
+					<p>{{ formatMessage(messages.breadDescription) }}</p>
+				</div>
+			</div>
+			<div class="bread-settings-hero__status">
+				<span class="bread-settings-status-dot" />
+				<div>
+					<strong>LOCAL PROFILE</strong>
+					<span>Saved on this device</span>
+				</div>
+			</div>
 		</header>
 
-		<section class="bread-settings-section bread-classic-layout-section">
-			<div>
-				<h2>{{ formatMessage(messages.classicLayout) }}</h2>
-				<p>{{ formatMessage(messages.classicLayoutDescription) }}</p>
-			</div>
-			<label class="bread-settings-toggle">
-				<input
-					type="checkbox"
-					:checked="classicLayout"
-					@change="setClassicLayout($event.target.checked)"
-				/>
-				<span aria-hidden="true" />
-			</label>
-		</section>
+		<div class="bread-settings-dashboard">
+			<aside class="bread-settings-overview">
+				<section class="bread-preview-card">
+					<div class="bread-preview-card__topline">
+						<span>WORKSPACE PREVIEW</span>
+						<span class="bread-preview-card__signal" />
+					</div>
+					<div class="bread-preview-card__window">
+						<div class="bread-preview-card__window-bar">
+							<BreadLogo variant="header" aria-hidden="true" />
+							<span />
+							<span />
+						</div>
+						<div class="bread-preview-card__window-body">
+							<div class="bread-preview-card__rail" />
+							<div class="bread-preview-card__content">
+								<span />
+								<span />
+								<span />
+							</div>
+						</div>
+					</div>
+					<div class="bread-preview-card__footer">
+						<div>
+							<span class="bread-preview-card__label">CURRENT MODE</span>
+							<strong>{{ classicLayout ? 'Classic layout' : 'Bread workspace' }}</strong>
+						</div>
+						<span class="bread-preview-card__accent" :style="{ backgroundColor: accentPalette[selectedAccent].brand }" />
+					</div>
+				</section>
 
-		<section class="bread-settings-section bread-original-themes-section">
-			<div>
-				<h2>{{ formatMessage(messages.originalThemes) }}</h2>
-				<p>{{ formatMessage(messages.originalThemesDescription) }}</p>
-			</div>
-			<label class="bread-settings-toggle">
-				<input
-					type="checkbox"
-					:checked="showOriginalThemes"
-					@change="setShowOriginalThemes($event.target.checked)"
-				/>
-				<span aria-hidden="true" />
-			</label>
-		</section>
+				<section class="bread-settings-summary-card">
+					<div class="bread-settings-card-kicker">CURRENT SETUP</div>
+					<div class="bread-settings-summary-row">
+						<span>Theme</span>
+						<strong>{{ current.theme }}</strong>
+					</div>
+					<div class="bread-settings-summary-row">
+						<span>Accent</span>
+						<strong>{{ formatMessage(accentOptions.find((accent) => accent.id === selectedAccent)?.label ?? messages.accentOrange) }}</strong>
+					</div>
+					<div class="bread-settings-summary-row">
+						<span>Original themes</span>
+						<strong>{{ showOriginalThemes ? 'Shown' : 'Hidden' }}</strong>
+					</div>
+				</section>
+			</aside>
 
-		<section class="bread-settings-section bread-custom-theme-section">
-			<div>
-				<h2>Custom theme</h2>
-				<p>Import a local background image or a JSON palette. Customizations stay on this device.</p>
-			</div>
-			<div class="bread-custom-theme-actions">
-				<Button type="outlined" @click="importBackground">Import background</Button>
-				<Button type="outlined" @click="importPalette">Import palette</Button>
-			</div>
-		</section>
+			<main class="bread-settings-controls">
+				<section class="bread-settings-control-card bread-layout-card">
+					<div class="bread-settings-card-heading">
+						<div>
+							<span class="bread-settings-card-kicker">01 / LAYOUT</span>
+							<h2>Choose your workspace</h2>
+							<p>Decide how much of Bread Client you want in view while you play.</p>
+						</div>
+						<span class="bread-settings-card-status">{{ classicLayout ? 'CLASSIC' : 'BREAD' }}</span>
+					</div>
+					<div class="bread-layout-options" role="group" aria-label="Workspace layout">
+						<button
+							type="button"
+							class="bread-layout-option"
+							:class="{ selected: !classicLayout }"
+							:aria-pressed="!classicLayout"
+							@click="setClassicLayout(false)"
+						>
+							<span class="bread-layout-option__visual bread-layout-option__visual--workspace"><i /><i /><i /></span>
+							<strong>Bread workspace</strong>
+							<small>Focused navigation and richer home views.</small>
+						</button>
+						<button
+							type="button"
+							class="bread-layout-option"
+							:class="{ selected: classicLayout }"
+							:aria-pressed="classicLayout"
+							@click="setClassicLayout(true)"
+						>
+							<span class="bread-layout-option__visual bread-layout-option__visual--classic"><i /><i /><i /></span>
+							<strong>Classic layout</strong>
+							<small>{{ formatMessage(messages.classicLayoutDescription) }}</small>
+						</button>
+					</div>
+				</section>
 
-		<AppearanceSettingsLayout class="bread-native-appearance-settings" />
+				<section class="bread-settings-control-card bread-theme-card">
+					<div class="bread-settings-card-heading">
+						<div>
+							<span class="bread-settings-card-kicker">02 / THEME</span>
+							<h2>Set the atmosphere</h2>
+							<p>Preview a theme before saving it across the rest of your client.</p>
+						</div>
+						<span class="bread-settings-card-status">{{ current.theme }}</span>
+					</div>
+					<AppearanceSettingsLayout class="bread-native-appearance-settings" />
+				</section>
 
-		<section class="bread-settings-section bread-accent-section">
-			<div>
-				<h2>{{ formatMessage(messages.accentTitle) }}</h2>
-				<p>{{ formatMessage(messages.accentDescription) }}</p>
-			</div>
-			<div class="bread-accent-swatches" role="group" :aria-label="formatMessage(messages.accentTitle)">
-				<button
-					v-for="accent in accentOptions"
-					:key="accent.id"
-					type="button"
-					class="bread-accent-swatch"
-					:class="{ selected: selectedAccent === accent.id }"
-					:aria-label="formatMessage(accent.label)"
-					:aria-pressed="selectedAccent === accent.id"
-					@click="setAccent(accent.id)"
-				>
-					<span :style="{ backgroundColor: accent.color }" aria-hidden="true" />
-				</button>
-			</div>
-		</section>
+				<section class="bread-settings-control-card bread-accent-card">
+					<div class="bread-settings-card-heading">
+						<div>
+							<span class="bread-settings-card-kicker">03 / ACCENT</span>
+							<h2>{{ formatMessage(messages.accentTitle) }}</h2>
+							<p>{{ formatMessage(messages.accentDescription) }}</p>
+						</div>
+					</div>
+					<div class="bread-accent-swatches" role="group" :aria-label="formatMessage(messages.accentTitle)">
+						<button
+							v-for="accent in accentOptions"
+							:key="accent.id"
+							type="button"
+							class="bread-accent-swatch"
+							:class="{ selected: selectedAccent === accent.id }"
+							:aria-label="formatMessage(accent.label)"
+							:aria-pressed="selectedAccent === accent.id"
+							@click="setAccent(accent.id)"
+						>
+							<span :style="{ backgroundColor: accent.color }" aria-hidden="true" />
+							<strong>{{ formatMessage(accent.label) }}</strong>
+						</button>
+					</div>
+				</section>
 
-		<section class="bread-settings-section bread-restore-section">
-			<div>
-				<h2>{{ formatMessage(messages.restoreTitle) }}</h2>
-				<p>{{ formatMessage(messages.restoreDescription) }}</p>
-			</div>
-			<Button type="outlined" @click="restoreStandard">
-				{{ formatMessage(messages.restoreButton) }}
-			</Button>
-		</section>
+				<section class="bread-settings-control-card bread-preferences-card">
+					<div class="bread-settings-card-heading">
+						<div>
+							<span class="bread-settings-card-kicker">04 / PREFERENCES</span>
+							<h2>Fine tune the client</h2>
+						</div>
+					</div>
+					<div class="bread-preference-row">
+						<div>
+							<strong>{{ formatMessage(messages.originalThemes) }}</strong>
+							<p>{{ formatMessage(messages.originalThemesDescription) }}</p>
+						</div>
+						<label class="bread-settings-toggle">
+							<input
+								type="checkbox"
+								:checked="showOriginalThemes"
+								@change="setShowOriginalThemes($event.target.checked)"
+							/>
+							<span aria-hidden="true" />
+						</label>
+					</div>
+					<div class="bread-preference-row bread-preference-row--tools">
+						<div>
+							<strong>Custom theme kit</strong>
+							<p>Bring in a local background or JSON palette for this device.</p>
+						</div>
+						<div class="bread-custom-theme-actions">
+							<Button type="outlined" @click="importBackground">Import background</Button>
+							<Button type="outlined" @click="importPalette">Import palette</Button>
+						</div>
+					</div>
+				</section>
+
+				<section class="bread-settings-control-card bread-restore-card">
+					<div>
+						<span class="bread-settings-card-kicker">RESET</span>
+						<h2>{{ formatMessage(messages.restoreTitle) }}</h2>
+						<p>{{ formatMessage(messages.restoreDescription) }}</p>
+					</div>
+					<Button type="outlined" @click="restoreStandard">
+						{{ formatMessage(messages.restoreButton) }}
+					</Button>
+				</section>
+			</main>
+		</div>
 	</div>
 </template>
 
@@ -753,6 +859,550 @@ provideAppearanceSettings({
 
 	.bread-accent-swatches {
 		padding-right: 0;
+	}
+}
+
+.bread-settings-page {
+	gap: 1rem;
+	padding: 0 0 2rem;
+}
+
+.bread-settings-hero {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 1rem;
+	padding: 1rem;
+	border: 1px solid var(--bread-color-border-subtle);
+	border-radius: var(--bread-radius-lg);
+	background:
+		radial-gradient(circle at 0% 0%, color-mix(in srgb, var(--bread-color-brand) 18%, transparent), transparent 15rem),
+		var(--bread-color-surface-panel);
+}
+
+.bread-settings-hero__heading {
+	display: flex;
+	align-items: center;
+	gap: 0.8rem;
+}
+
+.bread-settings-hero__logo {
+	width: 3.25rem;
+	height: 3.25rem;
+	justify-content: center;
+	border-radius: var(--bread-radius-md);
+	background: var(--bread-color-brand);
+	color: var(--bread-color-brand-contrast);
+}
+
+.bread-settings-hero__logo :deep(.bread-logo__mark) {
+	width: 2.25rem;
+	height: 2.25rem;
+}
+
+.bread-settings-hero__logo :deep(.bread-logo__wordmark) {
+	display: none;
+}
+
+.bread-settings-hero__status {
+	display: flex;
+	align-items: center;
+	gap: 0.55rem;
+	padding: 0.55rem 0.7rem;
+	border: 1px solid var(--bread-color-border-subtle);
+	border-radius: var(--bread-radius-md);
+	background: color-mix(in srgb, var(--bread-color-surface-raised) 66%, transparent);
+}
+
+.bread-settings-hero__status div {
+	display: flex;
+	flex-direction: column;
+	gap: 0.2rem;
+}
+
+.bread-settings-hero__status strong,
+.bread-settings-hero__status span:last-child {
+	font-size: 0.62rem;
+	letter-spacing: 0.08em;
+	line-height: 1.2;
+	text-transform: uppercase;
+}
+
+.bread-settings-hero__status strong {
+	color: var(--bread-color-text);
+}
+
+.bread-settings-hero__status span:last-child {
+	color: var(--bread-color-text-subtle);
+	letter-spacing: 0;
+	text-transform: none;
+}
+
+.bread-settings-status-dot {
+	width: 0.55rem;
+	height: 0.55rem;
+	border-radius: 50%;
+	background: var(--bread-color-brand);
+	box-shadow: 0 0 0 0.25rem color-mix(in srgb, var(--bread-color-brand) 16%, transparent);
+}
+
+.bread-settings-dashboard {
+	display: grid;
+	grid-template-columns: minmax(12rem, 0.62fr) minmax(0, 1.38fr);
+	align-items: start;
+	gap: 1rem;
+}
+
+.bread-settings-overview,
+.bread-settings-controls {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+}
+
+.bread-settings-overview {
+	position: sticky;
+	top: 0;
+}
+
+.bread-preview-card,
+.bread-settings-summary-card,
+.bread-settings-control-card {
+	border: 1px solid var(--bread-color-border-subtle);
+	border-radius: var(--bread-radius-lg);
+	background: var(--bread-color-surface-panel);
+}
+
+.bread-preview-card {
+	overflow: hidden;
+	background:
+		linear-gradient(145deg, color-mix(in srgb, var(--bread-color-brand) 17%, transparent), transparent 60%),
+		var(--bread-color-surface-panel);
+}
+
+.bread-preview-card__topline,
+.bread-preview-card__footer {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 0.6rem;
+}
+
+.bread-preview-card__topline {
+	padding: 0.75rem 0.8rem;
+	color: var(--bread-color-text-subtle);
+	font-size: 0.58rem;
+	font-weight: 800;
+	letter-spacing: 0.12em;
+}
+
+.bread-preview-card__signal {
+	width: 0.45rem;
+	height: 0.45rem;
+	border-radius: 50%;
+	background: var(--bread-color-brand);
+}
+
+.bread-preview-card__window {
+	margin: 0 0.8rem;
+	border: 1px solid var(--bread-color-border);
+	border-radius: var(--bread-radius-md);
+	background: var(--bread-color-bg);
+	box-shadow: 0 0.8rem 1.3rem rgb(0 0 0 / 17%);
+}
+
+.bread-preview-card__window-bar {
+	display: flex;
+	align-items: center;
+	gap: 0.25rem;
+	padding: 0.45rem;
+	border-bottom: 1px solid var(--bread-color-border-subtle);
+}
+
+.bread-preview-card__window-bar :deep(.bread-logo) {
+	margin-right: auto;
+	font-size: 0.55rem;
+}
+
+.bread-preview-card__window-bar :deep(.bread-logo__mark) {
+	width: 0.8rem;
+	height: 0.8rem;
+}
+
+.bread-preview-card__window-bar span {
+	width: 0.35rem;
+	height: 0.35rem;
+	border-radius: 50%;
+	background: var(--bread-color-border-strong);
+}
+
+.bread-preview-card__window-body {
+	display: flex;
+	gap: 0.45rem;
+	min-height: 6.2rem;
+	padding: 0.5rem;
+}
+
+.bread-preview-card__rail {
+	width: 1.5rem;
+	border-radius: var(--bread-radius-sm);
+	background: linear-gradient(180deg, var(--bread-color-brand), var(--bread-color-surface-raised) 45%);
+	opacity: 0.85;
+}
+
+.bread-preview-card__content {
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	justify-content: center;
+	gap: 0.45rem;
+}
+
+.bread-preview-card__content span {
+	display: block;
+	height: 0.55rem;
+	border-radius: var(--bread-radius-pill);
+	background: var(--bread-color-surface-raised);
+}
+
+.bread-preview-card__content span:first-child {
+	width: 70%;
+	background: var(--bread-color-brand);
+}
+
+.bread-preview-card__content span:last-child {
+	width: 45%;
+}
+
+.bread-preview-card__footer {
+	padding: 0.8rem;
+}
+
+.bread-preview-card__footer div {
+	display: flex;
+	flex-direction: column;
+	gap: 0.25rem;
+}
+
+.bread-preview-card__label,
+.bread-settings-card-kicker {
+	color: var(--bread-color-brand);
+	font-size: 0.58rem;
+	font-weight: 800;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+}
+
+.bread-preview-card__footer strong {
+	font-size: 0.82rem;
+}
+
+.bread-preview-card__accent {
+	width: 1.35rem;
+	height: 1.35rem;
+	border: 3px solid var(--bread-color-surface-panel);
+	border-radius: 50%;
+	box-shadow: 0 0 0 1px var(--bread-color-border-strong);
+}
+
+.bread-settings-summary-card {
+	display: flex;
+	flex-direction: column;
+	gap: 0.7rem;
+	padding: 0.85rem;
+}
+
+.bread-settings-summary-row {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 0.5rem;
+	padding-top: 0.6rem;
+	border-top: 1px solid var(--bread-color-border-subtle);
+	color: var(--bread-color-text-muted);
+	font-size: 0.75rem;
+}
+
+.bread-settings-summary-row strong {
+	max-width: 8rem;
+	overflow: hidden;
+	color: var(--bread-color-text);
+	font-size: 0.72rem;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.bread-settings-control-card {
+	padding: 1rem;
+}
+
+.bread-settings-card-heading {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	gap: 1rem;
+	margin-bottom: 0.85rem;
+}
+
+.bread-settings-card-heading h2,
+.bread-restore-card h2 {
+	margin: 0.25rem 0 0;
+	color: var(--bread-color-text);
+	font-size: 1.05rem;
+	font-weight: var(--bread-font-weight-bold);
+}
+
+.bread-settings-card-heading p,
+.bread-restore-card p,
+.bread-preference-row p {
+	max-width: 32rem;
+	margin: 0.35rem 0 0;
+	color: var(--bread-color-text-muted);
+	font-size: 0.75rem;
+	line-height: 1.4;
+}
+
+.bread-settings-card-status {
+	flex: 0 0 auto;
+	padding: 0.35rem 0.45rem;
+	border: 1px solid var(--bread-color-border-subtle);
+	border-radius: var(--bread-radius-sm);
+	color: var(--bread-color-brand-bright);
+	font-size: 0.58rem;
+	font-weight: 800;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+}
+
+.bread-layout-options {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 0.65rem;
+}
+
+.bread-layout-option {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 0.45rem;
+	min-width: 0;
+	padding: 0.65rem;
+	border: 1px solid var(--bread-color-border-subtle);
+	border-radius: var(--bread-radius-md);
+	background: var(--bread-color-surface-muted);
+	color: var(--bread-color-text);
+	text-align: left;
+	cursor: pointer;
+	transition: border-color 120ms ease, transform 120ms ease, background-color 120ms ease;
+}
+
+.bread-layout-option:hover {
+	transform: translateY(-1px);
+	border-color: var(--bread-color-border-strong);
+}
+
+.bread-layout-option.selected {
+	border-color: var(--bread-color-brand);
+	background: color-mix(in srgb, var(--bread-color-brand) 12%, var(--bread-color-surface-muted));
+	box-shadow: 0 0 0 1px var(--bread-color-brand);
+}
+
+.bread-layout-option strong {
+	font-size: 0.78rem;
+}
+
+.bread-layout-option small {
+	color: var(--bread-color-text-muted);
+	font-size: 0.68rem;
+	line-height: 1.35;
+}
+
+.bread-layout-option__visual {
+	display: flex;
+	align-items: flex-end;
+	gap: 0.2rem;
+	width: 100%;
+	height: 3rem;
+	padding: 0.35rem;
+	border: 1px solid var(--bread-color-border);
+	border-radius: var(--bread-radius-sm);
+	background: var(--bread-color-bg);
+}
+
+.bread-layout-option__visual i {
+	display: block;
+	width: 0.4rem;
+	height: 50%;
+	border-radius: 0.15rem 0.15rem 0 0;
+	background: var(--bread-color-surface-raised);
+}
+
+.bread-layout-option__visual i:first-child {
+	width: 28%;
+	height: 100%;
+	background: var(--bread-color-brand);
+}
+
+.bread-layout-option__visual i:nth-child(2) {
+	width: 42%;
+	height: 75%;
+}
+
+.bread-layout-option__visual i:last-child {
+	width: 22%;
+	height: 62%;
+}
+
+.bread-layout-option__visual--classic i:first-child {
+	width: 18%;
+	height: 74%;
+	background: var(--bread-color-surface-raised);
+}
+
+.bread-layout-option__visual--classic i:nth-child(2) {
+	width: 62%;
+	height: 100%;
+	background: var(--bread-color-brand);
+}
+
+.bread-layout-option__visual--classic i:last-child {
+	width: 16%;
+	height: 60%;
+}
+
+.bread-native-appearance-settings {
+	margin-top: 0.25rem;
+	padding-top: 0.85rem;
+	border-top: 1px solid var(--bread-color-border-subtle);
+}
+
+.bread-native-appearance-settings :deep(.theme-options) {
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 0.55rem;
+}
+
+.bread-native-appearance-settings :deep(.preview-radio) {
+	min-height: 6rem;
+}
+
+.bread-accent-swatches {
+	display: grid;
+	grid-template-columns: repeat(4, minmax(0, 1fr));
+	gap: 0.5rem;
+	padding: 0;
+}
+
+.bread-accent-swatch {
+	display: flex;
+	align-items: center;
+	gap: 0.4rem;
+	min-width: 0;
+	padding: 0.5rem;
+	border: 1px solid var(--bread-color-border-subtle);
+	border-radius: var(--bread-radius-md);
+	background: var(--bread-color-surface-muted);
+	color: var(--bread-color-text-muted);
+	text-align: left;
+	cursor: pointer;
+	transition: border-color 120ms ease, background-color 120ms ease, transform 120ms ease;
+}
+
+.bread-accent-swatch:hover {
+	transform: translateY(-1px);
+	border-color: var(--bread-color-border-strong);
+}
+
+.bread-accent-swatch span {
+	width: 1rem;
+	height: 1rem;
+	flex: 0 0 auto;
+	border-radius: 50%;
+}
+
+.bread-accent-swatch strong {
+	overflow: hidden;
+	font-size: 0.63rem;
+	font-weight: 700;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.bread-accent-swatch.selected {
+	border-color: var(--bread-color-brand);
+	background: color-mix(in srgb, var(--bread-color-brand) 12%, var(--bread-color-surface-muted));
+	box-shadow: 0 0 0 1px var(--bread-color-brand);
+	color: var(--bread-color-text);
+}
+
+.bread-preferences-card {
+	display: flex;
+	flex-direction: column;
+	gap: 0.8rem;
+}
+
+.bread-preference-row {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 1rem;
+	padding-top: 0.8rem;
+	border-top: 1px solid var(--bread-color-border-subtle);
+}
+
+.bread-preference-row strong {
+	font-size: 0.82rem;
+}
+
+.bread-preference-row--tools {
+	align-items: flex-start;
+}
+
+.bread-custom-theme-actions {
+	flex: 0 0 auto;
+	justify-content: flex-end;
+}
+
+.bread-restore-card {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 1rem;
+	background: color-mix(in srgb, var(--bread-color-surface-panel) 75%, var(--bread-color-surface-muted));
+}
+
+@media (max-width: 58rem) {
+	.bread-settings-dashboard {
+		grid-template-columns: 1fr;
+	}
+
+	.bread-settings-overview {
+		position: static;
+		display: grid;
+		grid-template-columns: minmax(0, 1.2fr) minmax(12rem, 0.8fr);
+	}
+}
+
+@media (max-width: 38rem) {
+	.bread-settings-hero,
+	.bread-preference-row,
+	.bread-restore-card {
+		align-items: flex-start;
+		flex-direction: column;
+	}
+
+	.bread-settings-hero__status {
+		width: 100%;
+	}
+
+	.bread-settings-overview,
+	.bread-layout-options,
+	.bread-native-appearance-settings :deep(.theme-options),
+	.bread-accent-swatches {
+		grid-template-columns: 1fr;
+	}
+
+	.bread-preference-row--tools .bread-custom-theme-actions {
+		justify-content: flex-start;
 	}
 }
 </style>
