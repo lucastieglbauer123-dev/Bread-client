@@ -23,6 +23,37 @@ use uuid::Uuid;
 // Replaces the space separator with a newline character, as to not split the arguments
 const TEMPORARY_REPLACE_CHAR: &str = "\n";
 
+// These flags keep garbage-collection work predictable during rendering. They are
+// intentionally conservative and supported by every Java version that Bread
+// Client can launch; user-supplied arguments are still appended afterwards.
+const DEFAULT_PERFORMANCE_JVM_ARGS: &[&str] = &[
+	"-XX:+UseG1GC",
+	"-XX:+ParallelRefProcEnabled",
+	"-XX:MaxGCPauseMillis=50",
+	"-XX:+DisableExplicitGC",
+];
+
+fn append_performance_jvm_args(
+	parsed_arguments: &mut Vec<String>,
+	custom_args: &[String],
+) {
+	for default_arg in DEFAULT_PERFORMANCE_JVM_ARGS {
+		let already_set = parsed_arguments
+			.iter()
+			.chain(custom_args.iter())
+			.any(|arg| {
+				if default_arg.starts_with("-XX:+Use") {
+					arg.starts_with("-XX:+Use") && arg.ends_with("GC")
+				} else {
+					arg.starts_with(default_arg.split('=').next().unwrap_or(default_arg))
+				}
+			});
+		if !already_set {
+			parsed_arguments.push((*default_arg).to_string());
+		}
+	}
+}
+
 pub fn get_class_paths(
     libraries_path: &Path,
     libraries: &[Library],
@@ -159,7 +190,8 @@ pub fn get_jvm_arguments(
         parsed_arguments.push(class_paths.to_string());
     }
 
-    parsed_arguments.push(format!("-Xmx{}M", memory.maximum));
+	parsed_arguments.push(format!("-Xmx{}M", memory.maximum));
+	append_performance_jvm_args(&mut parsed_arguments, &custom_args);
 
     if let Some(LoggingConfiguration::Log4j2Xml { argument, file }) = log_config
     {
@@ -549,5 +581,34 @@ pub async fn get_processor_main_class(
     })
     .await??;
 
-    Ok(main_class)
+	Ok(main_class)
+}
+
+#[cfg(test)]
+mod tests {
+	use super::{append_performance_jvm_args, DEFAULT_PERFORMANCE_JVM_ARGS};
+
+	#[test]
+	fn performance_defaults_are_added_once() {
+		let mut args = vec!["-Xmx4096M".to_string()];
+		append_performance_jvm_args(&mut args, &[]);
+		assert_eq!(
+			args.iter()
+				.filter(|arg| DEFAULT_PERFORMANCE_JVM_ARGS.contains(&arg.as_str()))
+			.count(),
+			DEFAULT_PERFORMANCE_JVM_ARGS.len()
+		);
+
+		let before = args.len();
+		append_performance_jvm_args(&mut args, &[]);
+		assert_eq!(args.len(), before);
+	}
+
+	#[test]
+	fn custom_gc_strategy_wins_over_g1_default() {
+		let mut args = Vec::new();
+		append_performance_jvm_args(&mut args, &["-XX:+UseZGC".to_string()]);
+		assert!(!args.iter().any(|arg| arg == "-XX:+UseG1GC"));
+		assert!(args.iter().any(|arg| arg == "-XX:MaxGCPauseMillis=50"));
+	}
 }

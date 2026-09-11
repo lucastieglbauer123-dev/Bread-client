@@ -11,6 +11,7 @@ export const BREAD_CHANGELOG: ChangelogEntry[] = [
 		items: [
 			'Browse searches now wait for Enter or 10 seconds of inactivity before refreshing across Modrinth, CurseForge, mods, shaders, resource packs, data packs, and modpacks.',
 			'Added distinct White and pink · for the one and only TJ. and Cyan and navy · KJ themes without changing the existing csm purple or KJ purple-flame themes.',
+			'Minecraft launches now use conservative G1 garbage-collection defaults for steadier frame pacing; custom Java arguments still take precedence.',
 		],
 	},
 	{
