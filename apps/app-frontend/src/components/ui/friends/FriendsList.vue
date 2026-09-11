@@ -18,8 +18,10 @@ import ModalWrapper from '@/components/ui/modal/ModalWrapper.vue'
 import { useAppSettings } from '@/composables/use-app-settings.ts'
 import { useFriends } from '@/composables/use-friends'
 import type { FriendWithUserData } from '@/helpers/friends.ts'
+import { normalizeFriendKey } from '@/helpers/friends.ts'
 import type { ModrinthCredentials } from '@/helpers/mr_auth'
 import { get as getSettings, set as setSettings } from '@/helpers/settings.ts'
+import { search_user } from '@/helpers/users.ts'
 
 const { formatMessage } = useVIntl()
 
@@ -69,6 +71,7 @@ const search = ref('')
 const friendInvitesModal = ref()
 const username = ref('')
 const addFriendModal = ref()
+const sendingFriendRequest = ref(false)
 
 const sortedFriends = computed<FriendWithUserData[]>(() =>
 	userFriends.value.slice().sort((a, b) => {
@@ -113,13 +116,29 @@ const incomingRequests = computed(() =>
 		.sort((a, b) => b.created.diff(a.created)),
 )
 
-function addFriendFromModal() {
+async function addFriendFromModal() {
 	const target = username.value.trim()
-	if (!target) return
+	if (!target || sendingFriendRequest.value) return
 
-	addFriendModal.value.hide()
-	requestFriend({ id: target, username: target })
-	username.value = ''
+	sendingFriendRequest.value = true
+	try {
+		const users = await search_user(target)
+		const match = users.find((user) => normalizeFriendKey(user.username) === normalizeFriendKey(target))
+		if (!match) {
+			throw new Error(`No Bread Client user found for “${target}”.`)
+		}
+		if (match.id === userCredentials.value?.user_id) {
+			throw new Error('You cannot send a friend request to yourself.')
+		}
+
+		addFriendModal.value.hide()
+		requestFriend({ id: match.id, username: match.username, avatarUrl: match.avatar_url })
+		username.value = ''
+	} catch (error) {
+		handleError(error)
+	} finally {
+		sendingFriendRequest.value = false
+	}
 }
 
 function showAddFriendModal() {
@@ -148,11 +167,11 @@ const messages = defineMessages({
 	},
 	usernameTitle: {
 		id: 'friends.add-friend.username.title',
-		defaultMessage: "What's your friend's Bread Client username?",
+		defaultMessage: "What's your friend's username?",
 	},
 	usernameDescription: {
 		id: 'friends.add-friend.username.description',
-		defaultMessage: 'It may be different from their Minecraft username!',
+		defaultMessage: 'Enter the name they use to sign in to Bread Client.',
 	},
 	usernamePlaceholder: {
 		id: 'friends.add-friend.username.placeholder',
@@ -197,7 +216,7 @@ const messages = defineMessages({
 	signInToAddFriends: {
 		id: 'friends.sign-in-to-add-friends',
 		defaultMessage:
-			"<link>Sign in to a Bread Client account</link> to add friends and see what they're playing!",
+			"<link>Sign in to Bread Client</link> to add friends and see what they're playing!",
 	},
 	addFriendsToShare: {
 		id: 'friends.add-friends-to-share',
@@ -268,7 +287,7 @@ const messages = defineMessages({
 				<Button
 					type="colored"
 					color="brand"
-					:disabled="username.length === 0"
+					:disabled="username.length === 0 || sendingFriendRequest"
 					@click="addFriendFromModal"
 				>
 					<SendIcon />

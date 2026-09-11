@@ -14,6 +14,7 @@ export const BREAD_CHANGELOG: ChangelogEntry[] = [
 			'Minecraft launches now use conservative G1 garbage-collection defaults for steadier frame pacing; custom Java arguments still take precedence.',
 			'Bread Client now ships with its own built-in gameplay suite (HUD, combat info, and more), enabled by default for supported Fabric versions.',
 			'Added a launch-time guard that rejects malformed or stretched Minecraft title-logo assets before they can be injected.',
+			'Friend requests now resolve the entered username to the real account ID before sending, with clear errors for unknown users and self-requests.',
 		],
 	},
 	{
