@@ -728,13 +728,25 @@ pub(crate) async fn toggle_disable_project(
 }
 
 pub(crate) async fn remove_project(
-    instance_id: &str,
-    project_path: &str,
-    state: &State,
+	instance_id: &str,
+	project_path: &str,
+	state: &State,
 ) -> crate::Result<()> {
-    let _content_lock = state.lock_instance_content(instance_id).await;
-    let scope = resolve_content_scope(instance_id, None, state).await?;
-    let base = instance_full_path(state, &scope.instance);
+	let _content_lock = state.lock_instance_content(instance_id).await;
+	let scope = resolve_content_scope(instance_id, None, state).await?;
+	if content_rows::is_instance_file_locked(
+		&scope.instance.id,
+		project_path,
+		&state.pool,
+	)
+	.await?
+	{
+		return Err(crate::ErrorKind::InputError(
+			"Bread Client built-in modules can be disabled but not removed".to_string(),
+		)
+		.into());
+	}
+	let base = instance_full_path(state, &scope.instance);
     let file = content_rows::get_instance_file_by_relative_path(
         &scope.instance.id,
         project_path,

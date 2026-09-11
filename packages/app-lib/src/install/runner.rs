@@ -722,10 +722,13 @@ async fn run_job(job_id: Uuid) -> crate::Result<()> {
         }
     }
 
-    let result = match result {
-        Ok(Some(instance_id)) => {
-            set_instance_id(&mut job_state, instance_id.clone());
-            Ok(instance_id)
+	let result = match result {
+		Ok(Some(instance_id)) => {
+			if installs_new_instance(&job_state.request) {
+				crate::install::ensure_bread_suite(&instance_id, &state).await?;
+			}
+			set_instance_id(&mut job_state, instance_id.clone());
+			Ok(instance_id)
         }
         Ok(None) => Err(crate::ErrorKind::InputError(
             "Install job completed without an instance id".to_string(),
@@ -773,6 +776,17 @@ async fn run_job(job_id: Uuid) -> crate::Result<()> {
     }
 
     Ok(())
+}
+
+fn installs_new_instance(request: &InstallRequest) -> bool {
+	matches!(
+		request,
+		InstallRequest::CreateInstance { .. }
+			| InstallRequest::CreateModpackInstance { .. }
+			| InstallRequest::CreateSharedInstance { .. }
+			| InstallRequest::ImportInstance { .. }
+			| InstallRequest::DuplicateInstance { .. }
+	)
 }
 
 async fn terminalize_stranded_job(

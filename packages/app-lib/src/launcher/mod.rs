@@ -907,9 +907,12 @@ pub async fn launch_minecraft(
         .into());
     }
 
-    let state = State::get().await?;
+	let state = State::get().await?;
+	// Restore the version-matched built-in suite before assembling the classpath.
+	// This is idempotent and also repairs a jar removed by an external tool.
+	crate::install::ensure_bread_suite(&instance.id, &state).await?;
 
-    // Show the launch transition immediately; the playing activity is set only
+	// Show the launch transition immediately; the playing activity is set only
     // after the Minecraft process has been spawned successfully below.
     let _ = state
         .discord_rpc

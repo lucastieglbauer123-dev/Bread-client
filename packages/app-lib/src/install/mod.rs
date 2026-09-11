@@ -1,4 +1,5 @@
 mod diagnostics;
+mod bread_suite;
 pub mod events;
 pub mod model;
 pub mod recovery;
@@ -22,3 +23,5 @@ pub use runner::{
     install_pack_to_existing_instance, job_support_details, list_jobs,
     retry_job, update_shared_instance,
 };
+
+pub(crate) use bread_suite::ensure_bread_suite;
