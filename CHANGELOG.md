@@ -7,6 +7,7 @@
 - Minecraft launches now use conservative G1 garbage-collection defaults for steadier frame pacing and less render-thread pause time; custom Java arguments still take precedence.
 - Bread Client now ships with its own built-in gameplay suite (HUD, combat info, and more), enabled by default for supported Fabric versions.
 - Added a launch-time guard that rejects malformed or stretched Minecraft title-logo assets before they can be injected.
+- Normalized title-pack paths so Windows-created archives load the crisp Bread artwork through Minecraft's forward-slash resource paths.
 - Friend requests now resolve the entered username to the real account ID before sending, with clear errors for unknown users and self-requests.
 - Built-in suite repair now replaces a stale jar safely on Windows before restoring the protected file.
 

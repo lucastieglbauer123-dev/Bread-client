@@ -90,7 +90,9 @@ async fn apply_bread_title_screen(client_path: &std::path::Path) -> crate::Resul
 			if file.is_dir() || file.name() == "pack.mcmeta" {
 				continue;
 			}
-			let name = file.name().to_owned();
+			// Archives assembled on Windows may store backslashes. Minecraft's
+			// resource loader always addresses assets with forward slashes.
+			let name = file.name().replace('\\', "/");
 			let mut data = Vec::new();
 			file.read_to_end(&mut data)?;
 			if name == BREAD_TITLE_LOGO_PATH
