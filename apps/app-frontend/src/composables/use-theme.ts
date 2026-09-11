@@ -8,12 +8,24 @@ export const THEME_OPTIONS = [
 	'purple',
 	'purple-flame',
 	'amber',
+	'tj',
+	'kj',
 	'light',
 	'oled',
 	'retro',
 	'system',
 ] as const
-export const DARK_THEMES = ['dark', 'standard', 'bread', 'purple', 'purple-flame', 'amber', 'oled', 'retro'] as const
+export const DARK_THEMES = [
+	'dark',
+	'standard',
+	'bread',
+	'purple',
+	'purple-flame',
+	'amber',
+	'kj',
+	'oled',
+	'retro',
+] as const
 
 export type ColorTheme = (typeof THEME_OPTIONS)[number]
 export type DarkTheme = (typeof DARK_THEMES)[number]

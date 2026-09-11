@@ -324,6 +324,54 @@ html.amber-mode,
 	);
 }
 
+html.tj-mode,
+.tj-mode {
+	color-scheme: light;
+
+	@include bread-theme(
+		#fff8fc,
+		#ffffff,
+		#fff0f6,
+		#ffe8f1,
+		#fff1f7,
+		#ffe5ef,
+		#ffd7e6,
+		#e3aac1,
+		#f0cddd,
+		#c96d98,
+		#351523,
+		#835b6d,
+		#ac8394,
+		#e86caa,
+		#ff91c2,
+		#ffb4d4,
+		#3a1126
+	);
+}
+
+html.kj-mode,
+.kj-mode {
+	@include bread-theme(
+		#08141b,
+		#0f202b,
+		#0b1a23,
+		#153240,
+		#1a3d4d,
+		#225265,
+		#2d6880,
+		#3d85a0,
+		#2a596c,
+		#4ba6c7,
+		#effcff,
+		#b7d9e4,
+		#82acba,
+		#42c6e8,
+		#70d9f3,
+		#96e7fb,
+		#08222c
+	);
+}
+
 body {
 	background-color: var(--bread-color-bg);
 	background-image: var(--bread-custom-background, none);

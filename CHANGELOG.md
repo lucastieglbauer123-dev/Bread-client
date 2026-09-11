@@ -1,5 +1,10 @@
 # Bread Client changelog
 
+## 2026-09-12
+
+- Browse searches now wait for Enter or 10 seconds of inactivity before refreshing across Modrinth, CurseForge, mods, shaders, resource packs, data packs, and modpacks.
+- Added distinct White and pink · for the one and only TJ. and Cyan and navy · KJ themes without changing the existing csm purple or KJ purple-flame themes.
+
 ## 2026-09-11
 
 - Replaced the Minecraft title-screen Bread Client wordmark with a compact centered bread mark so it no longer collides with the Java Edition sign.

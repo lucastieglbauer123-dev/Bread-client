@@ -50,6 +50,14 @@ const themeLabels = defineMessages({
 		id: 'settings.display.theme.amber',
 		defaultMessage: 'Amber and turquoise',
 	},
+	tj: {
+		id: 'settings.display.theme.tj',
+		defaultMessage: 'White and pink · for the one and only TJ.',
+	},
+	kj: {
+		id: 'settings.display.theme.kj',
+		defaultMessage: 'Cyan and navy · KJ',
+	},
 	oled: {
 		id: 'settings.display.theme.oled',
 		defaultMessage: 'OLED',
@@ -152,7 +160,9 @@ function getPreviewClass(option: T): string {
 		&.bread-mode,
 		&.purple-mode,
 		&.purple-flame-mode,
-		&.amber-mode {
+		&.amber-mode,
+		&.tj-mode,
+		&.kj-mode {
 			border-color: var(--bread-color-border-subtle);
 		}
 	}

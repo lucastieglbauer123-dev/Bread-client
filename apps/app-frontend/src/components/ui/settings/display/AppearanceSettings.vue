@@ -309,7 +309,16 @@ const { saved, current, changes, saving, hasChanges, reset, save } = useSavable(
 )
 
 const themeOptions = computed(() => {
-	const breadThemes = new Set(['system', 'standard', 'bread', 'purple', 'purple-flame', 'amber'])
+	const breadThemes = new Set([
+		'system',
+		'standard',
+		'bread',
+		'purple',
+		'purple-flame',
+		'amber',
+		'tj',
+		'kj',
+	])
 	return theme.options.filter(
 		(option) =>
 			(showOriginalThemes.value || breadThemes.has(option)) &&
