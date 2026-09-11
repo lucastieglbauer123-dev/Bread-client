@@ -2301,6 +2301,7 @@ provideAppUpdateDownloadProgress(appUpdateDownload)
 			<NavButton
 				class="bread-sidebar-create-button"
 				v-tooltip.right="formatMessage(messages.createNewInstance)"
+				:label="formatMessage(messages.createNewInstance)"
 				:to="() => installationModal?.show()"
 				:disabled="offline"
 			>
@@ -3143,9 +3144,7 @@ provideAppUpdateDownloadProgress(appUpdateDownload)
 }
 
 .bread-sidebar-create-button::after {
-	content: 'New instance';
-	font-size: 0.8rem;
-	font-weight: 800;
+	content: none;
 }
 
 .bread-make-yours {
