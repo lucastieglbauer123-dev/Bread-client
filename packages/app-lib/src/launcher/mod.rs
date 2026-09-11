@@ -40,6 +40,21 @@ pub mod quick_play_version;
 
 const BREAD_TITLE_SCREEN_MARKER: &str = "META-INF/bread-title-screen";
 const BREAD_TITLE_SCREEN_MARKER_CONTENT: &[u8] = b"Bread Client title screen v4";
+const BREAD_TITLE_LOGO_PATH: &str = "assets/minecraft/textures/gui/title/minecraft.png";
+const BREAD_TITLE_LOGO_WIDTH: u32 = 1024;
+const BREAD_TITLE_LOGO_HEIGHT: u32 = 256;
+
+fn is_valid_bread_title_logo(path: &str, bytes: &[u8]) -> bool {
+	if path != BREAD_TITLE_LOGO_PATH || bytes.len() < 24 {
+		return false;
+	}
+	const PNG_SIGNATURE: &[u8; 8] = b"\x89PNG\r\n\x1a\n";
+	bytes.starts_with(PNG_SIGNATURE)
+		&& u32::from_be_bytes(bytes[16..20].try_into().unwrap())
+			== BREAD_TITLE_LOGO_WIDTH
+		&& u32::from_be_bytes(bytes[20..24].try_into().unwrap())
+			== BREAD_TITLE_LOGO_HEIGHT
+}
 
 /// Embed Bread's title artwork directly into the downloaded Minecraft client jar.
 /// This keeps the branding active for every launch without exposing a removable
@@ -78,6 +93,14 @@ async fn apply_bread_title_screen(client_path: &std::path::Path) -> crate::Resul
 			let name = file.name().to_owned();
 			let mut data = Vec::new();
 			file.read_to_end(&mut data)?;
+			if name == BREAD_TITLE_LOGO_PATH
+				&& !is_valid_bread_title_logo(&name, &data)
+			{
+				return Err(crate::ErrorKind::LauncherError(
+					"Bread title logo must be a 1024x256 PNG".to_string(),
+				)
+				.into());
+			}
 			overrides.push((name, data));
 		}
 
@@ -1294,5 +1317,24 @@ pub async fn launch_minecraft(
         )
         .await;
 
-    Ok(process_metadata)
+	Ok(process_metadata)
+}
+
+#[cfg(test)]
+mod title_screen_tests {
+	use super::{
+		BREAD_TITLE_LOGO_HEIGHT, BREAD_TITLE_LOGO_PATH,
+		BREAD_TITLE_LOGO_WIDTH, is_valid_bread_title_logo,
+	};
+
+	#[test]
+	fn embedded_title_logo_dimensions_are_guarded() {
+		let mut png = vec![0u8; 24];
+		png[..8].copy_from_slice(b"\x89PNG\r\n\x1a\n");
+		png[16..20].copy_from_slice(&BREAD_TITLE_LOGO_WIDTH.to_be_bytes());
+		png[20..24].copy_from_slice(&BREAD_TITLE_LOGO_HEIGHT.to_be_bytes());
+		assert!(is_valid_bread_title_logo(BREAD_TITLE_LOGO_PATH, &png));
+		png[20..24].copy_from_slice(&512u32.to_be_bytes());
+		assert!(!is_valid_bread_title_logo(BREAD_TITLE_LOGO_PATH, &png));
+	}
 }

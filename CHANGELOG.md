@@ -6,6 +6,7 @@
 - Added distinct White and pink · for the one and only TJ. and Cyan and navy · KJ themes without changing the existing csm purple or KJ purple-flame themes.
 - Minecraft launches now use conservative G1 garbage-collection defaults for steadier frame pacing and less render-thread pause time; custom Java arguments still take precedence.
 - Bread Client now ships with its own built-in gameplay suite (HUD, combat info, and more), enabled by default for supported Fabric versions.
+- Added a launch-time guard that rejects malformed or stretched Minecraft title-logo assets before they can be injected.
 
 ## 2026-09-11
 
