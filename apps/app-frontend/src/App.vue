@@ -2301,7 +2301,6 @@ provideAppUpdateDownloadProgress(appUpdateDownload)
 			<NavButton
 				class="bread-sidebar-create-button"
 				v-tooltip.right="formatMessage(messages.createNewInstance)"
-				:label="formatMessage(messages.createNewInstance)"
 				:to="() => installationModal?.show()"
 				:disabled="offline"
 			>

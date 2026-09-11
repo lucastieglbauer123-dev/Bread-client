@@ -4,6 +4,7 @@
 
 - Replaced the Minecraft title-screen Bread Client wordmark with a compact centered bread mark so it no longer collides with the Java Edition sign.
 - Rebuilt the launcher sidebar as a structured workspace rail with profile state, grouped navigation cards, an active-instance switcher, a prominent create action, and utility controls.
+- Cleaned up the new sidebar create action so its label is shown once and remains easy to identify.
 - Reworked Appearance settings into a real workspace dashboard with live layout choices, theme previews, accent cards, a local setup summary, preference controls, and reset actions.
 
 ## 2026-09-10
