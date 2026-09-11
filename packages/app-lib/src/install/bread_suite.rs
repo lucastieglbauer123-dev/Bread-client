@@ -80,6 +80,12 @@ pub(crate) async fn ensure_bread_suite(
 	if needs_write {
 		let temporary = target.with_extension("jar.bread-tmp");
 		tokio::fs::write(&temporary, suite.bytes).await?;
+		if let Err(error) = tokio::fs::remove_file(&target).await
+			&& error.kind() != std::io::ErrorKind::NotFound
+		{
+			let _ = tokio::fs::remove_file(&temporary).await;
+			return Err(error.into());
+		}
 		tokio::fs::rename(&temporary, &target).await?;
 	}
 
