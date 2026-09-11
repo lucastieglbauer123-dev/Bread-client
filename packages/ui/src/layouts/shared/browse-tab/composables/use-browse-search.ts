@@ -1,6 +1,6 @@
 import type { Labrinth } from '@modrinth/api-client'
 import type { ComputedRef, Ref, ShallowRef } from 'vue'
-import { computed, nextTick, ref, shallowRef, watch } from 'vue'
+import { computed, nextTick, onBeforeUnmount, ref, shallowRef, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 import { useDebugLogger } from '#ui/composables/debug-logger'
@@ -73,6 +73,7 @@ export interface BrowseSearchState {
 	excludeLoaders: ComputedRef<boolean>
 
 	refreshSearch: () => Promise<void>
+	submitSearch: () => Promise<void>
 	setPage: (page: number) => Promise<void>
 	clearSearch: () => void
 	onFilterChange: () => void
@@ -191,6 +192,7 @@ export function useBrowseSearch(options: UseBrowseSearchOptions): BrowseSearchSt
 	const projectHits = shallowRef<BrowseSearchResponse['projectHits']>([])
 	const serverHits = shallowRef<BrowseSearchResponse['serverHits']>([])
 	const totalHits = ref(0)
+	const SEARCH_IDLE_DELAY_MS = 10_000
 
 	const pageCount = computed(() => {
 		if (totalHits.value === 0) return 1
@@ -206,6 +208,8 @@ export function useBrowseSearch(options: UseBrowseSearchOptions): BrowseSearchSt
 			searchDebounceTimer = null
 		}
 	}
+
+	onBeforeUnmount(clearSearchDebounce)
 
 	const providedFiltersOrEmpty = computed(() => options.providedFilters?.value ?? [])
 	const effectiveCurrentFilters = computed(() =>
@@ -298,8 +302,17 @@ export function useBrowseSearch(options: UseBrowseSearchOptions): BrowseSearchSt
 		{ deep: true },
 	)
 
-	watch(effectiveRequestParams, (newVal, oldVal) => {
-		refreshing.value = true
+	function scheduleSearch(delay: number) {
+		clearSearchDebounce()
+		if (!active.value) return
+
+		searchDebounceTimer = setTimeout(() => {
+			searchDebounceTimer = null
+			void refreshSearch()
+		}, delay)
+	}
+
+	watch([effectiveRequestParams, query], ([newVal, newQuery], [oldVal, oldQuery]) => {
 		debug('effectiveRequestParams changed', {
 			from: oldVal?.substring(0, 80),
 			to: newVal?.substring(0, 80),
@@ -308,9 +321,17 @@ export function useBrowseSearch(options: UseBrowseSearchOptions): BrowseSearchSt
 		if (!active.value) {
 			return
 		}
-		searchDebounceTimer = setTimeout(() => {
-			refreshSearch()
-		}, 200)
+
+		if (newQuery !== oldQuery) {
+			debug('search query changed; waiting for submit or idle', {
+				idleMs: SEARCH_IDLE_DELAY_MS,
+			})
+			scheduleSearch(SEARCH_IDLE_DELAY_MS)
+			return
+		}
+
+		refreshing.value = true
+		scheduleSearch(200)
 	})
 
 	watch(active, (isActive, wasActive) => {
@@ -321,6 +342,7 @@ export function useBrowseSearch(options: UseBrowseSearchOptions): BrowseSearchSt
 	})
 
 	async function refreshSearch() {
+		clearSearchDebounce()
 		if (!active.value) {
 			return
 		}
@@ -378,6 +400,11 @@ export function useBrowseSearch(options: UseBrowseSearchOptions): BrowseSearchSt
 		}
 	}
 
+	async function submitSearch() {
+		clearSearchDebounce()
+		await refreshSearch()
+	}
+
 	function updateUrlParams() {
 		if (!active.value) {
 			return
@@ -414,6 +441,7 @@ export function useBrowseSearch(options: UseBrowseSearchOptions): BrowseSearchSt
 	function clearSearch() {
 		query.value = ''
 		currentPage.value = 1
+		void submitSearch()
 	}
 
 	function onFilterChange() {
@@ -428,6 +456,7 @@ export function useBrowseSearch(options: UseBrowseSearchOptions): BrowseSearchSt
 				effectiveSortTypes.value.find((sortType) => sortType.name === 'relevance') ??
 				effectiveSortTypes.value[0]
 			query.value = ''
+			void nextTick(() => refreshSearch())
 
 			void nextTick(() => {
 				initAdvancedPrefs()
@@ -459,6 +488,7 @@ export function useBrowseSearch(options: UseBrowseSearchOptions): BrowseSearchSt
 		deprioritizedTags,
 		excludeLoaders,
 		refreshSearch,
+		submitSearch,
 		setPage,
 		clearSearch,
 		onFilterChange,

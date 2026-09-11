@@ -77,6 +77,13 @@ const messages = defineMessages({
 	},
 })
 
+function handleSearchKeydown(event: KeyboardEvent) {
+	if (event.key !== 'Enter') return
+
+	event.preventDefault()
+	void ctx.submitSearch()
+}
+
 function cardActionType(action: CardAction) {
 	if (action.type === 'transparent') return 'quiet'
 	if (action.type === 'outlined') return 'outlined'
@@ -157,6 +164,7 @@ function getProjectCardTags(result: Labrinth.Search.v3.ResultSearchProject, disp
 		clearable
 		wrapper-class="w-full"
 		size="large"
+		:input-attrs="{ onKeydown: handleSearchKeydown }"
 		@clear="ctx.clearSearch()"
 	/>
 
