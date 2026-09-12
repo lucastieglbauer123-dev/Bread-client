@@ -61,6 +61,11 @@ export default new createRouter({
 			component: () => import('@/pages/Skins.vue'),
 		},
 		{
+			path: '/friends',
+			name: 'Friends',
+			component: () => import('@/pages/Friends.vue'),
+		},
+		{
 			path: '/activity',
 			name: 'Recent activity',
 			component: () => import('@/pages/RecentActivity.vue'),

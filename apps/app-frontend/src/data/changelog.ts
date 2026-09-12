@@ -18,6 +18,7 @@ export const BREAD_CHANGELOG: ChangelogEntry[] = [
 			'Friend requests now resolve the entered username to the real account ID before sending, with clear errors for unknown users and self-requests.',
 			'Built-in suite repair now replaces a stale jar safely on Windows before restoring the protected file.',
 			'Fabric instances can now use Minecraft 1.21.11; the built-in suite uses its verified 1.21.x compatibility artifact, and Fabric API installs automatically before first launch.',
+			'Added a Friends workspace: send requests by Minecraft username, review pending requests, and accept or decline them when you return.',
 		],
 	},
 	{

@@ -167,15 +167,15 @@ const messages = defineMessages({
 	},
 	usernameTitle: {
 		id: 'friends.add-friend.username.title',
-		defaultMessage: "What's your friend's username?",
+		defaultMessage: "What's your friend's Minecraft username?",
 	},
 	usernameDescription: {
 		id: 'friends.add-friend.username.description',
-		defaultMessage: 'Enter the name they use to sign in to Bread Client.',
+		defaultMessage: 'Use the username they use with their Minecraft account in Bread Client.',
 	},
 	usernamePlaceholder: {
 		id: 'friends.add-friend.username.placeholder',
-		defaultMessage: 'Enter Bread Client username...',
+		defaultMessage: 'Enter Minecraft username...',
 	},
 	sendFriendRequest: {
 		id: 'friends.add-friend.submit',
@@ -297,15 +297,15 @@ const messages = defineMessages({
 		</div>
 	</ModalWrapper>
 	<div v-if="userCredentials && !loading" class="flex gap-1 items-center mb-3 -ml-1">
+		<IconButton
+			v-tooltip="formatMessage(messages.addFriend)"
+			type="quiet"
+			:label="formatMessage(messages.addFriend)"
+			@click="showAddFriendModal"
+		>
+			<UserPlusIcon />
+		</IconButton>
 		<template v-if="sortedFriends.length > 0">
-			<IconButton
-				v-tooltip="formatMessage(messages.addFriend)"
-				type="quiet"
-				:label="formatMessage(messages.addFriend)"
-				@click="addFriendModal.show"
-			>
-				<UserPlusIcon />
-			</IconButton>
 			<Input
 				v-model="search"
 				:icon="SearchIcon"

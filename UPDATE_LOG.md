@@ -6,6 +6,7 @@ new Bread Client update is committed.
 ## 2026-09-12
 
 - Fabric instances can now use Minecraft 1.21.11; the built-in suite uses its verified 1.21.x compatibility artifact, and Fabric API installs automatically before first launch.
+- Added a Friends workspace: send requests by Minecraft username, review pending requests, and accept or decline them when you return.
 
 ## 2026-09-08
 

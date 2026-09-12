@@ -30,6 +30,7 @@ import {
 	ToggleRightIcon,
 	UserIcon,
 	UserPlusIcon,
+	UsersIcon,
 	XIcon,
 } from '@modrinth/assets'
 import {
@@ -233,6 +234,10 @@ const APP_SIDEBAR_WIDTH = 300
 const INTERCOM_BUBBLE_DEFAULT_PADDING = 20
 const PRIDE_FUNDRAISER_END_DATE = new Date('2026-07-01T00:00:00Z').getTime()
 const credentials = ref()
+// Shared with standalone workspace pages that need to react to account changes.
+// The value is still sourced from the existing Modrinth auth client; this only
+// exposes the active Minecraft-linked account to Bread UI surfaces.
+provide('breadCredentials', credentials)
 const storedModrinthAccounts = ref([])
 let credentialsRefreshId = 0
 const sidebarToggled = ref(true)
@@ -626,6 +631,10 @@ const messages = defineMessages({
 	files: {
 		id: 'app.nav.files',
 		defaultMessage: 'Crash reports',
+	},
+	friends: {
+		id: 'app.nav.friends',
+		defaultMessage: 'Friends',
 	},
 	notifications: {
 		id: 'app.nav.notifications',
@@ -2267,6 +2276,14 @@ provideAppUpdateDownloadProgress(appUpdateDownload)
 				:is-primary="(route) => route.path.startsWith('/skins')"
 			>
 				<ShirtIcon />
+			</NavButton>
+			<NavButton
+				v-tooltip.right="formatMessage(messages.friends)"
+				to="/friends"
+				:label="formatMessage(messages.friends)"
+				:is-primary="(route) => route.path.startsWith('/friends')"
+			>
+				<UsersIcon />
 			</NavButton>
 					</div>
 				</section>
