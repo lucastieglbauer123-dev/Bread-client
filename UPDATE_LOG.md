@@ -3,6 +3,10 @@
 This file records user-facing launcher updates. Add a dated entry here whenever a
 new Bread Client update is committed.
 
+## 2026-09-12
+
+- Fabric instances can now use Minecraft 1.21.11; the built-in suite uses its verified 1.21.x compatibility artifact, and Fabric API installs automatically before first launch.
+
 ## 2026-09-08
 
 - Added a working Notifications control and notification-center popover with unread badges and dismiss actions.

@@ -724,6 +724,9 @@ async fn run_job(job_id: Uuid) -> crate::Result<()> {
 
 	let result = match result {
 		Ok(Some(instance_id)) => {
+			// Keep the required Fabric dependency present for both new and
+			// existing instances after any install or repair job.
+			crate::install::ensure_fabric_api(&instance_id, &state).await?;
 			if installs_new_instance(&job_state.request) {
 				crate::install::ensure_bread_suite(&instance_id, &state).await?;
 			}

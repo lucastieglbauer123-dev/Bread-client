@@ -933,6 +933,10 @@ pub async fn launch_minecraft(
     }
 
 	let state = State::get().await?;
+	// Fabric API is a required runtime dependency for every Fabric instance.
+	// Restore it before assembling the classpath so older instances are repaired
+	// transparently as well as newly-created ones.
+	crate::install::ensure_fabric_api(&instance.id, &state).await?;
 	// Restore the version-matched built-in suite before assembling the classpath.
 	// This is idempotent and also repairs a jar removed by an external tool.
 	crate::install::ensure_bread_suite(&instance.id, &state).await?;

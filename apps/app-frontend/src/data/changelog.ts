@@ -17,6 +17,7 @@ export const BREAD_CHANGELOG: ChangelogEntry[] = [
 			'Normalized title-pack paths so Windows-created archives load the crisp Bread artwork through Minecraft resource paths.',
 			'Friend requests now resolve the entered username to the real account ID before sending, with clear errors for unknown users and self-requests.',
 			'Built-in suite repair now replaces a stale jar safely on Windows before restoring the protected file.',
+			'Fabric instances can now use Minecraft 1.21.11; the built-in suite uses its verified 1.21.x compatibility artifact, and Fabric API installs automatically before first launch.',
 		],
 	},
 	{

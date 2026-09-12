@@ -31,7 +31,10 @@ fn suite_for_version(game_version: &str) -> Option<&'static SuiteJar> {
 		"1.16" | "1.16.5" | "1.16_combat-6" => Some(&SUITE_1_16),
 		"1.20" | "1.20.1" => Some(&SUITE_1_20),
 		"1.21" | "1.21.1" => Some(&SUITE_1_21),
-		"1.21.10" | "latest" => Some(&SUITE_1_LATEST),
+		// The 1.21.10 suite jar declares the broad `1.21.x` Minecraft range and
+		// is the verified compatibility artifact for 1.21.11 until a dedicated
+		// 1.21.11 build is published by the suite project.
+		"1.21.10" | "1.21.11" | "latest" => Some(&SUITE_1_LATEST),
 		"26.2" => Some(&SUITE_26_2),
 		_ => None,
 	}
@@ -109,4 +112,19 @@ pub(crate) async fn ensure_bread_suite(
 		);
 	}
 	Ok(needs_write)
+}
+
+#[cfg(test)]
+mod tests {
+	use super::suite_for_version;
+
+	#[test]
+	fn latest_suite_artifact_covers_minecraft_1_21_11() {
+		assert_eq!(
+			suite_for_version("1.21.11")
+				.expect("1.21.11 should use the verified 1.21.x suite")
+				.file_name,
+			"BreadClient-3.1.6+1.21.10.jar"
+		);
+	}
 }

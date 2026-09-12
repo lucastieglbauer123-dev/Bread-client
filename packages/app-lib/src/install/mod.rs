@@ -1,5 +1,6 @@
 mod diagnostics;
 mod bread_suite;
+mod fabric_api;
 pub mod events;
 pub mod model;
 pub mod recovery;
@@ -25,3 +26,4 @@ pub use runner::{
 };
 
 pub(crate) use bread_suite::ensure_bread_suite;
+pub(crate) use fabric_api::ensure_fabric_api;
