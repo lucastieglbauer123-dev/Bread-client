@@ -11,7 +11,7 @@ import {
 	useRelativeTime,
 	useVIntl,
 } from '@modrinth/ui'
-import { computed, ref } from 'vue'
+import { computed, inject, ref, type Ref } from 'vue'
 
 import FriendsSection from '@/components/ui/friends/FriendsSection.vue'
 import ModalWrapper from '@/components/ui/modal/ModalWrapper.vue'
@@ -33,6 +33,7 @@ const props = defineProps<{
 	credentials: ModrinthCredentials | null
 	signIn: () => void
 }>()
+const accountsCard = inject<Ref<{ hasAccounts?: boolean } | null>>('accountsCard', ref(null))
 
 type FriendsSectionCollapsedFlag =
 	| 'friends_active_collapsed'
@@ -55,6 +56,7 @@ function setFriendsSectionCollapsed(flag: FriendsSectionCollapsedFlag, collapsed
 }
 
 const userCredentials = computed(() => props.credentials)
+const minecraftAccountConnected = computed(() => !!accountsCard.value?.hasAccounts)
 const {
 	friends: userFriends,
 	loading,
@@ -142,6 +144,10 @@ async function addFriendFromModal() {
 }
 
 function showAddFriendModal() {
+	if (!userCredentials.value) {
+		props.signIn()
+		return
+	}
 	username.value = ''
 	addFriendModal.value?.show()
 }
@@ -222,6 +228,11 @@ const messages = defineMessages({
 		id: 'friends.add-friends-to-share',
 		defaultMessage: "<link>Add friends</link> to see what they're playing!",
 	},
+	connectBreadForFriends: {
+		id: 'friends.connect-bread-for-friends',
+		defaultMessage:
+			'<link>Link friend sync</link> to send requests and see what your friends are playing.',
+	},
 })
 </script>
 
@@ -296,7 +307,7 @@ const messages = defineMessages({
 			</div>
 		</div>
 	</ModalWrapper>
-	<div v-if="userCredentials && !loading" class="flex gap-1 items-center mb-3 -ml-1">
+	<div v-if="(userCredentials || minecraftAccountConnected) && !loading" class="flex gap-1 items-center mb-3 -ml-1">
 		<IconButton
 			v-tooltip="formatMessage(messages.addFriend)"
 			type="quiet"
@@ -354,10 +365,19 @@ const messages = defineMessages({
 		</template>
 		<template v-else-if="sortedFriends.length === 0">
 			<div class="text-sm">
-				<div v-if="!userCredentials">
+				<div v-if="!userCredentials && !minecraftAccountConnected">
 					<IntlFormatted :message-id="messages.signInToAddFriends">
 						<template #link="{ children }">
 							<span class="font-semibold text-brand cursor-pointer" @click="signIn">
+								<component :is="() => children" />
+							</span>
+						</template>
+					</IntlFormatted>
+				</div>
+				<div v-else-if="!userCredentials">
+					<IntlFormatted :message-id="messages.connectBreadForFriends">
+						<template #link="{ children }">
+							<span class="font-semibold text-brand cursor-pointer" @click="showAddFriendModal">
 								<component :is="() => children" />
 							</span>
 						</template>

@@ -5,7 +5,7 @@ new Bread Client update is committed.
 
 ## 2026-09-13
 
-- Fixed the Friends workspace auth indicator so an already loaded account does not fall back to a “Sign in” prompt during token refresh.
+- Fixed the Friends workspace auth indicator to recognize the loaded Minecraft account and distinguish it from the optional Bread friend-sync connection.
 
 ## 2026-09-12
 

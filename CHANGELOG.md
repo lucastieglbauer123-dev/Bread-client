@@ -2,7 +2,7 @@
 
 ## 2026-09-13
 
-- Fixed the Friends workspace to recognize a loaded account while its session token refreshes, so signed-in users no longer see a false “Sign in” prompt.
+- Fixed the Friends workspace to recognize both the loaded Minecraft account and Bread friend-sync session, so logged-in users no longer see a misleading duplicate “Sign in” prompt.
 
 ## 2026-09-12
 

@@ -13,12 +13,13 @@ const credentials = inject<Ref<ModrinthCredentials | null | undefined>>(
 )
 const signIn = inject<() => void>('showBreadSignIn', () => {})
 const friendsList = ref<InstanceType<typeof FriendsList> | null>(null)
+const accountsCard = inject<Ref<{ hasAccounts?: boolean } | null>>('accountsCard', ref(null))
 
-// The active account is identified by `user_id`.  The session token can be
-// refreshed asynchronously (and is intentionally not exposed to every UI
-// surface), so using it here made the page briefly—and sometimes
-// permanently—show “Sign in” for an account that was already loaded.
-const signedIn = computed(() => !!credentials.value?.user_id)
+// Friends sync uses the existing Bread account session, while the sidebar
+// account card represents the linked Minecraft account. Keep both states
+// visible so a Minecraft login is not mistaken for a second login requirement.
+const breadSignedIn = computed(() => !!credentials.value?.user_id)
+const minecraftSignedIn = computed(() => !!accountsCard.value?.hasAccounts)
 
 useRootBreadcrumb({
 	slot: 'root',
@@ -28,7 +29,7 @@ useRootBreadcrumb({
 })
 
 function openAddFriend() {
-	if (signedIn.value) {
+	if (breadSignedIn.value) {
 		friendsList.value?.showAddFriendModal()
 	} else {
 		signIn()
@@ -48,11 +49,12 @@ function openAddFriend() {
 				</div>
 			</div>
 			<div class="bread-friends-hero__actions">
-				<span v-if="signedIn" class="bread-friends-status">Connected to your Minecraft account</span>
+				<span v-if="breadSignedIn" class="bread-friends-status">Friends sync connected</span>
+				<span v-else-if="minecraftSignedIn" class="bread-friends-status">Minecraft account connected · link friend sync once</span>
 				<span v-else class="bread-friends-status">Sign in to manage friends</span>
 				<Button type="colored" color="brand" @click="openAddFriend">
 					<UserPlusIcon />
-					{{ signedIn ? 'Add friend' : 'Sign in' }}
+					{{ breadSignedIn ? 'Add friend' : minecraftSignedIn ? 'Connect friends' : 'Sign in' }}
 				</Button>
 			</div>
 		</header>

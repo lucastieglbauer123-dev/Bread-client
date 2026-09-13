@@ -148,6 +148,7 @@ const loginDisabled = ref(false)
 const defaultUser = ref<string | undefined>()
 const equippedSkin = ref<Skin | null>(null)
 const headUrlCache = ref(new Map<string, string>())
+const hasAccounts = computed(() => accounts.value.length > 0)
 
 async function refreshValues() {
 	defaultUser.value = await get_default_user().catch(handleError)
@@ -196,6 +197,7 @@ defineExpose({
 	setLoginDisabled,
 	login,
 	loginDisabled,
+	hasAccounts,
 })
 
 await refreshValues()
