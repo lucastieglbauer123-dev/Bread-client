@@ -25,6 +25,7 @@ pub(crate) struct ContentScope {
 pub(crate) struct InstalledContentFile {
     pub relative_path: String,
     pub project_id: Option<String>,
+    pub version_id: Option<String>,
     pub enabled: bool,
 }
 
@@ -157,9 +158,43 @@ fn target_preferences(
 }
 
 pub(crate) async fn resolve_install_plan(
-    instance_id: &str,
-    request: InstanceInstallProjectRequest,
-    state: &State,
+	instance_id: &str,
+	request: InstanceInstallProjectRequest,
+	state: &State,
+) -> crate::Result<ResolveContentPlan> {
+	resolve_install_plan_with_cache(
+		instance_id,
+		request,
+		state,
+		Some(CacheBehaviour::MustRevalidate),
+	)
+	.await
+}
+
+/// Resolve a project while bypassing the metadata cache.
+///
+/// This is used for launch-critical dependencies such as Fabric API. The
+/// regular install UI remains cache-first, while the launch path can guarantee
+/// that a newly published compatible version is considered immediately.
+pub(crate) async fn resolve_install_plan_fresh(
+	instance_id: &str,
+	request: InstanceInstallProjectRequest,
+	state: &State,
+) -> crate::Result<ResolveContentPlan> {
+	resolve_install_plan_with_cache(
+		instance_id,
+		request,
+		state,
+		Some(CacheBehaviour::Bypass),
+	)
+	.await
+}
+
+async fn resolve_install_plan_with_cache(
+	instance_id: &str,
+	request: InstanceInstallProjectRequest,
+	state: &State,
+	cache_behaviour: Option<CacheBehaviour>,
 ) -> crate::Result<ResolveContentPlan> {
     let content_set =
         content_rows::get_applied_content_set(instance_id, &state.pool)
@@ -176,10 +211,10 @@ pub(crate) async fn resolve_install_plan(
             state,
         )
         .await?;
-    let provider = CachedEntryContentProvider {
-        state,
-        cache_behaviour: Some(CacheBehaviour::MustRevalidate),
-    };
+	let provider = CachedEntryContentProvider {
+		state,
+		cache_behaviour,
+	};
     let content_type = request.content_type;
     let request = ResolveContentRequest {
         project_id: request.project_id,
@@ -893,11 +928,12 @@ pub(crate) async fn list_project_files(
         .into_iter()
         .filter_map(|entry| {
             let file = files.get(entry.file_id.as_ref()?)?;
-            Some(InstalledContentFile {
-                relative_path: file.relative_path.clone(),
-                project_id: entry.project_id,
-                enabled: entry.enabled && file.enabled,
-            })
+			Some(InstalledContentFile {
+				relative_path: file.relative_path.clone(),
+				project_id: entry.project_id,
+				version_id: entry.version_id,
+				enabled: entry.enabled && file.enabled,
+			})
         })
         .collect())
 }

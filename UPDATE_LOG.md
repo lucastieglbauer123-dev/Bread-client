@@ -5,6 +5,7 @@ new Bread Client update is committed.
 
 ## 2026-09-13
 
+- Fabric instances now refresh the latest compatible Fabric Loader and Fabric API when created or launched, while retaining a cached version for offline recovery.
 - Fixed the Friends workspace auth indicator to recognize the loaded Minecraft account and distinguish it from the optional Bread friend-sync connection.
 
 ## 2026-09-12

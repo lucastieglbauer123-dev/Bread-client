@@ -9,6 +9,7 @@ export const BREAD_CHANGELOG: ChangelogEntry[] = [
 	{
 		date: '2026-09-13',
 		items: [
+			'Fabric instances now refresh the latest compatible Fabric Loader and Fabric API when created or launched, with a cached offline fallback.',
 			'Fixed the Friends workspace to recognize both the loaded Minecraft account and Bread friend-sync session, so logged-in users no longer see a misleading duplicate “Sign in” prompt.',
 		],
 	},

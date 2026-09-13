@@ -281,7 +281,11 @@ pub async fn get_loader_version_from_profile(
         return Ok(None);
     }
 
-    let version = loader_version.unwrap_or("latest");
+	let version = if loader == ModLoader::Fabric {
+		"latest"
+	} else {
+		loader_version.unwrap_or("latest")
+	};
 
     let filter = |it: &LoaderVersion| match version {
         "latest" => true,
@@ -289,8 +293,21 @@ pub async fn get_loader_version_from_profile(
         id => it.id == *id,
     };
 
-    let versions =
-        crate::api::metadata::get_loader_versions(loader.as_meta_str()).await?;
+	// A stored loader id is useful for display and offline recovery, but it must
+	// not pin Fabric forever. Always ask launcher-meta for the current
+	// compatible list at creation/launch time, then fall back to the cached
+	// manifest only when the network is unavailable.
+	let versions = match crate::api::metadata::get_loader_versions_latest(loader.as_meta_str()).await {
+		Ok(versions) => versions,
+		Err(error) => {
+			tracing::warn!(
+				loader = %loader.as_meta_str(),
+				error = %error,
+				"Unable to refresh loader manifest; using cached versions for offline launch"
+			);
+			crate::api::metadata::get_loader_versions(loader.as_meta_str()).await?
+		}
+	};
 
     if let Some(loaders) =
         loader_versions_for_game_version(&versions, game_version)
@@ -960,14 +977,32 @@ pub async fn launch_minecraft(
             .position(|x| x.id == "22w16a")
             .unwrap_or(0);
 
-    let loader_version = get_loader_version_from_profile(
-        &content_set.game_version,
-        content_set.loader,
-        content_set.loader_version.as_deref(),
-    )
-    .await?;
+	let loader_version = get_loader_version_from_profile(
+		&content_set.game_version,
+		content_set.loader,
+		content_set.loader_version.as_deref(),
+	)
+	.await?;
 
-    if content_set.loader != ModLoader::Vanilla && loader_version.is_none() {
+	if content_set.loader == ModLoader::Fabric {
+		if let Some(loader_version) = loader_version.as_ref() {
+			if content_set.loader_version.as_deref() != Some(loader_version.id.as_str()) {
+				crate::state::instances::commands::set_applied_content_set_loader_version(
+					&instance.id,
+					Some(loader_version.id.as_str()),
+					&state.pool,
+				)
+				.await?;
+				tracing::info!(
+					instance_id = %instance.id,
+					loader_version = %loader_version.id,
+					"Updated the instance to the latest compatible Fabric Loader"
+				);
+			}
+		}
+	}
+
+	if content_set.loader != ModLoader::Vanilla && loader_version.is_none() {
         return Err(crate::ErrorKind::LauncherError(format!(
             "No loader version selected for {}",
             content_set.loader.as_str()
