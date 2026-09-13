@@ -14,7 +14,11 @@ const credentials = inject<Ref<ModrinthCredentials | null | undefined>>(
 const signIn = inject<() => void>('showBreadSignIn', () => {})
 const friendsList = ref<InstanceType<typeof FriendsList> | null>(null)
 
-const signedIn = computed(() => !!credentials.value?.session)
+// The active account is identified by `user_id`.  The session token can be
+// refreshed asynchronously (and is intentionally not exposed to every UI
+// surface), so using it here made the page briefly—and sometimes
+// permanently—show “Sign in” for an account that was already loaded.
+const signedIn = computed(() => !!credentials.value?.user_id)
 
 useRootBreadcrumb({
 	slot: 'root',

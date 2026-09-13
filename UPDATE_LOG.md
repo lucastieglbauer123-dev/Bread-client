@@ -3,6 +3,10 @@
 This file records user-facing launcher updates. Add a dated entry here whenever a
 new Bread Client update is committed.
 
+## 2026-09-13
+
+- Fixed the Friends workspace auth indicator so an already loaded account does not fall back to a “Sign in” prompt during token refresh.
+
 ## 2026-09-12
 
 - Fabric instances can now use Minecraft 1.21.11; the built-in suite uses its verified 1.21.x compatibility artifact, and Fabric API installs automatically before first launch.

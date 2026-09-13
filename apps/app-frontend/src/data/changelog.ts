@@ -7,6 +7,12 @@ export interface ChangelogEntry {
 /** User-facing entries mirrored in the repository CHANGELOG.md. */
 export const BREAD_CHANGELOG: ChangelogEntry[] = [
 	{
+		date: '2026-09-13',
+		items: [
+			'Fixed the Friends workspace to recognize a loaded account while its session token refreshes, so signed-in users no longer see a false “Sign in” prompt.',
+		],
+	},
+	{
 		date: '2026-09-12',
 		items: [
 			'Browse searches now wait for Enter or 10 seconds of inactivity before refreshing across Modrinth, CurseForge, mods, shaders, resource packs, data packs, and modpacks.',
