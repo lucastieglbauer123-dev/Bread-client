@@ -5,6 +5,7 @@ new Bread Client update is committed.
 
 ## 2026-09-13
 
+- Added a regression test proving a stored Fabric Loader 0.19.3 value is ignored in favor of a fresh `latest` lookup.
 - Refreshed the embedded 26.2 suite asset after the keybind conflict test so shipped instances include the verified runtime diagnostics.
 - Bundled the freshly verified 26.2 Bread gameplay suite build so new instances receive the current runtime checks.
 - Fabric instances now refresh the latest compatible Fabric Loader and Fabric API when created or launched, while retaining a cached version for offline recovery.

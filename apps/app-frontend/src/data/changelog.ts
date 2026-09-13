@@ -9,6 +9,7 @@ export const BREAD_CHANGELOG: ChangelogEntry[] = [
 	{
 		date: '2026-09-13',
 		items: [
+			'Added a regression test proving a stored Fabric Loader 0.19.3 value is ignored in favor of a fresh latest lookup.',
 			'Refreshed the embedded 26.2 suite asset after the keybind conflict test so shipped instances include the verified runtime diagnostics.',
 			'Updated the bundled 26.2 Bread gameplay suite artifact to the freshly verified build with loader, keybind, and MixinExtras diagnostics.',
 			'Fabric instances now refresh the latest compatible Fabric Loader and Fabric API when created or launched, with a cached offline fallback.',

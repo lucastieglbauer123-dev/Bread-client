@@ -281,11 +281,7 @@ pub async fn get_loader_version_from_profile(
         return Ok(None);
     }
 
-	let version = if loader == ModLoader::Fabric {
-		"latest"
-	} else {
-		loader_version.unwrap_or("latest")
-	};
+	let version = loader_version_selector(loader, loader_version);
 
     let filter = |it: &LoaderVersion| match version {
         "latest" => true,
@@ -326,6 +322,14 @@ pub async fn get_loader_version_from_profile(
     } else {
         Ok(None)
     }
+}
+
+fn loader_version_selector(loader: ModLoader, loader_version: Option<&str>) -> &str {
+	if loader == ModLoader::Fabric {
+		"latest"
+	} else {
+		loader_version.unwrap_or("latest")
+	}
 }
 
 fn loader_versions_for_game_version<'a>(
@@ -1366,7 +1370,9 @@ mod title_screen_tests {
 	use super::{
 		BREAD_TITLE_LOGO_HEIGHT, BREAD_TITLE_LOGO_PATH,
 		BREAD_TITLE_LOGO_WIDTH, is_valid_bread_title_logo,
+		loader_version_selector,
 	};
+	use crate::data::ModLoader;
 
 	#[test]
 	fn embedded_title_logo_dimensions_are_guarded() {
@@ -1377,5 +1383,17 @@ mod title_screen_tests {
 		assert!(is_valid_bread_title_logo(BREAD_TITLE_LOGO_PATH, &png));
 		png[20..24].copy_from_slice(&512u32.to_be_bytes());
 		assert!(!is_valid_bread_title_logo(BREAD_TITLE_LOGO_PATH, &png));
+	}
+
+	#[test]
+	fn fabric_loader_selection_ignores_stale_pinned_version() {
+		assert_eq!(
+			loader_version_selector(ModLoader::Fabric, Some("0.19.3")),
+			"latest"
+		);
+		assert_eq!(
+			loader_version_selector(ModLoader::Forge, Some("47.2.0")),
+			"47.2.0"
+		);
 	}
 }
