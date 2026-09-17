@@ -1,5 +1,9 @@
 # Bread Client changelog
 
+## 2026-09-18
+
+- Fixed Minecraft title branding across legacy 1.8.9/1.16 sprite-sheet renderers and modern versions, so the Bread Client mark is no longer clipped or distorted on older instances.
+
 ## 2026-09-17
 
 - Corrected the Minecraft title logo canvas and centering so the Bread Client mark renders at the game's native scale without compression or distortion.

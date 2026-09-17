@@ -39,23 +39,54 @@ pub mod download;
 pub mod quick_play_version;
 
 const BREAD_TITLE_SCREEN_MARKER: &str = "META-INF/bread-title-screen";
-const BREAD_TITLE_SCREEN_MARKER_CONTENT: &[u8] = b"Bread Client title screen v5";
+const BREAD_TITLE_SCREEN_MARKER_CONTENT_MODERN: &[u8] = b"Bread Client title screen v6 modern";
+const BREAD_TITLE_SCREEN_MARKER_CONTENT_LEGACY: &[u8] = b"Bread Client title screen v6 legacy";
 const BREAD_TITLE_LOGO_PATH: &str = "assets/minecraft/textures/gui/title/minecraft.png";
 const BREAD_TITLE_LOGO_WIDTH: u32 = 1024;
 const BREAD_TITLE_LOGO_HEIGHT: u32 = 256;
 const BREAD_TITLE_LOGO_MIN_VISIBLE_WIDTH: u32 = BREAD_TITLE_LOGO_WIDTH / 2;
 const BREAD_TITLE_LOGO_MIN_VISIBLE_HEIGHT: u32 = BREAD_TITLE_LOGO_HEIGHT / 2;
+const BREAD_TITLE_LEGACY_LOGO_WIDTH: u32 = 256;
+const BREAD_TITLE_LEGACY_LOGO_HEIGHT: u32 = 256;
+const BREAD_TITLE_LEGACY_SLICE_WIDTH: u32 = 155;
+const BREAD_TITLE_LEGACY_SLICE_HEIGHT: u32 = 44;
+const BREAD_TITLE_LEGACY_SLICE_OFFSET: u32 = 45;
 
-fn has_bread_title_logo_dimensions(path: &str, bytes: &[u8]) -> bool {
+fn uses_legacy_title_logo(game_version: &str) -> bool {
+	game_version.starts_with("1.8.9") || game_version.starts_with("1.16")
+}
+
+fn title_screen_artwork(game_version: &str) -> (&'static [u8], &'static [u8]) {
+	if uses_legacy_title_logo(game_version) {
+		(
+			include_bytes!("../../assets/bread-title-screen-legacy.zip"),
+			BREAD_TITLE_SCREEN_MARKER_CONTENT_LEGACY,
+		)
+	} else {
+		(
+			include_bytes!("../../assets/bread-title-screen.zip"),
+			BREAD_TITLE_SCREEN_MARKER_CONTENT_MODERN,
+		)
+	}
+}
+
+fn has_title_logo_dimensions(
+	path: &str,
+	bytes: &[u8],
+	width: u32,
+	height: u32,
+) -> bool {
 	if path != BREAD_TITLE_LOGO_PATH || bytes.len() < 24 {
 		return false;
 	}
 	const PNG_SIGNATURE: &[u8; 8] = b"\x89PNG\r\n\x1a\n";
 	bytes.starts_with(PNG_SIGNATURE)
-		&& u32::from_be_bytes(bytes[16..20].try_into().unwrap())
-			== BREAD_TITLE_LOGO_WIDTH
-		&& u32::from_be_bytes(bytes[20..24].try_into().unwrap())
-			== BREAD_TITLE_LOGO_HEIGHT
+		&& u32::from_be_bytes(bytes[16..20].try_into().unwrap()) == width
+		&& u32::from_be_bytes(bytes[20..24].try_into().unwrap()) == height
+}
+
+fn has_bread_title_logo_dimensions(path: &str, bytes: &[u8]) -> bool {
+	has_title_logo_dimensions(path, bytes, BREAD_TITLE_LOGO_WIDTH, BREAD_TITLE_LOGO_HEIGHT)
 }
 
 fn is_valid_bread_title_logo(path: &str, bytes: &[u8]) -> bool {
@@ -95,12 +126,48 @@ fn is_valid_bread_title_logo(path: &str, bytes: &[u8]) -> bool {
 		&& visible_center.abs_diff(texture_center) <= BREAD_TITLE_LOGO_WIDTH / 4
 }
 
+fn is_valid_bread_legacy_title_logo(path: &str, bytes: &[u8]) -> bool {
+	if !has_title_logo_dimensions(
+		path,
+		bytes,
+		BREAD_TITLE_LEGACY_LOGO_WIDTH,
+		BREAD_TITLE_LEGACY_LOGO_HEIGHT,
+	) {
+		return false;
+	}
+
+	let Ok(image) = image::load_from_memory(bytes) else {
+		return false;
+	};
+	let image = image.to_rgba8();
+	let mut top_pixels = 0;
+	let mut bottom_pixels = 0;
+	for (x, y, pixel) in image.enumerate_pixels() {
+		if x >= BREAD_TITLE_LEGACY_SLICE_WIDTH || pixel.0[3] < 8 {
+			continue;
+		}
+		if y < BREAD_TITLE_LEGACY_SLICE_HEIGHT {
+			top_pixels += 1;
+		} else if y >= BREAD_TITLE_LEGACY_SLICE_OFFSET
+			&& y < BREAD_TITLE_LEGACY_SLICE_OFFSET + BREAD_TITLE_LEGACY_SLICE_HEIGHT
+		{
+			bottom_pixels += 1;
+		}
+	}
+	top_pixels >= 100 && bottom_pixels >= 100
+}
+
 /// Embed Bread's title artwork directly into the downloaded Minecraft client jar.
 /// This keeps the branding active for every launch without exposing a removable
 /// resource-pack entry in either Minecraft or the launcher content browser.
-async fn apply_bread_title_screen(client_path: &std::path::Path) -> crate::Result<()> {
+async fn apply_bread_title_screen(
+	client_path: &std::path::Path,
+	game_version: &str,
+) -> crate::Result<()> {
 	let client_path = client_path.to_owned();
+	let game_version = game_version.to_owned();
 	tokio::task::spawn_blocking(move || {
+		let (override_bytes, expected_marker) = title_screen_artwork(&game_version);
 		let bytes = std::fs::read(&client_path)?;
 		let mut archive = zip::ZipArchive::new(Cursor::new(bytes)).map_err(|error| {
 			crate::ErrorKind::LauncherError(format!("Could not read Minecraft client jar: {error}"))
@@ -109,7 +176,7 @@ async fn apply_bread_title_screen(client_path: &std::path::Path) -> crate::Resul
 		let marker_is_current = if let Ok(mut marker) = archive.by_name(BREAD_TITLE_SCREEN_MARKER) {
 			let mut marker_content = Vec::new();
 			marker.read_to_end(&mut marker_content)?;
-			marker_content == BREAD_TITLE_SCREEN_MARKER_CONTENT
+			marker_content == expected_marker
 		} else {
 			false
 		};
@@ -117,7 +184,6 @@ async fn apply_bread_title_screen(client_path: &std::path::Path) -> crate::Resul
 			return Ok(());
 		}
 
-		let override_bytes = include_bytes!("../../assets/bread-title-screen.zip");
 		let mut title_pack = zip::ZipArchive::new(Cursor::new(override_bytes)).map_err(|error| {
 			crate::ErrorKind::LauncherError(format!("Could not read Bread title artwork: {error}"))
 		})?;
@@ -134,11 +200,14 @@ async fn apply_bread_title_screen(client_path: &std::path::Path) -> crate::Resul
 			let name = file.name().replace('\\', "/");
 			let mut data = Vec::new();
 			file.read_to_end(&mut data)?;
-			if name == BREAD_TITLE_LOGO_PATH
-				&& !is_valid_bread_title_logo(&name, &data)
-			{
+			let valid_logo = if uses_legacy_title_logo(&game_version) {
+				is_valid_bread_legacy_title_logo(&name, &data)
+			} else {
+				is_valid_bread_title_logo(&name, &data)
+			};
+			if name == BREAD_TITLE_LOGO_PATH && !valid_logo {
 				return Err(crate::ErrorKind::LauncherError(
-					"Bread title logo must be a valid 1024x256 PNG with visible, centered artwork"
+					"Bread title logo has invalid dimensions or missing artwork for this Minecraft version"
 						.to_string(),
 				)
 				.into());
@@ -177,7 +246,7 @@ async fn apply_bread_title_screen(client_path: &std::path::Path) -> crate::Resul
 			writer.start_file(BREAD_TITLE_SCREEN_MARKER, options).map_err(|error| {
 				crate::ErrorKind::LauncherError(format!("Could not mark Bread title artwork: {error}"))
 			})?;
-			writer.write_all(BREAD_TITLE_SCREEN_MARKER_CONTENT)?;
+			writer.write_all(expected_marker)?;
 			writer.finish().map_err(|error| {
 				crate::ErrorKind::LauncherError(format!("Could not finish Minecraft client jar: {error}"))
 			})?;
@@ -1108,7 +1177,7 @@ pub async fn launch_minecraft(
 		.directories
 		.version_dir(&version_jar)
 		.join(format!("{version_jar}.jar"));
-	apply_bread_title_screen(&client_path).await?;
+	apply_bread_title_screen(&client_path, &content_set.game_version).await?;
 
 	let args = version_info.arguments.clone().unwrap_or_default();
     let mut command = match wrapper {
@@ -1408,7 +1477,8 @@ pub async fn launch_minecraft(
 #[cfg(test)]
 mod title_screen_tests {
 	use super::{
-		has_bread_title_logo_dimensions, is_valid_bread_title_logo,
+		has_bread_title_logo_dimensions, is_valid_bread_legacy_title_logo,
+		is_valid_bread_title_logo, title_screen_artwork, uses_legacy_title_logo,
 		BREAD_TITLE_LOGO_HEIGHT, BREAD_TITLE_LOGO_PATH, BREAD_TITLE_LOGO_WIDTH,
 		loader_version_selector,
 	};
@@ -1425,6 +1495,28 @@ mod title_screen_tests {
 		let mut bytes = Vec::new();
 		logo.read_to_end(&mut bytes).unwrap();
 		assert!(is_valid_bread_title_logo(BREAD_TITLE_LOGO_PATH, &bytes));
+	}
+
+	#[test]
+	fn embedded_legacy_title_logo_has_expected_slices() {
+		let mut archive = zip::ZipArchive::new(std::io::Cursor::new(include_bytes!(
+			"../../assets/bread-title-screen-legacy.zip"
+		)))
+		.unwrap();
+		let mut logo = archive.by_name(BREAD_TITLE_LOGO_PATH).unwrap();
+		let mut bytes = Vec::new();
+		logo.read_to_end(&mut bytes).unwrap();
+		assert!(is_valid_bread_legacy_title_logo(BREAD_TITLE_LOGO_PATH, &bytes));
+	}
+
+	#[test]
+	fn title_artwork_selects_renderer_compatible_asset() {
+		assert!(uses_legacy_title_logo("1.16_combat-6"));
+		assert!(uses_legacy_title_logo("1.8.9"));
+		assert!(!uses_legacy_title_logo("1.21.11"));
+		let (legacy, _) = title_screen_artwork("1.16_combat-6");
+		let (modern, _) = title_screen_artwork("1.21.11");
+		assert_ne!(legacy, modern);
 	}
 
 	#[test]
