@@ -3,6 +3,10 @@
 This file records user-facing launcher updates. Add a dated entry here whenever a
 new Bread Client update is committed.
 
+## 2026-09-17
+
+- Corrected the Minecraft title logo canvas and centering so the Bread Client mark renders at the game's native scale without compression or distortion.
+
 ## 2026-09-13
 
 - Added a regression test proving a stored Fabric Loader 0.19.3 value is ignored in favor of a fresh `latest` lookup.
