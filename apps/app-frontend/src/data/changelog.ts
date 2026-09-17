@@ -7,6 +7,12 @@ export interface ChangelogEntry {
 /** User-facing entries mirrored in the repository CHANGELOG.md. */
 export const BREAD_CHANGELOG: ChangelogEntry[] = [
 	{
+		date: '2026-09-17',
+		items: [
+			'Corrected the Minecraft title logo canvas and centering so the Bread Client mark renders at the game\'s native scale without compression or distortion.',
+		],
+	},
+	{
 		date: '2026-09-13',
 		items: [
 			'Added a regression test proving a stored Fabric Loader 0.19.3 value is ignored in favor of a fresh latest lookup.',

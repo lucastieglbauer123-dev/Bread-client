@@ -39,12 +39,14 @@ pub mod download;
 pub mod quick_play_version;
 
 const BREAD_TITLE_SCREEN_MARKER: &str = "META-INF/bread-title-screen";
-const BREAD_TITLE_SCREEN_MARKER_CONTENT: &[u8] = b"Bread Client title screen v4";
+const BREAD_TITLE_SCREEN_MARKER_CONTENT: &[u8] = b"Bread Client title screen v5";
 const BREAD_TITLE_LOGO_PATH: &str = "assets/minecraft/textures/gui/title/minecraft.png";
 const BREAD_TITLE_LOGO_WIDTH: u32 = 1024;
 const BREAD_TITLE_LOGO_HEIGHT: u32 = 256;
+const BREAD_TITLE_LOGO_MIN_VISIBLE_WIDTH: u32 = BREAD_TITLE_LOGO_WIDTH / 2;
+const BREAD_TITLE_LOGO_MIN_VISIBLE_HEIGHT: u32 = BREAD_TITLE_LOGO_HEIGHT / 2;
 
-fn is_valid_bread_title_logo(path: &str, bytes: &[u8]) -> bool {
+fn has_bread_title_logo_dimensions(path: &str, bytes: &[u8]) -> bool {
 	if path != BREAD_TITLE_LOGO_PATH || bytes.len() < 24 {
 		return false;
 	}
@@ -54,6 +56,43 @@ fn is_valid_bread_title_logo(path: &str, bytes: &[u8]) -> bool {
 			== BREAD_TITLE_LOGO_WIDTH
 		&& u32::from_be_bytes(bytes[20..24].try_into().unwrap())
 			== BREAD_TITLE_LOGO_HEIGHT
+}
+
+fn is_valid_bread_title_logo(path: &str, bytes: &[u8]) -> bool {
+	if !has_bread_title_logo_dimensions(path, bytes) {
+		return false;
+	}
+
+	let Ok(image) = image::load_from_memory(bytes) else {
+		return false;
+	};
+	let image = image.to_rgba8();
+	let mut bounds: Option<(u32, u32, u32, u32)> = None;
+	for (x, y, pixel) in image.enumerate_pixels() {
+		if pixel.0[3] < 8 {
+			continue;
+		}
+		bounds = Some(match bounds {
+			Some((min_x, min_y, max_x, max_y)) => (
+				min_x.min(x),
+				min_y.min(y),
+				max_x.max(x),
+				max_y.max(y),
+			),
+			None => (x, y, x, y),
+		});
+	}
+
+	let Some((min_x, min_y, max_x, max_y)) = bounds else {
+		return false;
+	};
+	let visible_width = max_x - min_x + 1;
+	let visible_height = max_y - min_y + 1;
+	let visible_center = (min_x + max_x + 1) / 2;
+	let texture_center = BREAD_TITLE_LOGO_WIDTH / 2;
+	visible_width >= BREAD_TITLE_LOGO_MIN_VISIBLE_WIDTH
+		&& visible_height >= BREAD_TITLE_LOGO_MIN_VISIBLE_HEIGHT
+		&& visible_center.abs_diff(texture_center) <= BREAD_TITLE_LOGO_WIDTH / 4
 }
 
 /// Embed Bread's title artwork directly into the downloaded Minecraft client jar.
@@ -99,7 +138,8 @@ async fn apply_bread_title_screen(client_path: &std::path::Path) -> crate::Resul
 				&& !is_valid_bread_title_logo(&name, &data)
 			{
 				return Err(crate::ErrorKind::LauncherError(
-					"Bread title logo must be a 1024x256 PNG".to_string(),
+					"Bread title logo must be a valid 1024x256 PNG with visible, centered artwork"
+						.to_string(),
 				)
 				.into());
 			}
@@ -1368,21 +1408,34 @@ pub async fn launch_minecraft(
 #[cfg(test)]
 mod title_screen_tests {
 	use super::{
-		BREAD_TITLE_LOGO_HEIGHT, BREAD_TITLE_LOGO_PATH,
-		BREAD_TITLE_LOGO_WIDTH, is_valid_bread_title_logo,
+		has_bread_title_logo_dimensions, is_valid_bread_title_logo,
+		BREAD_TITLE_LOGO_HEIGHT, BREAD_TITLE_LOGO_PATH, BREAD_TITLE_LOGO_WIDTH,
 		loader_version_selector,
 	};
 	use crate::data::ModLoader;
+	use std::io::Read;
 
 	#[test]
-	fn embedded_title_logo_dimensions_are_guarded() {
+	fn embedded_title_logo_has_expected_artwork() {
+		let mut archive = zip::ZipArchive::new(std::io::Cursor::new(include_bytes!(
+			"../../assets/bread-title-screen.zip"
+		)))
+		.unwrap();
+		let mut logo = archive.by_name(BREAD_TITLE_LOGO_PATH).unwrap();
+		let mut bytes = Vec::new();
+		logo.read_to_end(&mut bytes).unwrap();
+		assert!(is_valid_bread_title_logo(BREAD_TITLE_LOGO_PATH, &bytes));
+	}
+
+	#[test]
+	fn title_logo_dimensions_are_guarded() {
 		let mut png = vec![0u8; 24];
 		png[..8].copy_from_slice(b"\x89PNG\r\n\x1a\n");
 		png[16..20].copy_from_slice(&BREAD_TITLE_LOGO_WIDTH.to_be_bytes());
 		png[20..24].copy_from_slice(&BREAD_TITLE_LOGO_HEIGHT.to_be_bytes());
-		assert!(is_valid_bread_title_logo(BREAD_TITLE_LOGO_PATH, &png));
+		assert!(has_bread_title_logo_dimensions(BREAD_TITLE_LOGO_PATH, &png));
 		png[20..24].copy_from_slice(&512u32.to_be_bytes());
-		assert!(!is_valid_bread_title_logo(BREAD_TITLE_LOGO_PATH, &png));
+		assert!(!has_bread_title_logo_dimensions(BREAD_TITLE_LOGO_PATH, &png));
 	}
 
 	#[test]
