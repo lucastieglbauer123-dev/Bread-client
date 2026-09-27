@@ -88,10 +88,7 @@ watch(historicalLogsQuery.error, (error) => {
 	if (error) handleError(error)
 })
 
-const selectedLogFilename = useSessionStorage<string | null>(
-	`instance-selected-log:${instanceId.value}`,
-	null,
-)
+const selectedLogFilename = useSessionStorage(`instance-selected-log:${instanceId.value}`, '')
 const selectedLogIndex = ref(0)
 const isLive = computed(() => selectedLogIndex.value === 0)
 
@@ -189,7 +186,7 @@ let historicalLoadRequest = 0
 watch(selectedLogIndex, async (newIndex) => {
 	const requestId = ++historicalLoadRequest
 	const log = filteredLogs.value[newIndex]
-	selectedLogFilename.value = log?.live ? null : (log?.filename ?? null)
+	selectedLogFilename.value = log?.live ? '' : (log?.filename ?? '')
 	if (newIndex === 0) return
 	if (!log) return
 
