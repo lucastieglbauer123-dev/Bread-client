@@ -1,5 +1,13 @@
 # Bread Client changelog
 
+## 2026-09-27 — A smoother instance workspace
+
+- Fixed the instance tabs so Mods, Resource Packs, Shaders, and Datapacks open the matching view every time.
+- Logs now keep receiving new lines while you move between instance tabs, and the selected crash log stays open when you return.
+- Added a deep black theme for HarI, with separate shades for the page, panels, cards, and borders.
+- Added a navy blue theme for stopswamp, with a cool blue accent throughout the launcher.
+- Updated the Minecraft title artwork to a centered Bread mark that leaves the Java Edition sign clear.
+
 ## 2026-09-18
 
 - Fixed Minecraft title branding across legacy 1.8.9/1.16 sprite-sheet renderers and modern versions, so the Bread Client mark is no longer clipped or distorted on older instances.

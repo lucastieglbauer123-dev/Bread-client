@@ -23,7 +23,7 @@ useRootBreadcrumb({
 			<div>
 				<p class="bread-eyebrow">Bread Client</p>
 				<h1>What’s new</h1>
-				<p>Fresh improvements and fixes in your launcher.</p>
+				<p>The latest fixes and improvements in Bread Client.</p>
 			</div>
 		</header>
 		<div class="bread-whats-new-list">
