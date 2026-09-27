@@ -318,6 +318,8 @@ const themeOptions = computed(() => {
 		'amber',
 		'tj',
 		'kj',
+		'hari',
+		'stopswamp',
 	])
 	return theme.options.filter(
 		(option) =>

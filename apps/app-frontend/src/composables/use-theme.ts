@@ -10,6 +10,8 @@ export const THEME_OPTIONS = [
 	'amber',
 	'tj',
 	'kj',
+	'hari',
+	'stopswamp',
 	'light',
 	'oled',
 	'retro',
@@ -23,6 +25,8 @@ export const DARK_THEMES = [
 	'purple-flame',
 	'amber',
 	'kj',
+	'hari',
+	'stopswamp',
 	'oled',
 	'retro',
 ] as const

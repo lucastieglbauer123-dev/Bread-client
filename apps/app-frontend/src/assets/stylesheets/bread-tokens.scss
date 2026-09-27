@@ -372,6 +372,52 @@ html.kj-mode,
 	);
 }
 
+html.hari-mode,
+.hari-mode {
+	@include bread-theme(
+		#070707,
+		#111111,
+		#0c0c0c,
+		#181818,
+		#202020,
+		#2a2a2a,
+		#353535,
+		#464646,
+		#2c2c2c,
+		#5b5b5b,
+		#fafafa,
+		#c4c4c4,
+		#8f8f8f,
+		#e8e8e8,
+		#ffffff,
+		#ffffff,
+		#151515
+	);
+}
+
+html.stopswamp-mode,
+.stopswamp-mode {
+	@include bread-theme(
+		#06101f,
+		#0b1a2c,
+		#081525,
+		#10243a,
+		#173149,
+		#1d3d59,
+		#24516f,
+		#2c6688,
+		#1d405b,
+		#3f82a8,
+		#eef7ff,
+		#b6d0e3,
+		#7e9fb8,
+		#5fb5e8,
+		#86cdf2,
+		#a8e0f8,
+		#071d2d
+	);
+}
+
 body {
 	background-color: var(--bread-color-bg);
 	background-image: var(--bread-custom-background, none);

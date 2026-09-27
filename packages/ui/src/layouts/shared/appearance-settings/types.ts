@@ -9,6 +9,8 @@ export const BREAD_THEME_OPTIONS = [
 	'amber',
 	'tj',
 	'kj',
+	'hari',
+	'stopswamp',
 ] as const
 export type BreadTheme = (typeof BREAD_THEME_OPTIONS)[number]
 export type AppearanceTheme = Labrinth.Users.v3.Theme | BreadTheme

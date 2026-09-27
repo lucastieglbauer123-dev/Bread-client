@@ -58,6 +58,14 @@ const themeLabels = defineMessages({
 		id: 'settings.display.theme.kj',
 		defaultMessage: 'Cyan and navy · KJ',
 	},
+	hari: {
+		id: 'settings.display.theme.hari',
+		defaultMessage: 'Black shades · HarI',
+	},
+	stopswamp: {
+		id: 'settings.display.theme.stopswamp',
+		defaultMessage: 'Navy blue · stopswamp',
+	},
 	oled: {
 		id: 'settings.display.theme.oled',
 		defaultMessage: 'OLED',
@@ -162,7 +170,9 @@ function getPreviewClass(option: T): string {
 		&.purple-flame-mode,
 		&.amber-mode,
 		&.tj-mode,
-		&.kj-mode {
+		&.kj-mode,
+		&.hari-mode,
+		&.stopswamp-mode {
 			border-color: var(--bread-color-border-subtle);
 		}
 	}
