@@ -39,18 +39,19 @@ pub mod download;
 pub mod quick_play_version;
 
 const BREAD_TITLE_SCREEN_MARKER: &str = "META-INF/bread-title-screen";
-const BREAD_TITLE_SCREEN_MARKER_CONTENT_MODERN: &[u8] = b"Bread Client title screen v6 modern";
-const BREAD_TITLE_SCREEN_MARKER_CONTENT_LEGACY: &[u8] = b"Bread Client title screen v6 legacy";
+const BREAD_TITLE_SCREEN_MARKER_CONTENT_MODERN: &[u8] =
+	b"Bread Client title screen v7 modern bread mark";
+const BREAD_TITLE_SCREEN_MARKER_CONTENT_LEGACY: &[u8] =
+	b"Bread Client title screen v7 legacy bread mark";
 const BREAD_TITLE_LOGO_PATH: &str = "assets/minecraft/textures/gui/title/minecraft.png";
 const BREAD_TITLE_LOGO_WIDTH: u32 = 1024;
 const BREAD_TITLE_LOGO_HEIGHT: u32 = 256;
-const BREAD_TITLE_LOGO_MIN_VISIBLE_WIDTH: u32 = BREAD_TITLE_LOGO_WIDTH / 2;
+const BREAD_TITLE_LOGO_MIN_VISIBLE_WIDTH: u32 = BREAD_TITLE_LOGO_WIDTH / 8;
 const BREAD_TITLE_LOGO_MIN_VISIBLE_HEIGHT: u32 = BREAD_TITLE_LOGO_HEIGHT / 2;
 const BREAD_TITLE_LEGACY_LOGO_WIDTH: u32 = 256;
 const BREAD_TITLE_LEGACY_LOGO_HEIGHT: u32 = 256;
 const BREAD_TITLE_LEGACY_SLICE_WIDTH: u32 = 155;
 const BREAD_TITLE_LEGACY_SLICE_HEIGHT: u32 = 44;
-const BREAD_TITLE_LEGACY_SLICE_OFFSET: u32 = 45;
 
 fn uses_legacy_title_logo(game_version: &str) -> bool {
 	game_version.starts_with("1.8.9") || game_version.starts_with("1.16")
@@ -141,20 +142,17 @@ fn is_valid_bread_legacy_title_logo(path: &str, bytes: &[u8]) -> bool {
 	};
 	let image = image.to_rgba8();
 	let mut top_pixels = 0;
-	let mut bottom_pixels = 0;
 	for (x, y, pixel) in image.enumerate_pixels() {
 		if x >= BREAD_TITLE_LEGACY_SLICE_WIDTH || pixel.0[3] < 8 {
 			continue;
 		}
 		if y < BREAD_TITLE_LEGACY_SLICE_HEIGHT {
 			top_pixels += 1;
-		} else if y >= BREAD_TITLE_LEGACY_SLICE_OFFSET
-			&& y < BREAD_TITLE_LEGACY_SLICE_OFFSET + BREAD_TITLE_LEGACY_SLICE_HEIGHT
-		{
-			bottom_pixels += 1;
 		}
 	}
-	top_pixels >= 100 && bottom_pixels >= 100
+	// Legacy Minecraft renders the title as two sprite rows. The Bread mark
+	// intentionally occupies only the first row so it stays clear of Java Edition.
+	top_pixels >= 100
 }
 
 /// Embed Bread's title artwork directly into the downloaded Minecraft client jar.
