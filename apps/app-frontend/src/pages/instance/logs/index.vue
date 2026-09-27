@@ -5,6 +5,8 @@
 </template>
 
 <script setup>
+defineOptions({ name: 'InstanceLogs' })
+
 import {
 	ConsolePageLayout,
 	injectModrinthClient,
@@ -12,6 +14,7 @@ import {
 	provideConsoleManager,
 } from '@modrinth/ui'
 import { useQuery } from '@tanstack/vue-query'
+import { useSessionStorage } from '@vueuse/core'
 import { computed, ref, shallowRef, triggerRef, watch, watchEffect } from 'vue'
 
 import { useAppEvent } from '@/composables/use-app-event'
@@ -85,6 +88,10 @@ watch(historicalLogsQuery.error, (error) => {
 	if (error) handleError(error)
 })
 
+const selectedLogFilename = useSessionStorage<string | null>(
+	`instance-selected-log:${instanceId.value}`,
+	null,
+)
 const selectedLogIndex = ref(0)
 const isLive = computed(() => selectedLogIndex.value === 0)
 
@@ -105,8 +112,10 @@ const logSources = computed(() =>
 watch(
 	[filteredLogs, () => route.query.log],
 	([availableLogs, requestedFilename]) => {
-		if (typeof requestedFilename !== 'string') return
-		const index = availableLogs.findIndex((log) => log.filename === requestedFilename)
+		const filename =
+			typeof requestedFilename === 'string' ? requestedFilename : selectedLogFilename.value
+		if (!filename) return
+		const index = availableLogs.findIndex((log) => log.filename === filename)
 		if (index >= 0) selectedLogIndex.value = index
 	},
 	{ immediate: true },
@@ -176,28 +185,28 @@ provideConsoleManager({
 	},
 })
 
+let historicalLoadRequest = 0
 watch(selectedLogIndex, async (newIndex) => {
-	if (newIndex === 0) return
+	const requestId = ++historicalLoadRequest
 	const log = filteredLogs.value[newIndex]
+	selectedLogFilename.value = log?.live ? null : (log?.filename ?? null)
+	if (newIndex === 0) return
 	if (!log) return
 
+	historicalConsole.clear()
 	const cached = getHistoricalContent(log.filename)
 	if (cached) {
-		historicalConsole.clear()
-		historicalConsole.addLegacyLog(cached)
+		if (requestId === historicalLoadRequest) historicalConsole.addLegacyLog(cached)
 		return
 	}
 
 	const output = await get_output_by_filename(instanceId.value, log.log_type, log.filename).catch(
 		handleError,
 	)
-	if (output) {
-		historicalConsole.clear()
+	if (output && requestId === historicalLoadRequest) {
 		historicalConsole.addLegacyLog(output)
 	}
 })
-
-selectedLogIndex.value = 0
 
 if (!instancePage.playing.value) {
 	void analyseForCrash()

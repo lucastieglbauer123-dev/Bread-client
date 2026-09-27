@@ -83,7 +83,9 @@
 						@pending="subpagePending = true"
 						@resolve="subpagePending = false"
 					>
-						<component :is="Component" />
+						<KeepAlive include="InstanceLogs">
+							<component :is="Component" :key="route.fullPath" />
+						</KeepAlive>
 					</Suspense>
 				</template>
 			</RouterView>

@@ -18,6 +18,7 @@ interface InstanceConsoleEntry {
 	historicalConsole: ConsoleState
 	historicalCache: Map<string, string>
 	logList: LogEntry[] | null
+	hydrated: boolean
 }
 
 const instances = new Map<string, InstanceConsoleEntry>()
@@ -31,6 +32,7 @@ function getOrCreate(instanceId: string): InstanceConsoleEntry {
 		historicalConsole: createConsoleState(),
 		historicalCache: new Map(),
 		logList: null,
+		hydrated: false,
 	}
 	instances.set(instanceId, entry)
 	return entry
@@ -38,11 +40,17 @@ function getOrCreate(instanceId: string): InstanceConsoleEntry {
 
 async function hydrate(instanceId: string): Promise<void> {
 	const entry = getOrCreate(instanceId)
-	if (entry.liveConsole.output.value.length > 0) return
+	if (entry.hydrated) return
+	entry.hydrated = true
 
-	const buffer = await get_live_log_buffer(instanceId)
-	if (buffer) {
-		entry.liveConsole.addLegacyLog(buffer)
+	try {
+		const buffer = await get_live_log_buffer(instanceId)
+		if (buffer) {
+			entry.liveConsole.addLegacyLog(buffer)
+		}
+	} catch (error) {
+		entry.hydrated = false
+		throw error
 	}
 }
 
