@@ -505,32 +505,35 @@ const tabs = computed(() => {
 	}[] = [
 		{
 			label: formatMessage(messages.contentTab),
-			href: `${basePath.value}`,
+			href: `${basePath.value}/projects/mod`,
 			icon: BoxesIcon,
+			isActive: (currentRoute) =>
+				currentRoute.name === 'InstanceContentFilter' && currentRoute.params.type === 'mod',
 		},
 	]
 
 	instanceTabs.push(
 		{
 			label: formatMessage(messages.resourcePacksTab),
-			href: `${basePath.value}#resource-packs`,
+			href: `${basePath.value}/projects/resourcepack`,
 			icon: BoxesIcon,
 			isActive: (currentRoute) =>
-				currentRoute.path === basePath.value && currentRoute.hash === '#resource-packs',
+				currentRoute.name === 'InstanceContentFilter' &&
+				currentRoute.params.type === 'resourcepack',
 		},
 		{
 			label: formatMessage(messages.shadersTab),
-			href: `${basePath.value}#shaders`,
+			href: `${basePath.value}/projects/shader`,
 			icon: BoxesIcon,
 			isActive: (currentRoute) =>
-				currentRoute.path === basePath.value && currentRoute.hash === '#shaders',
+				currentRoute.name === 'InstanceContentFilter' && currentRoute.params.type === 'shader',
 		},
 		{
 			label: formatMessage(messages.datapacksTab),
-			href: `${basePath.value}#datapacks`,
+			href: `${basePath.value}/projects/datapack`,
 			icon: BoxesIcon,
 			isActive: (currentRoute) =>
-				currentRoute.path === basePath.value && currentRoute.hash === '#datapacks',
+				currentRoute.name === 'InstanceContentFilter' && currentRoute.params.type === 'datapack',
 		},
 	)
 

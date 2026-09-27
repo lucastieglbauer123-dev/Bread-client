@@ -21,6 +21,7 @@ import {
 } from '@modrinth/assets'
 import { useSessionStorage } from '@vueuse/core'
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { useRoute } from 'vue-router'
 
 import Avatar from '#ui/components/base/Avatar.vue'
 import { Button, type ButtonMenuOption, TeleportOverflowMenu } from '#ui/components/base/buttons'
@@ -30,7 +31,11 @@ import FilterPills from '#ui/components/base/FilterPills.vue'
 import Input from '#ui/components/base/inputs/Input.vue'
 import { useDebugLogger } from '#ui/composables/debug-logger'
 import { defineMessages, useVIntl } from '#ui/composables/i18n'
-import { commonMessages, formatContentTypeSentence } from '#ui/utils/common-messages'
+import {
+	commonMessages,
+	formatContentTypeSentence,
+	normalizeProjectType,
+} from '#ui/utils/common-messages'
 
 import ContentCardTable from './components/ContentCardTable.vue'
 import ContentSelectionBar from './components/ContentSelectionBar.vue'
@@ -271,6 +276,40 @@ const { selectedFilters, filterOptions, toggleFilter, applyFilters } = useConten
 		isPackLocked: ctx.isPackLocked,
 		persistKey: ctx.filterPersistKey,
 	},
+)
+
+const route = useRoute()
+const routeProjectType = computed(() => {
+	if (route.name !== 'InstanceContentFilter') return undefined
+	const type = route.params.type
+	return typeof type === 'string' ? normalizeProjectType(type) : undefined
+})
+const contentTypeFilterIds = computed(
+	() => new Set(filterOptions.value.map((option) => option.id).filter((id) => id !== 'updates')),
+)
+
+watch(
+	[routeProjectType, filterOptions],
+	([requestedType, options]) => {
+		if (route.name !== 'InstanceContent' && route.name !== 'InstanceContentFilter') return
+
+		const availableType =
+			requestedType && options.some((option) => option.id === requestedType)
+				? requestedType
+				: undefined
+		const nextFilters = selectedFilters.value.filter(
+			(filter) => !contentTypeFilterIds.value.has(filter),
+		)
+		if (availableType) nextFilters.push(availableType)
+
+		if (
+			nextFilters.length !== selectedFilters.value.length ||
+			nextFilters.some((filter, index) => filter !== selectedFilters.value[index])
+		) {
+			selectedFilters.value = nextFilters
+		}
+	},
+	{ immediate: true },
 )
 
 const { selectedMetadataFilters, metadataFilterCategories, applyMetadataFilters } =
