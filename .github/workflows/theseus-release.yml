@@ -72,7 +72,7 @@ jobs:
             --rawfile macOsAarch64UpdateArtifactSignature "${MACOS_UNIVERSAL_BUNDLE_ARTIFACT_NAME}/universal-apple-darwin/release/bundle/macos/Modrinth App.app.tar.gz.sig" \
             --rawfile macOsX64UpdateArtifactSignature "${MACOS_UNIVERSAL_BUNDLE_ARTIFACT_NAME}/universal-apple-darwin/release/bundle/macos/Modrinth App.app.tar.gz.sig" \
             --rawfile linuxX64UpdateArtifactSignature "${LINUX_X64_BUNDLE_ARTIFACT_NAME}/release/bundle/appimage/Modrinth App_${VERSION_TAG#v}_amd64.AppImage.tar.gz.sig" \
-            --rawfile windowsX64UpdateArtifactSignature "${WINDOWS_X64_BUNDLE_ARTIFACT_NAME}/release/bundle/nsis/Modrinth App_${VERSION_TAG#v}_x64-setup.nsis.zip.sig" \
+            --rawfile windowsX64UpdateArtifactSignature "${WINDOWS_X64_BUNDLE_ARTIFACT_NAME}/release/bundle/nsis/Bread Client_${VERSION_TAG#v}_x64-setup.nsis.zip.sig" \
           '{
             "version": $versionTag,
             "notes": $releaseNotes,
@@ -99,8 +99,8 @@ jobs:
               },
               "windows-x86_64": {
                 "signature": $windowsX64UpdateArtifactSignature,
-                "url": @uri "${{ env.LAUNCHER_FILES_BUCKET_BASE_URL }}/versions/\($versionTag)/windows/\("Modrinth App_" + $versionTag + "_x64-setup.nsis.zip")",
-                "install_urls": [@uri "${{ env.LAUNCHER_FILES_BUCKET_BASE_URL }}/versions/\($versionTag)/windows/\("Modrinth App_" + $versionTag + "_x64-setup.exe")"]
+                "url": @uri "${{ env.LAUNCHER_FILES_BUCKET_BASE_URL }}/versions/\($versionTag)/windows/\("Bread Client_" + $versionTag + "_x64-setup.nsis.zip")",
+                "install_urls": [@uri "${{ env.LAUNCHER_FILES_BUCKET_BASE_URL }}/versions/\($versionTag)/windows/\("Bread Client_" + $versionTag + "_x64-setup.exe")", @uri "${{ env.LAUNCHER_FILES_BUCKET_BASE_URL }}/versions/\($versionTag)/windows/\("Bread Client_" + $versionTag + "_x64_en-US.msi")"]
               }
             }
           }' > updates.json
@@ -135,7 +135,7 @@ jobs:
               "s3://${AWS_BUCKET}/versions/${VERSION_TAG#v}/linux"
           done
 
-          for windowsBundleType in 'nsis'; do
+          for windowsBundleType in 'nsis' 'msi'; do
             aws s3 cp --recursive \
               "${WINDOWS_X64_BUNDLE_ARTIFACT_NAME}/release/bundle/${windowsBundleType}" \
               "s3://${AWS_BUCKET}/versions/${VERSION_TAG#v}/windows"
@@ -150,9 +150,10 @@ jobs:
           VERSION="${VERSION_TAG#v}"
 
           gh release create "$VERSION_TAG" \
-            --title "Modrinth App ${VERSION}" \
+            --title "Bread Client ${VERSION}" \
             --notes-file release-notes.md \
-            "${WINDOWS_X64_BUNDLE_ARTIFACT_NAME}/release/bundle/nsis/Modrinth App_${VERSION}_x64-setup.exe" \
+            "${WINDOWS_X64_BUNDLE_ARTIFACT_NAME}/release/bundle/nsis/"*.exe \
+            "${WINDOWS_X64_BUNDLE_ARTIFACT_NAME}/release/bundle/msi/"*.msi \
             "${MACOS_UNIVERSAL_BUNDLE_ARTIFACT_NAME}/universal-apple-darwin/release/bundle/dmg/Modrinth App_${VERSION}_universal.dmg" \
             "${LINUX_X64_BUNDLE_ARTIFACT_NAME}/release/bundle/appimage/Modrinth App_${VERSION}_amd64.AppImage" \
             "${LINUX_X64_BUNDLE_ARTIFACT_NAME}/release/bundle/deb/Modrinth App_${VERSION}_amd64.deb" \
