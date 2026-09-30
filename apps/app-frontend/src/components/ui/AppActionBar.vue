@@ -15,6 +15,16 @@
 			<UnplugIcon class="text-secondary" />
 			<span class="text-sm text-contrast"> {{ formatMessage(messages.offline) }} </span>
 		</div>
+		<Button
+			type="quiet"
+			size="sm"
+			:aria-pressed="offlineMode"
+			:title="offlineMode ? 'Use online services again' : 'Work with local files only'"
+			@click="setOfflineMode(!offlineMode)"
+		>
+			<UnplugIcon v-if="offlineMode" />
+			{{ formatMessage(offlineMode ? messages.offlineMode : messages.onlineMode) }}
+		</Button>
 		<AppUpdateButton />
 		<div
 			class="flex border-solid border-surface-5 text-sm items-center gap-2 py-1.5 px-3 rounded-xl border"
@@ -132,7 +142,7 @@ import {
 	TerminalSquareIcon,
 	UnplugIcon,
 } from '@modrinth/assets'
-import { IconButton } from '@modrinth/ui'
+import { Button, IconButton } from '@modrinth/ui'
 import {
 	defineMessages,
 	injectNotificationManager,
@@ -148,6 +158,7 @@ import { useRouter } from 'vue-router'
 
 import AppUpdateButton from '@/components/ui/app-update-button/index.vue'
 import { useInstallJobNotifications } from '@/composables/browse/install-job-notifications'
+import { useClientMode } from '@/composables/use-client-mode'
 import { useAppEvent } from '@/composables/use-app-event'
 import { trackEvent } from '@/helpers/analytics'
 import { toError } from '@/helpers/errors'
@@ -162,6 +173,7 @@ const popupNotificationManager = injectPopupNotificationManager()
 const { formatMessage } = useVIntl()
 
 const router = useRouter()
+const { offlineMode, setOfflineMode } = useClientMode()
 
 const showInstances = ref(false)
 
@@ -207,6 +219,14 @@ const messages = defineMessages({
 	noInstancesRunning: {
 		id: 'app.action-bar.no-instances-running',
 		defaultMessage: 'No instances running',
+	},
+	onlineMode: {
+		id: 'app.action-bar.online-mode',
+		defaultMessage: 'Online mode',
+	},
+	offlineMode: {
+		id: 'app.action-bar.offline-mode',
+		defaultMessage: 'Offline workspace',
 	},
 	downloadingJava: {
 		id: 'app.action-bar.downloading-java',

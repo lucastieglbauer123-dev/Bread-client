@@ -41,6 +41,7 @@ import { useRoute, useRouter } from 'vue-router'
 
 import { useAppServerBrowse } from '@/composables/browse/use-app-server-browse'
 import { useAppEvent } from '@/composables/use-app-event'
+import { useClientMode } from '@/composables/use-client-mode'
 import { useAppSettings } from '@/composables/use-app-settings.ts'
 import { get_project, get_search_results_v3, get_version_many } from '@/helpers/cache.js'
 import {
@@ -535,14 +536,16 @@ const {
 	router,
 })
 
-const offline = ref(!navigator.onLine)
+const { offlineMode } = useClientMode()
+const networkOffline = ref(!navigator.onLine)
+const offline = computed(() => networkOffline.value || offlineMode.value)
 const handleOffline = () => {
 	debugLog('went offline')
-	offline.value = true
+	networkOffline.value = true
 }
 const handleOnline = () => {
 	debugLog('went online')
-	offline.value = false
+	networkOffline.value = false
 }
 window.addEventListener('offline', handleOffline)
 window.addEventListener('online', handleOnline)

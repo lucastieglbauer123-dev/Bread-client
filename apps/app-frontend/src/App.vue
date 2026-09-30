@@ -104,6 +104,7 @@ import SurveyPopup from '@/components/ui/SurveyPopup.vue'
 import WindowControls from '@/components/ui/WindowControls.vue'
 import { useCheckDisableMouseover } from '@/composables/macCssFix.js'
 import { useAppEvent } from '@/composables/use-app-event'
+import { useClientMode } from '@/composables/use-client-mode'
 import { useAppSettings } from '@/composables/use-app-settings.ts'
 import { useError } from '@/composables/use-error.js'
 import { useInstanceMetadataRefresh } from '@/composables/use-instance-metadata-refresh'
@@ -193,6 +194,7 @@ import {
 
 const appSettings = useAppSettings()
 const appTheme = useTheme()
+const { offlineMode } = useClientMode()
 const router = useRouter()
 const route = useRoute()
 const { channel: appEventChannel, events: appEvents } = setupAppEventsProvider()
@@ -1316,6 +1318,8 @@ async function fetchCredentials() {
 }
 
 async function signIn(flow = 'sign-in', addAccount = false) {
+	if (offlineMode.value) return
+
 	try {
 		await login(flow, addAccount)
 		await fetchCredentials()

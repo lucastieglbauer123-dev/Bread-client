@@ -3,6 +3,8 @@ import { ImportIcon, PlusIcon } from '@modrinth/assets'
 import { Button, defineMessages, IntlFormatted, useVIntl } from '@modrinth/ui'
 import { inject, onMounted, onUnmounted, ref } from 'vue'
 
+import { useClientMode } from '@/composables/use-client-mode'
+
 import BreadLogo from './BreadLogo.vue'
 
 const showCreationModal = inject<() => void>('showCreationModal')
@@ -10,6 +12,7 @@ const showImportModal = inject<() => void>('showImportModal')
 const showBreadSignIn = inject<() => Promise<void>>('showBreadSignIn')
 
 const { formatMessage } = useVIntl()
+const { offlineMode } = useClientMode()
 
 const messages = defineMessages({
 	welcomeTitle: {
@@ -67,14 +70,14 @@ function handleQuickCreate(event: KeyboardEvent) {
 		return
 	}
 
-	if (!offline.value) {
+	if (!offline.value && !offlineMode.value) {
 		event.preventDefault()
 		showCreationModal?.()
 	}
 }
 
 async function signIn() {
-	if (offline.value || signingIn.value || !showBreadSignIn) return
+	if (offline.value || offlineMode.value || signingIn.value || !showBreadSignIn) return
 	signingIn.value = true
 	try {
 		// The injected callback uses the existing Modrinth OAuth client ID and
@@ -121,7 +124,7 @@ onUnmounted(() => {
 						color="brand"
 						size="lg"
 						class="!shadow-none"
-						:disabled="offline"
+						:disabled="offline || offlineMode"
 						@click="showCreationModal?.()"
 					>
 						<PlusIcon />
@@ -131,7 +134,7 @@ onUnmounted(() => {
 						type="outlined"
 						size="lg"
 						class="!shadow-none"
-						:disabled="offline || signingIn || !showBreadSignIn"
+						:disabled="offline || offlineMode || signingIn || !showBreadSignIn"
 						@click="signIn"
 					>
 						{{ formatMessage(messages.signIn) }}
@@ -154,7 +157,7 @@ onUnmounted(() => {
 			class="flex flex-col h-max items-center justify-end gap-4 text-sm leading-5 text-secondary"
 		>
 			<span class="whitespace-nowrap">{{ formatMessage(messages.importPrompt) }}</span>
-			<Button size="lg" class="!font-medium" :disabled="offline" @click="showImportModal?.()">
+			<Button size="lg" class="!font-medium" :disabled="offline || offlineMode" @click="showImportModal?.()">
 				<ImportIcon />
 				{{ formatMessage(messages.importFromLauncher) }}
 			</Button>
