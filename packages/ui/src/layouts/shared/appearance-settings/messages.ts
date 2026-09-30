@@ -16,7 +16,7 @@ export const appearanceSettingsMessages = defineMessages({
 	syncAcrossDevicesDescription: {
 		id: 'settings.display.theme.sync-across-devices.description',
 		defaultMessage:
-			"Use this theme everywhere you're signed in. Turn this off to keep a separate theme on this device.",
+			"Use a supported theme everywhere you're signed in. Bread themes stay on this device.",
 	},
 	syncAcrossDevicesSignedOutTooltip: {
 		id: 'settings.display.theme.sync-across-devices.sign-in-tooltip',

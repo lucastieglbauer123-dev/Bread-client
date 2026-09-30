@@ -12,6 +12,8 @@ export const THEME_OPTIONS = [
 	'kj',
 	'hari',
 	'stopswamp',
+	'copperline',
+	'tidal',
 	'light',
 	'oled',
 	'retro',
@@ -27,6 +29,8 @@ export const DARK_THEMES = [
 	'kj',
 	'hari',
 	'stopswamp',
+	'copperline',
+	'tidal',
 	'oled',
 	'retro',
 ] as const
@@ -91,8 +95,21 @@ const active = computed<Theme>(() => {
 	return native.value === 'light' ? 'light' : preferredDark.value
 })
 
-nativeThemeQuery.addEventListener('change', (event) => {
+function updateNativeTheme(event: MediaQueryListEvent | MediaQueryList): void {
 	native.value = event.matches ? 'dark' : 'light'
+}
+
+if ('addEventListener' in nativeThemeQuery) {
+	nativeThemeQuery.addEventListener('change', updateNativeTheme)
+} else {
+	// Older WebView2 builds expose the legacy MediaQueryList listener API only.
+	nativeThemeQuery.addListener(updateNativeTheme)
+}
+
+// Windows can apply an appearance change while the app is suspended. Refreshing
+// when the window becomes visible keeps “Sync with system” correct after returning.
+document.addEventListener('visibilitychange', () => {
+	if (document.visibilityState === 'visible') updateNativeTheme(nativeThemeQuery)
 })
 
 watch([preferred, preview], ([selectedPreferred, selectedPreview]) => {

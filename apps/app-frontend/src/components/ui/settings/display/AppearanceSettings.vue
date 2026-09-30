@@ -278,10 +278,9 @@ const { saved, current, changes, saving, hasChanges, reset, save } = useSavable(
 			value.theme === 'dark' ||
 			value.theme === 'oled' ||
 			value.theme === 'retro'
+		const shouldSyncTheme = value.syncAcrossDevices && canSyncTheme && !!auth.user.value
 		if (
-			value.syncAcrossDevices &&
-			auth.user.value &&
-			canSyncTheme &&
+			shouldSyncTheme &&
 			(appearanceChanges.theme !== undefined || appearanceChanges.syncAcrossDevices !== undefined)
 		) {
 			await updatePreferences({
@@ -292,7 +291,9 @@ const { saved, current, changes, saving, hasChanges, reset, save } = useSavable(
 		const nextSettings: AppSettings = {
 			...settings.value,
 			theme: value.theme,
-			sync_theme_across_devices: value.syncAcrossDevices,
+			// Custom Bread palettes only exist on this device. Do not leave the
+			// sync switch on while silently ignoring the selected theme remotely.
+			sync_theme_across_devices: shouldSyncTheme,
 			advanced_rendering: value.advancedRendering,
 			native_decorations: value.nativeDecorations,
 		}
@@ -303,7 +304,7 @@ const { saved, current, changes, saving, hasChanges, reset, save } = useSavable(
 			theme.preferredDark = value.theme
 		}
 		theme.preferred = value.theme
-		theme.syncAcrossDevices = value.syncAcrossDevices
+		theme.syncAcrossDevices = shouldSyncTheme
 		theme.advancedRendering = value.advancedRendering
 	},
 )
@@ -320,6 +321,8 @@ const themeOptions = computed(() => {
 		'kj',
 		'hari',
 		'stopswamp',
+		'copperline',
+		'tidal',
 	])
 	return theme.options.filter(
 		(option) =>

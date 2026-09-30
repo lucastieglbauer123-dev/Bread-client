@@ -418,6 +418,52 @@ html.stopswamp-mode,
 	);
 }
 
+html.copperline-mode,
+.copperline-mode {
+	@include bread-theme(
+		#120d0a,
+		#1d1510,
+		#17100c,
+		#2a1c14,
+		#352319,
+		#432d20,
+		#573b28,
+		#765033,
+		#513522,
+		#a87542,
+		#fff7ec,
+		#d2b9a1,
+		#a98d73,
+		#e1a34c,
+		#ffc66b,
+		#ffdb91,
+		#2c1a0b
+	);
+}
+
+html.tidal-mode,
+.tidal-mode {
+	@include bread-theme(
+		#071516,
+		#0d2425,
+		#0a1c1d,
+		#123538,
+		#174447,
+		#1f5658,
+		#2b6e6e,
+		#3a8581,
+		#285d5c,
+		#55b3a6,
+		#effffb,
+		#b4d8d1,
+		#7faea8,
+		#61d6bd,
+		#8af0d7,
+		#a9ffe8,
+		#092822
+	);
+}
+
 body {
 	background-color: var(--bread-color-bg);
 	background-image: var(--bread-custom-background, none);

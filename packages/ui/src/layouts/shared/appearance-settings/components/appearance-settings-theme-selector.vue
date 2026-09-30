@@ -66,6 +66,14 @@ const themeLabels = defineMessages({
 		id: 'settings.display.theme.stopswamp',
 		defaultMessage: 'Navy blue · stopswamp',
 	},
+	copperline: {
+		id: 'settings.display.theme.copperline',
+		defaultMessage: 'Copperline · warm dark',
+	},
+	tidal: {
+		id: 'settings.display.theme.tidal',
+		defaultMessage: 'Tidal · deep blue and mint',
+	},
 	oled: {
 		id: 'settings.display.theme.oled',
 		defaultMessage: 'OLED',
@@ -172,7 +180,9 @@ function getPreviewClass(option: T): string {
 		&.tj-mode,
 		&.kj-mode,
 		&.hari-mode,
-		&.stopswamp-mode {
+		&.stopswamp-mode,
+		&.copperline-mode,
+		&.tidal-mode {
 			border-color: var(--bread-color-border-subtle);
 		}
 	}
