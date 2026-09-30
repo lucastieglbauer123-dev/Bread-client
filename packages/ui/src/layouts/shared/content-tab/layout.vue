@@ -279,28 +279,25 @@ const { selectedFilters, filterOptions, toggleFilter, applyFilters } = useConten
 )
 
 const route = useRoute()
+const contentTypes = new Set(['mod', 'resourcepack', 'shader', 'datapack', 'plugin'])
 const routeProjectType = computed(() => {
 	if (route.name !== 'InstanceContentFilter') return undefined
 	const type = route.params.type
-	return typeof type === 'string' ? normalizeProjectType(type) : undefined
+	if (typeof type !== 'string') return undefined
+
+	const normalized = normalizeProjectType(type)
+	return contentTypes.has(normalized) ? normalized : undefined
 })
-const contentTypeFilterIds = computed(
-	() => new Set(filterOptions.value.map((option) => option.id).filter((id) => id !== 'updates')),
-)
 
 watch(
 	[routeProjectType, filterOptions],
-	([requestedType, options]) => {
+	([requestedType]) => {
 		if (route.name !== 'InstanceContent' && route.name !== 'InstanceContentFilter') return
 
-		const availableType =
-			requestedType && options.some((option) => option.id === requestedType)
-				? requestedType
-				: undefined
 		const nextFilters = selectedFilters.value.filter(
-			(filter) => !contentTypeFilterIds.value.has(filter),
+			(filter) => !contentTypes.has(normalizeProjectType(filter)),
 		)
-		if (availableType) nextFilters.push(availableType)
+		if (requestedType) nextFilters.push(requestedType)
 
 		if (
 			nextFilters.length !== selectedFilters.value.length ||
