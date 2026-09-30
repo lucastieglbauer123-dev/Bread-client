@@ -50,6 +50,11 @@ class BatchSkinRenderer {
 			antialias: true,
 			alpha: true,
 			preserveDrawingBuffer: true,
+			powerPreference: 'low-power',
+		})
+		canvas.addEventListener('webglcontextlost', (event) => {
+			event.preventDefault()
+			console.warn('Skin preview WebGL context was lost; using 2D fallbacks.')
 		})
 
 		this.renderer.outputColorSpace = THREE.SRGBColorSpace
@@ -97,6 +102,14 @@ class BatchSkinRenderer {
 		const forwards = await this.renderView(frontCameraPos, lookAtTarget)
 
 		return { forwards }
+	}
+
+	public isContextLost(): boolean {
+		try {
+			return this.renderer?.getContext().isContextLost() ?? false
+		} catch {
+			return true
+		}
 	}
 
 	private async renderView(
@@ -210,7 +223,7 @@ function getModelUrlForVariant(variant: string): string {
 export const skinBlobUrlMap = reactive(new Map<string, RenderResult>())
 export const headBlobUrlMap = reactive(new Map<string, string>())
 const DEBUG_MODE = false
-const SKIN_PREVIEW_RENDER_VERSION = 'ears-2-fixed-uvs'
+const SKIN_PREVIEW_RENDER_VERSION = 'ears-2-fixed-uvs-gpu-safe'
 
 let sharedRenderer: BatchSkinRenderer | null = null
 let latestPreviewGeneration = 0
@@ -402,6 +415,7 @@ async function generateSkinPreviewsForGeneration(
 	generation: number,
 ): Promise<void> {
 	const isCurrentGeneration = () => generation === latestPreviewGeneration
+	let webglPreviewDisabled = false
 
 	try {
 		const skinKeys = skins.map(getSkinPreviewKey)
@@ -445,44 +459,74 @@ async function generateSkinPreviewsForGeneration(
 				} else continue
 			}
 
-			const renderer = getSharedRenderer()
-
-			let variant = skin.variant
-			if (variant === 'UNKNOWN') {
+			let fallbackHead: string | undefined
+			const useHeadFallback = async () => {
 				try {
-					variant = await determineModelType(skin.texture)
+					fallbackHead ??= await generateHeadRender(skin)
+					if (!skinBlobUrlMap.has(key)) {
+						skinBlobUrlMap.set(key, { forwards: fallbackHead })
+					}
 				} catch (error) {
-					console.error(`Failed to determine model type for skin ${key}:`, error)
-					variant = 'CLASSIC'
+					console.warn(`Failed to create a fallback preview for skin ${key}:`, error)
 				}
 			}
 
-			const modelUrl = getModelUrlForVariant(variant)
-			const cape: Cape | undefined = capes.find((_cape) => _cape.id === skin.cape_id)
-			const rawRenderResult = await renderer.renderSkin(
-				await get_normalized_skin_texture(skin),
-				modelUrl,
-				cape?.texture,
-				skin.texture,
-			)
+			if (!webglPreviewDisabled) {
+				const renderer = getSharedRenderer()
+				try {
+					let variant = skin.variant
+					if (variant === 'UNKNOWN') {
+						try {
+							variant = await determineModelType(skin.texture)
+						} catch (error) {
+							console.error(`Failed to determine model type for skin ${key}:`, error)
+							variant = 'CLASSIC'
+						}
+					}
 
-			if (!isCurrentGeneration()) return
+					const modelUrl = getModelUrlForVariant(variant)
+					const cape: Cape | undefined = capes.find((_cape) => _cape.id === skin.cape_id)
+					const rawRenderResult = await renderer.renderSkin(
+						await get_normalized_skin_texture(skin),
+						modelUrl,
+						cape?.texture,
+						skin.texture,
+					)
 
-			const renderResult: RenderResult = {
-				forwards: URL.createObjectURL(rawRenderResult.forwards),
-			}
+					if (!isCurrentGeneration()) return
 
-			skinBlobUrlMap.set(key, renderResult)
+					const renderResult: RenderResult = {
+						forwards: URL.createObjectURL(rawRenderResult.forwards),
+					}
 
-			try {
-				await skinPreviewStorage.store(key, rawRenderResult)
-			} catch (error) {
-				console.warn('Failed to store skin preview in persistent storage:', error)
+					skinBlobUrlMap.set(key, renderResult)
+
+					try {
+						await skinPreviewStorage.store(key, rawRenderResult)
+					} catch (error) {
+						console.warn('Failed to store skin preview in persistent storage:', error)
+					}
+				} catch (error) {
+					const errorText = String(error)
+					const gpuFailure =
+						renderer.isContextLost() || /webgl|gpu|context|renderer/i.test(errorText)
+
+					console.warn(`Failed to render full skin preview for ${key}; using a 2D fallback.`, error)
+					webglPreviewDisabled ||= gpuFailure
+					disposeSharedRenderer()
+					await useHeadFallback()
+				}
+			} else {
+				await useHeadFallback()
 			}
 
 			const headKey = `${skin.texture_key}-head`
 			if (!headBlobUrlMap.has(headKey)) {
-				await generateHeadRender(skin)
+				try {
+					await generateHeadRender(skin)
+				} catch (error) {
+					console.warn(`Failed to cache the head render for skin ${key}:`, error)
+				}
 			}
 		}
 	} finally {
