@@ -100,7 +100,7 @@ jobs:
               "windows-x86_64": {
                 "signature": $windowsX64UpdateArtifactSignature,
                 "url": @uri "${{ env.LAUNCHER_FILES_BUCKET_BASE_URL }}/versions/\($versionTag)/windows/\("Bread Client_" + $versionTag + "_x64-setup.nsis.zip")",
-                "install_urls": [@uri "${{ env.LAUNCHER_FILES_BUCKET_BASE_URL }}/versions/\($versionTag)/windows/\("Bread Client_" + $versionTag + "_x64-setup.exe")", @uri "${{ env.LAUNCHER_FILES_BUCKET_BASE_URL }}/versions/\($versionTag)/windows/\("Bread Client_" + $versionTag + "_x64_en-US.msi")"]
+                "install_urls": [@uri "${{ env.LAUNCHER_FILES_BUCKET_BASE_URL }}/versions/\($versionTag)/windows/\("Bread Client_" + $versionTag + "_x64-setup.exe")", @uri "${{ env.LAUNCHER_FILES_BUCKET_BASE_URL }}/versions/\($versionTag)/windows/\("Bread Client_" + $versionTag + "-1_x64_en-US.msi")"]
               }
             }
           }' > updates.json
