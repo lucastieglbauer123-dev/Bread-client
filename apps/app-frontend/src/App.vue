@@ -879,10 +879,15 @@ const STARTUP_UPDATE_CHECK_KEY = 'bread.performance.check-updates-on-startup'
 
 function deferStartupWork(work) {
 	const run = () => {
-		if (firstPaintReady.value) {
-			void work()
-		} else {
+		if (!firstPaintReady.value) {
 			requestAnimationFrame(run)
+			return
+		}
+
+		if ('requestIdleCallback' in window) {
+			window.requestIdleCallback(() => void work(), { timeout: 1500 })
+		} else {
+			window.setTimeout(() => void work(), 0)
 		}
 	}
 	requestAnimationFrame(run)
