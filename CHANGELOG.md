@@ -1,5 +1,13 @@
 # Bread Client changelog
 
+## 2026-09-30 — Less friction, clearer control
+
+- Content tabs now keep Mods, Resource Packs, Shaders, and Datapacks selectable even when one category has no installed items yet.
+- Expired Minecraft tokens are no longer passed into Java after a refresh outage, preventing the vague “Invalid session” launch failure.
+- Added a local Offline workspace switch for managing local files without starting online sign-in or browse actions. It does not bypass Minecraft authentication.
+- System theme changes are picked up when the app returns to the foreground, and custom Bread themes now stay local instead of being silently ignored by account sync.
+- Added Copperline and Tidal themes, plus a GitHub Pages site with release links, accessibility basics, and project notices.
+
 ## 2026-09-27 — A smoother instance workspace
 
 - Fixed the instance tabs so Mods, Resource Packs, Shaders, and Datapacks open the matching view every time.

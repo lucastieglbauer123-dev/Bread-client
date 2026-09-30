@@ -7,6 +7,17 @@ export interface ChangelogEntry {
 /** User-facing entries mirrored in the repository CHANGELOG.md. */
 export const BREAD_CHANGELOG: ChangelogEntry[] = [
 	{
+		date: '2026-09-30',
+		title: 'Less friction, clearer control',
+		items: [
+			'Content tabs now keep Mods, Resource Packs, Shaders, and Datapacks selectable even when one category has no installed items yet.',
+			'Expired Minecraft tokens are no longer passed into Java after a refresh outage, preventing the vague “Invalid session” launch failure.',
+			'Added a local Offline workspace switch for managing local files without starting online sign-in or browse actions. It does not bypass Minecraft authentication.',
+			'System theme changes are picked up when the app returns to the foreground, and custom Bread themes now stay local instead of being silently ignored by account sync.',
+			'Added Copperline and Tidal themes, plus a GitHub Pages site with release links, accessibility basics, and project notices.',
+		],
+	},
+	{
 		date: '2026-09-27',
 		title: 'A smoother instance workspace',
 		items: [
