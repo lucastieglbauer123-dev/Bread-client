@@ -78,7 +78,7 @@
     "message": "Minecraft setup failed"
   },
   "app.action-bar.install.summary.modrinth-unreachable": {
-    "message": "Couldn't reach Bread Client"
+    "message": "Couldn't reach the content service"
   },
   "app.action-bar.install.summary.no-write-permission": {
     "message": "No permission to write"
@@ -106,6 +106,12 @@
   },
   "app.action-bar.offline": {
     "message": "Offline"
+  },
+  "app.action-bar.offline-mode": {
+    "message": "Offline workspace"
+  },
+  "app.action-bar.online-mode": {
+    "message": "Online mode"
   },
   "app.action-bar.primary-instance": {
     "message": "Primary instance"
@@ -198,7 +204,7 @@
     "message": "Hide right sidebar"
   },
   "app.appearance-settings.unknown-pack-warning.description": {
-    "message": "Show a safety warning before installing a Bread Client Pack (.mrpack) that isn't hosted on Bread Client."
+    "message": "Show a safety warning before installing a community pack (.mrpack) that isn't hosted in the Bread catalog."
   },
   "app.appearance-settings.unknown-pack-warning.title": {
     "message": "Warn me before installing unknown modpacks"
@@ -354,13 +360,13 @@
     "message": "View instance"
   },
   "app.hosting.update-required.description": {
-    "message": "You need to update to use Bread Hosting through the Bread Client"
+    "message": "You need to update to use Bread Hosting through Bread Client"
   },
   "app.hosting.update-required.download": {
     "message": "Download to update"
   },
   "app.hosting.update-required.rinthbot-alt": {
-    "message": "Excited Bread Client Bot"
+    "message": "Excited Bread Bot"
   },
   "app.hosting.update-required.title": {
     "message": "Bread Client update required"
@@ -378,7 +384,7 @@
     "message": "Close"
   },
   "app.icon-editor.apply-icons-modal.description": {
-    "message": "Create custom icons for your instances right in the Bread Client. Mix and match backgrounds with symbols from Minecraft and popular mods!"
+    "message": "Create custom icons for your instances right in Bread Client. Mix and match backgrounds with symbols from Minecraft and popular mods!"
   },
   "app.icon-editor.apply-icons-modal.instances-without-icons": {
     "message": "{count, plural, one {# instance doesn’t} other {# instances don’t}} have icons yet. Want us to give {count, plural, one {it} other {them}} random ones to get started?"
@@ -756,7 +762,10 @@
     "message": "Error creating shortcut"
   },
   "app.instance.tab.content": {
-    "message": "Content"
+    "message": "Mods"
+  },
+  "app.instance.tab.datapacks": {
+    "message": "Datapacks"
   },
   "app.instance.tab.files": {
     "message": "Files"
@@ -764,8 +773,17 @@
   "app.instance.tab.logs": {
     "message": "Logs"
   },
+  "app.instance.tab.resource-packs": {
+    "message": "Resource Packs"
+  },
   "app.instance.tab.screenshots": {
     "message": "Screenshots"
+  },
+  "app.instance.tab.settings": {
+    "message": "Settings"
+  },
+  "app.instance.tab.shaders": {
+    "message": "Shaders"
   },
   "app.instance.tab.share": {
     "message": "Share"
@@ -881,6 +899,9 @@
   "app.library.context-menu.create-instance": {
     "message": "New instance"
   },
+  "app.library.description": {
+    "message": "Your own worlds, exactly how you want them."
+  },
   "app.library.filter.add": {
     "message": "Add filter"
   },
@@ -907,6 +928,9 @@
   },
   "app.library.filter.loader": {
     "message": "Loader"
+  },
+  "app.library.find-next-world": {
+    "message": "Find your next world"
   },
   "app.library.group-by.custom-group": {
     "message": "Custom group"
@@ -1018,6 +1042,15 @@
   },
   "app.library.group.unknown": {
     "message": "Unknown group"
+  },
+  "app.library.installation-found": {
+    "message": "Minecraft installation found"
+  },
+  "app.library.installation-found.description": {
+    "message": "{count, plural, one {# game folder} other {# game folders}} detected"
+  },
+  "app.library.installation-found.refresh": {
+    "message": "Refresh"
   },
   "app.library.instance.action.add-content": {
     "message": "Add content"
@@ -1134,7 +1167,7 @@
     "message": "Name"
   },
   "app.library.title": {
-    "message": "Library"
+    "message": "Your instances"
   },
   "app.modal.install-to-play.additional-context": {
     "message": "Additional context"
@@ -1164,7 +1197,7 @@
     "message": "Install"
   },
   "app.modal.install-to-play.invite-warning": {
-    "message": "This invite was created by another Bread Client user, not Bread Client. Only accept invites from people you trust."
+    "message": "This invite was created by another player, not Bread Client. Only accept invites from people you trust."
   },
   "app.modal.install-to-play.invite-warning-with-creator": {
     "message": "This invite was created by <creator>{username}</creator>, not Bread Client. Only accept invites from people you trust."
@@ -1200,7 +1233,7 @@
     "message": "For support requests, contact our <support-link>support team</support-link>. For bug reports, open a <github-link>GitHub issue</github-link>."
   },
   "app.modal.install-to-play.reviewed-files": {
-    "message": "Files that aren't published to Bread Client aren't reviewed."
+    "message": "Files that aren't published in the Bread catalog aren't reviewed."
   },
   "app.modal.install-to-play.shared-instance": {
     "message": "Shared instance"
@@ -1209,10 +1242,10 @@
     "message": "Shared instance content"
   },
   "app.modal.install-to-play.shared-instance-unknown-files-description": {
-    "message": "This shared instance contains files that aren’t published on Bread Client. We strongly recommend only installing files from sources you trust."
+    "message": "This shared instance contains files that aren’t published in the Bread catalog. We strongly recommend only installing files from sources you trust."
   },
   "app.modal.install-to-play.unknown-files-description": {
-    "message": "This server modpack contains files that aren’t published on Bread Client. We strongly recommend only installing files from sources you trust."
+    "message": "This server modpack contains files that aren’t published in the Bread catalog. We strongly recommend only installing files from sources you trust."
   },
   "app.modal.install-to-play.unknown-files-warning": {
     "message": "Unknown files warning"
@@ -1233,7 +1266,7 @@
     "message": "Removed"
   },
   "app.modal.update-to-play.server-modpack-unknown-files-description": {
-    "message": "This server modpack update contains files that aren’t published on Bread Client. We strongly recommend only installing files from sources you trust."
+    "message": "This server modpack update contains files that aren’t published in the Bread catalog. We strongly recommend only installing files from sources you trust."
   },
   "app.modal.update-to-play.shared-instance-added-label": {
     "message": "Added"
@@ -1242,7 +1275,7 @@
     "message": "Removed"
   },
   "app.modal.update-to-play.shared-instance-unknown-files-description": {
-    "message": "This shared instance update contains files that aren’t published on Bread Client. We strongly recommend only installing files from sources you trust."
+    "message": "This shared instance update contains files that aren’t published in the Bread catalog. We strongly recommend only installing files from sources you trust."
   },
   "app.modal.update-to-play.update-required": {
     "message": "Update required"
@@ -1256,8 +1289,17 @@
   "app.nav.create-new-instance": {
     "message": "Create new instance"
   },
+  "app.nav.downloads": {
+    "message": "Recent activity"
+  },
+  "app.nav.files": {
+    "message": "Crash reports"
+  },
+  "app.nav.friends": {
+    "message": "Friends"
+  },
   "app.nav.home": {
-    "message": "Home"
+    "message": "Play"
   },
   "app.nav.loading-profile": {
     "message": "Loading profile..."
@@ -1267,6 +1309,9 @@
   },
   "app.nav.modrinth-hosting": {
     "message": "Bread Hosting"
+  },
+  "app.nav.notifications": {
+    "message": "Notifications"
   },
   "app.nav.remove-account": {
     "message": "Remove account"
@@ -1279,9 +1324,6 @@
   },
   "app.nav.switch-account": {
     "message": "Switch account"
-  },
-  "app.nav.upgrade-to-modrinth-plus": {
-    "message": "Upgrade to Bread Supporter"
   },
   "app.nav.view-profile": {
     "message": "View profile"
@@ -1304,8 +1346,50 @@
   "app.news.view-all": {
     "message": "View all news"
   },
+  "app.news.whats-new": {
+    "message": "What's new"
+  },
   "app.notification.warning": {
     "message": "Warning"
+  },
+  "app.performance-settings.cache.clear": {
+    "message": "Clear cache"
+  },
+  "app.performance-settings.cache.cleared": {
+    "message": "Content cache cleared."
+  },
+  "app.performance-settings.cache.description": {
+    "message": "Clear cached project, version, and search metadata if results look stale."
+  },
+  "app.performance-settings.cache.title": {
+    "message": "Content cache"
+  },
+  "app.performance-settings.check-updates": {
+    "message": "Check for updates on startup"
+  },
+  "app.performance-settings.check-updates.description": {
+    "message": "When off, the check is deferred for about 10 seconds after the app opens."
+  },
+  "app.performance-settings.java.description": {
+    "message": "Saved Java paths are reused between launches. Re-scan only when you install or remove Java."
+  },
+  "app.performance-settings.java.none": {
+    "message": "No saved Java installations yet."
+  },
+  "app.performance-settings.java.rescan": {
+    "message": "Re-scan Java"
+  },
+  "app.performance-settings.java.rescanning": {
+    "message": "Scanning…"
+  },
+  "app.performance-settings.java.title": {
+    "message": "Detected Java installations"
+  },
+  "app.performance-settings.startup.description": {
+    "message": "Keep the launcher responsive while non-essential checks run in the background."
+  },
+  "app.performance-settings.startup.title": {
+    "message": "Launch behavior"
   },
   "app.project.actions.label": {
     "message": "Project actions"
@@ -1526,6 +1610,57 @@
   "app.settings.app-version": {
     "message": "Bread Client {version}"
   },
+  "app.settings.bread.accent.blue": {
+    "message": "Blue accent"
+  },
+  "app.settings.bread.accent.description": {
+    "message": "Use a color that feels right to you."
+  },
+  "app.settings.bread.accent.lime": {
+    "message": "Lime accent"
+  },
+  "app.settings.bread.accent.orange": {
+    "message": "Orange accent"
+  },
+  "app.settings.bread.accent.pink": {
+    "message": "Pink accent"
+  },
+  "app.settings.bread.accent.title": {
+    "message": "Accent colour"
+  },
+  "app.settings.bread.classic-layout": {
+    "message": "Classic layout"
+  },
+  "app.settings.bread.classic-layout.description": {
+    "message": "Use the familiar compact layout instead of the new Bread workspace."
+  },
+  "app.settings.bread.description": {
+    "message": "Your choices are saved on this device."
+  },
+  "app.settings.bread.eyebrow": {
+    "message": "PERSONALIZE"
+  },
+  "app.settings.bread.heading": {
+    "message": "Make Bread Client"
+  },
+  "app.settings.bread.heading.accent": {
+    "message": "yours."
+  },
+  "app.settings.bread.original-themes": {
+    "message": "Switch to original themes"
+  },
+  "app.settings.bread.original-themes.description": {
+    "message": "Show the original launcher themes alongside Bread themes."
+  },
+  "app.settings.bread.restore.button": {
+    "message": "Restore standard"
+  },
+  "app.settings.bread.restore.description": {
+    "message": "Restore the original Bread Client appearance at any time."
+  },
+  "app.settings.bread.restore.title": {
+    "message": "Back to standard"
+  },
   "app.settings.default-instance-options.environment-variables.description": {
     "message": "Environment variables set when launching an instance."
   },
@@ -1635,7 +1770,7 @@
     "message": "Discord Rich Presence"
   },
   "app.settings.privacy.telemetry.description": {
-    "message": "Bread Client collects anonymized analytics and usage data to improve our user experience and customize your experience. By disabling this option, you opt out and your data will no longer be collected."
+    "message": "Bread Client collects anonymized analytics and usage data to improve the launcher. By disabling this option, you opt out and your data will no longer be collected."
   },
   "app.settings.privacy.telemetry.title": {
     "message": "Telemetry"
@@ -1653,7 +1788,7 @@
     "message": "Purge the app cache?"
   },
   "app.settings.resource-management.app-cache.description": {
-    "message": "Clear cached data and download it again from Bread Client. The app may load more slowly until the cache is rebuilt."
+    "message": "Clear cached data and download it again from the content service. The app may load more slowly until the cache is rebuilt."
   },
   "app.settings.resource-management.app-cache.purge": {
     "message": "Purge cache"
@@ -1771,6 +1906,9 @@
   },
   "app.settings.tabs.resource-management": {
     "message": "Resource management"
+  },
+  "app.settings.tabs.stats": {
+    "message": "Stats"
   },
   "app.settings.tabs.synced-options": {
     "message": "Synced settings"
@@ -1902,13 +2040,13 @@
     "message": "MINECON Earth 2017"
   },
   "app.skins.section.modrinth": {
-    "message": "Bread Client"
+    "message": "Community"
   },
   "app.skins.section.modrinth-pride": {
-    "message": "Bread Client Pride"
+    "message": "Community Pride"
   },
   "app.skins.section.modrinth-pride.tooltip": {
-    "message": "You received these skins for donating to a Bread Client Pride fundraiser during Pride Month."
+    "message": "You received these skins for donating to a community Pride fundraiser during Pride Month."
   },
   "app.skins.section.mounts-of-mayhem": {
     "message": "Mounts of Mayhem"
@@ -1932,7 +2070,7 @@
     "message": "Sign in to Microsoft"
   },
   "app.skins.title": {
-    "message": "Skin selector"
+    "message": "Skins & capes"
   },
   "app.skins.toggle-ears-features-off": {
     "message": "Toggle off"
@@ -2006,6 +2144,9 @@
   "app.welcome-screen.quick-create-hint": {
     "message": "Press <shortcut>N</shortcut> to quick create an instance"
   },
+  "app.welcome-screen.sign-in": {
+    "message": "Sign in to Bread Client"
+  },
   "app.welcome-screen.title": {
     "message": "Welcome to Bread Client"
   },
@@ -2073,16 +2214,19 @@
     "message": "Adding a friend"
   },
   "friends.add-friend.username.description": {
-    "message": "It may be different from their Minecraft username!"
+    "message": "Use the username they use with their Minecraft account in Bread Client."
   },
   "friends.add-friend.username.placeholder": {
-    "message": "Enter Bread Client username..."
+    "message": "Enter Minecraft username..."
   },
   "friends.add-friend.username.title": {
-    "message": "What's your friend's Bread Client username?"
+    "message": "What's your friend's Minecraft username?"
   },
   "friends.add-friends-to-share": {
     "message": "<link>Add friends</link> to see what they're playing!"
+  },
+  "friends.connect-bread-for-friends": {
+    "message": "<link>Link friend sync</link> to send requests and see what your friends are playing."
   },
   "friends.friend.actions.label": {
     "message": "Friend actions"
@@ -2124,7 +2268,7 @@
     "message": "{title} - {count}"
   },
   "friends.sign-in-to-add-friends": {
-    "message": "<link>Sign in to a Bread Client account</link> to add friends and see what they're playing!"
+    "message": "<link>Sign in to Bread Client</link> to add friends and see what they're playing!"
   },
   "installation-settings.shared-instance.linked-title": {
     "message": "Linked shared instance"
@@ -2145,7 +2289,7 @@
     "message": "Unpublish shared instance"
   },
   "installation-settings.shared-instance.unpublish-description": {
-    "message": "Remove this shared instance from Bread Client and stop sending updates to anyone using it. Your local instance will not be affected."
+    "message": "Remove this shared instance from the Bread catalog and stop sending updates to anyone using it. Your local instance will not be affected."
   },
   "installation-settings.shared-instance.unpublishing-button": {
     "message": "Unpublishing..."
@@ -2160,7 +2304,7 @@
     "message": "Unlink shared instance"
   },
   "installation-settings.unpublish-shared-instance.modal.admonition-body": {
-    "message": "This deletes the shared instance from Bread Client's servers. People using it in the Bread Client will stop receiving updates, but your local instance and its content will stay on this device."
+    "message": "This deletes the shared instance from Bread Client's servers. People using Bread Client will stop receiving updates, but your local instance and its content will stay on this device."
   },
   "installation-settings.unpublish-shared-instance.modal.admonition-header": {
     "message": "Unpublishing shared instance"
@@ -2170,6 +2314,9 @@
   },
   "instance.action.create-shortcut": {
     "message": "Create shortcut"
+  },
+  "instance.action.delete-instance": {
+    "message": "Delete instance"
   },
   "instance.action.export-modpack": {
     "message": "Export modpack"
@@ -2442,7 +2589,7 @@
     "message": "TNT"
   },
   "instance.icon-editor.symbol.wrenth-rinth": {
-    "message": "Bread Client Wrench"
+    "message": "Bread Wrench"
   },
   "instance.icon-editor.symbol.zombie": {
     "message": "Zombie"
@@ -2656,6 +2803,9 @@
   },
   "instance.settings.tabs.hooks.wrapper.enter": {
     "message": "Enter wrapper command..."
+  },
+  "instance.settings.tabs.import": {
+    "message": "Import"
   },
   "instance.settings.tabs.installation": {
     "message": "Installation"
@@ -2930,6 +3080,9 @@
   "minecraft-account.label": {
     "message": "Minecraft account"
   },
+  "minecraft-account.manage-skin": {
+    "message": "Skin & cape"
+  },
   "minecraft-account.not-signed-in": {
     "message": "Not signed in"
   },
@@ -3002,9 +3155,6 @@
   "onboarding-checklist.login-minecraft": {
     "message": "Sign in to Minecraft"
   },
-  "onboarding-checklist.login-modrinth": {
-    "message": "Sign in to Bread Client"
-  },
   "onboarding-checklist.title": {
     "message": "Getting started"
   },
@@ -3028,5 +3178,8 @@
   },
   "settings.sidebar.label.display": {
     "message": "Display"
+  },
+  "settings.sidebar.label.performance": {
+    "message": "Performance"
   }
 }
