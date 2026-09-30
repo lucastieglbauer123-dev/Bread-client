@@ -492,17 +492,27 @@ impl Credentials {
 
             match res {
                 Ok(_) => Ok(Some(creds)),
-                Err(err) => {
-                    if let ErrorKind::MinecraftAuthenticationError(
-                        MinecraftAuthenticationError::Request {
-                            ref source,
-                            ..
-                        },
-                    ) = *err.raw
-                        && (source.is_connect() || source.is_timeout())
-                    {
-                        return Ok(Some(creds));
-                    }
+				Err(err) => {
+					if let ErrorKind::MinecraftAuthenticationError(
+						MinecraftAuthenticationError::Request {
+							ref source,
+							..
+						},
+					) = *err.raw
+						&& (source.is_connect() || source.is_timeout())
+					{
+						// A still-valid token can carry a launch through a brief outage, but
+						// an expired token must never reach Minecraft. Minecraft reports that
+						// case as the vague "Invalid session" message and cannot recover it
+						// after the game has already started.
+						if creds.expires > Utc::now() {
+							return Ok(Some(creds));
+						}
+
+						tracing::warn!(
+							"Refusing to launch with an expired Minecraft token after refresh failed: {err}"
+						);
+					}
 
                     if matches!(
                         &*err.raw,
