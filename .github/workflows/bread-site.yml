@@ -36,7 +36,7 @@ jobs:
           const manifest = {
             version: packageJson.version,
             release_url: 'https://github.com/lucastieglbauer123-dev/Bread-client/releases/latest',
-            notes_url: 'https://lucastieglbauer123-dev.github.io/Bread-client/',
+            notes_url: 'https://bread-client.pages.dev/',
             published_at: new Date().toISOString(),
             channel: 'stable',
           }
