@@ -3,9 +3,6 @@ name: Bread Client site
 on:
   push:
     branches: [main]
-    paths:
-      - 'site/**'
-      - '.github/workflows/bread-site.yml'
   workflow_dispatch:
 
 permissions:
@@ -30,6 +27,21 @@ jobs:
         uses: actions/configure-pages@v5
         with:
           enablement: true
+      - name: Stamp current launcher version
+        shell: bash
+        run: |
+          node <<'NODE'
+          const fs = require('node:fs')
+          const packageJson = JSON.parse(fs.readFileSync('apps/app-frontend/package.json', 'utf8'))
+          const manifest = {
+            version: packageJson.version,
+            release_url: 'https://github.com/lucastieglbauer123-dev/Bread-client/releases/latest',
+            notes_url: 'https://lucastieglbauer123-dev.github.io/Bread-client/',
+            published_at: new Date().toISOString(),
+            channel: 'stable',
+          }
+          fs.writeFileSync('site/updates.json', `${JSON.stringify(manifest, null, 2)}\n`)
+          NODE
       - name: Upload site
         uses: actions/upload-pages-artifact@v3
         with:
