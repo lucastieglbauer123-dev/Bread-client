@@ -54,7 +54,10 @@ async fn initialize_state(
 fn show_window(app: tauri::AppHandle) {
     if let Some(start) = PROCESS_START_TIME.get() {
         if let Ok(elapsed) = start.elapsed() {
-            eprintln!("[Bread startup] first paint: {} ms", elapsed.as_millis());
+            eprintln!(
+                "[Bread startup] first paint: {} ms",
+                elapsed.as_millis()
+            );
         }
     }
     let win = app.get_window("main").unwrap();
@@ -83,6 +86,26 @@ fn is_dev() -> bool {
 fn are_updates_enabled() -> bool {
     cfg!(feature = "updater")
         && env::var("MODRINTH_EXTERNAL_UPDATE_PROVIDER").is_err()
+}
+
+/// Returns true only when this Windows process has administrator privileges.
+///
+/// Bread's administrator tools are deliberately local-only. They are not an
+/// account or ownership check, and they never grant remote access.
+#[cfg(target_os = "windows")]
+#[tauri::command]
+fn is_system_administrator() -> bool {
+    std::process::Command::new("net")
+        .args(["session"])
+        .output()
+        .map(|output| output.status.success())
+        .unwrap_or(false)
+}
+
+#[cfg(not(target_os = "windows"))]
+#[tauri::command]
+fn is_system_administrator() -> bool {
+    false
 }
 
 #[cfg(feature = "updater")]
@@ -285,6 +308,7 @@ fn main() {
             initialize_state,
             is_dev,
             are_updates_enabled,
+            is_system_administrator,
             get_update_size,
             enqueue_update_for_installation,
             remove_enqueued_update,

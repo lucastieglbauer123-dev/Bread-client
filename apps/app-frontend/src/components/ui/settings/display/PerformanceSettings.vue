@@ -2,10 +2,17 @@
 import { CoffeeIcon } from '@modrinth/assets'
 import { Button, defineMessages, injectNotificationManager, Toggle, useVIntl } from '@modrinth/ui'
 import { useQueryClient } from '@tanstack/vue-query'
+import { openUrl } from '@tauri-apps/plugin-opener'
 import { computed, ref, watch } from 'vue'
 
+import { config } from '@/config'
 import { purge_cache_types } from '@/helpers/cache.js'
 import { find_filtered_jres, get_java_versions, set_java_version } from '@/helpers/jre.js'
+import {
+	isSystemAdministrator,
+	showAppDbBackupsFolder,
+	showLauncherLogsFolder,
+} from '@/helpers/utils.js'
 
 const { formatMessage } = useVIntl()
 const { handleError } = injectNotificationManager()
@@ -66,6 +73,38 @@ const messages = defineMessages({
 		id: 'app.performance-settings.cache.cleared',
 		defaultMessage: 'Content cache cleared.',
 	},
+	browserTitle: {
+		id: 'app.performance-settings.browser.title',
+		defaultMessage: 'Website and browser',
+	},
+	browserDescription: {
+		id: 'app.performance-settings.browser.description',
+		defaultMessage: 'Open the Bread Client site for release notes, downloads, and the latest version listed online.',
+	},
+	openWebsite: {
+		id: 'app.performance-settings.browser.open-website',
+		defaultMessage: 'Open Bread Client website',
+	},
+	adminTitle: {
+		id: 'app.performance-settings.admin.title',
+		defaultMessage: 'Administrator tools',
+	},
+	adminDescription: {
+		id: 'app.performance-settings.admin.description',
+		defaultMessage: 'Local diagnostics for this machine. This section is available only when Bread Client is running with Windows administrator rights.',
+	},
+	adminStatus: {
+		id: 'app.performance-settings.admin.status',
+		defaultMessage: 'Administrator access is active for this session.',
+	},
+	openLogs: {
+		id: 'app.performance-settings.admin.open-logs',
+		defaultMessage: 'Open launcher logs',
+	},
+	openBackups: {
+		id: 'app.performance-settings.admin.open-backups',
+		defaultMessage: 'Open settings backups',
+	},
 })
 
 const checkUpdatesOnStartup = ref(
@@ -82,6 +121,7 @@ const javaVersions = ref<Record<string, JavaVersion>>((await get_java_versions()
 >)
 const scanning = ref(false)
 const cacheStatus = ref('')
+const isAdministrator = ref(await isSystemAdministrator().catch(() => false))
 const savedJavaVersions = computed(() =>
 	Object.entries(javaVersions.value ?? {})
 		.filter(([, value]) => value?.path)
@@ -128,6 +168,18 @@ async function clearCache(): Promise<void> {
 	} catch (error) {
 		handleError(error)
 	}
+}
+
+async function openWebsite(): Promise<void> {
+	await openUrl(config.breadSiteUrl).catch(handleError)
+}
+
+async function openLauncherLogs(): Promise<void> {
+	await showLauncherLogsFolder().catch(handleError)
+}
+
+async function openSettingsBackups(): Promise<void> {
+	await showAppDbBackupsFolder().catch(handleError)
 }
 </script>
 
@@ -188,6 +240,32 @@ async function clearCache(): Promise<void> {
 				{{ formatMessage(messages.clearCache) }}
 			</Button>
 			<p v-if="cacheStatus" class="m-0 text-secondary">{{ cacheStatus }}</p>
+		</section>
+
+		<section class="flex flex-col gap-4">
+			<div>
+				<h2 class="m-0 text-lg font-semibold text-contrast">{{ formatMessage(messages.browserTitle) }}</h2>
+				<p class="m-0 mt-1 text-secondary">{{ formatMessage(messages.browserDescription) }}</p>
+			</div>
+			<Button type="outlined" class="w-fit" @click="openWebsite">
+				{{ formatMessage(messages.openWebsite) }}
+			</Button>
+		</section>
+
+		<section v-if="isAdministrator" class="flex flex-col gap-4">
+			<div>
+				<h2 class="m-0 text-lg font-semibold text-contrast">{{ formatMessage(messages.adminTitle) }}</h2>
+				<p class="m-0 mt-1 text-secondary">{{ formatMessage(messages.adminDescription) }}</p>
+			</div>
+			<p class="m-0 text-secondary">{{ formatMessage(messages.adminStatus) }}</p>
+			<div class="flex flex-wrap gap-3">
+				<Button type="outlined" @click="openLauncherLogs">
+					{{ formatMessage(messages.openLogs) }}
+				</Button>
+				<Button type="outlined" @click="openSettingsBackups">
+					{{ formatMessage(messages.openBackups) }}
+				</Button>
+			</div>
 		</section>
 	</div>
 </template>

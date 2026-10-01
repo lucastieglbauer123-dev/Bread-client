@@ -11,6 +11,10 @@ export async function areUpdatesEnabled() {
 	return await invoke('are_updates_enabled')
 }
 
+export async function isSystemAdministrator() {
+	return await invoke('is_system_administrator')
+}
+
 export async function getUpdateSize(updateRid) {
 	return await invoke('get_update_size', { rid: updateRid })
 }
