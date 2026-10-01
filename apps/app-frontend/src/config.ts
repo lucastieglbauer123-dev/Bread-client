@@ -11,6 +11,7 @@ const sharedInstancesBaseUrl = trimTrailingSlash(
 	import.meta.env.SHARED_INSTANCES_API_BASE_URL || 'https://shared-instances.modrinth.com',
 )
 const curseForgeApiBaseUrl = 'https://api.curseforge.com/v1'
+const breadSiteUrl = 'https://lucastieglbauer123-dev.github.io/Bread-client'
 
 // CurseForge's read-only catalog key is intentionally kept in one place so it
 // can be rotated without hunting through the browser and install code.
@@ -26,4 +27,5 @@ export const config = {
 	sharedInstancesBaseUrl,
 	curseForgeApiBaseUrl,
 	curseForgeApiKey,
+	breadSiteUrl,
 }

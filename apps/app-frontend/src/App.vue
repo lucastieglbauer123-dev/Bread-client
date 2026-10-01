@@ -122,6 +122,7 @@ import {
 import { debugAnalytics, initAnalytics, trackEvent } from '@/helpers/analytics'
 import { check_reachable } from '@/helpers/auth.js'
 import { BREAD_PACK_OPTIONS } from '@/helpers/bread-packs'
+import { compareBreadVersions, getBreadWebsiteUpdateManifest } from '@/helpers/bread-updates.ts'
 import { recordActivity } from '@/helpers/activity'
 import { get_user, get_user_many, get_version } from '@/helpers/cache.js'
 import { markFirstPaint } from '@/helpers/startup-metrics'
@@ -1809,7 +1810,53 @@ const updatePopupMessages = defineMessages({
 		id: 'app.update-popup.changelog',
 		defaultMessage: 'Changelog',
 	},
+	websiteAvailable: {
+		id: 'app.update-popup.website-available',
+		defaultMessage: 'A newer Bread Client build is out',
+	},
+	websiteBody: {
+		id: 'app.update-popup.website-body',
+		defaultMessage: 'Bread Client v{version} is listed on the project site. Open the release page when you are ready to update.',
+	},
+	websiteButton: {
+		id: 'app.update-popup.website-button',
+		defaultMessage: 'View release',
+	},
 })
+
+async function findBreadWebsiteUpdate() {
+	try {
+		const [manifest, currentVersion] = await Promise.all([
+			getBreadWebsiteUpdateManifest(),
+			getVersion(),
+		])
+		return manifest && compareBreadVersions(manifest.version, currentVersion) > 0 ? manifest : null
+	} catch (error) {
+		console.warn('Could not check the Bread Client website for updates.', error)
+		return null
+	}
+}
+
+function showBreadWebsiteUpdate(manifest) {
+	const storageKey = `bread.website-update-shown:${manifest.version}`
+	if (localStorage.getItem(storageKey) === 'true') return
+
+	addPopupNotification({
+		contentType: 'standard',
+		title: formatMessage(updatePopupMessages.websiteAvailable),
+		text: formatMessage(updatePopupMessages.websiteBody, { version: manifest.version }),
+		type: 'info',
+		autoCloseMs: null,
+		buttons: [
+			{
+				label: formatMessage(updatePopupMessages.websiteButton),
+				action: () => openUrl(manifest.release_url),
+				color: 'brand',
+			},
+		],
+	})
+	localStorage.setItem(storageKey, 'true')
+}
 
 function clearDelayedUpdatePopup() {
 	if (delayedUpdatePopupTimeout !== null) {
@@ -1914,9 +1961,11 @@ function showDelayedUpdatePopup() {
 }
 
 async function checkUpdates() {
+	const websiteUpdate = await findBreadWebsiteUpdate()
 	if (!(await areUpdatesEnabled())) {
 		console.log('Skipping update check as updates are disabled in this build or environment')
 		updatesEnabled.value = false
+		if (websiteUpdate) showBreadWebsiteUpdate(websiteUpdate)
 
 		if (os.value === 'Linux' && !isDevEnvironment.value) {
 			checkLinuxUpdates()
@@ -1926,9 +1975,16 @@ async function checkUpdates() {
 	}
 
 	async function performCheck() {
-		const update = await invoke('plugin:updater|check')
+		let update
+		try {
+			update = await invoke('plugin:updater|check')
+		} catch (error) {
+			if (websiteUpdate) showBreadWebsiteUpdate(websiteUpdate)
+			throw error
+		}
 		if (!update) {
 			console.log('No update available')
+			if (websiteUpdate) showBreadWebsiteUpdate(websiteUpdate)
 			return
 		}
 
