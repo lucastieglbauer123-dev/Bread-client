@@ -1,13 +1,46 @@
 const checkbox = document.querySelector('#download-acknowledgement')
 const downloadLink = document.querySelector('[data-download-link]')
+const downloadStatus = document.querySelector('[data-msi-status]')
 if (checkbox && downloadLink) {
+  let msiUrl = ''
   const updateDownloadState = () => {
-    downloadLink.setAttribute('aria-disabled', String(!checkbox.checked))
-    if (checkbox.checked) downloadLink.removeAttribute('tabindex')
+    const ready = checkbox.checked && Boolean(msiUrl)
+    downloadLink.setAttribute('aria-disabled', String(!ready))
+    if (ready) downloadLink.removeAttribute('tabindex')
     else downloadLink.setAttribute('tabindex', '-1')
   }
+
   checkbox.addEventListener('change', updateDownloadState)
   updateDownloadState()
+  if (downloadStatus) downloadStatus.textContent = 'Checking GitHub releases for a Windows MSI…'
+
+  fetch('https://api.github.com/repos/lucastieglbauer123-dev/Bread-client/releases/latest', {
+    headers: { Accept: 'application/vnd.github+json' }
+  })
+    .then((response) => {
+      if (!response.ok) throw new Error('No published release')
+      return response.json()
+    })
+    .then((release) => {
+      const asset = (release.assets || []).find((item) => /\.msi$/i.test(item.name) && item.state === 'uploaded')
+      if (!asset) throw new Error('No MSI in the latest release')
+
+      const url = new URL(asset.browser_download_url)
+      if (url.origin !== 'https://github.com' || !url.pathname.startsWith('/lucastieglbauer123-dev/Bread-client/releases/download/')) {
+        throw new Error('Unexpected installer location')
+      }
+
+      msiUrl = url.href
+      downloadLink.href = msiUrl
+      downloadLink.textContent = 'Download Windows MSI'
+      if (downloadStatus) downloadStatus.textContent = 'Latest MSI: ' + release.tag_name + '. Read the release notes before installing.'
+      updateDownloadState()
+    })
+    .catch(() => {
+      downloadLink.textContent = 'MSI not available'
+      if (downloadStatus) downloadStatus.textContent = 'No Windows MSI is published yet. Check All releases for the next installer.'
+      updateDownloadState()
+    })
 }
 
 const settings = JSON.parse(localStorage.getItem('bread-site-settings') || '{}')
