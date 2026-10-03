@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Bread Client | A focused Minecraft launcher</title>
-  <meta name="description" content="Bread Client is a focused desktop launcher for Minecraft Java instances, mods, resource packs, shaders, logs, and worlds.">
+  <title>Bread Client | Minecraft Java launcher</title>
+  <meta name="description" content="Bread Client keeps Minecraft Java instances, mods, resource packs, shaders, worlds, and logs together in one desktop launcher.">
   <link rel="canonical" href="https://bread-client.pages.dev/">
   <link rel="stylesheet" href="styles.css">
 </head>
@@ -15,24 +15,81 @@
       <svg class="brand-mark" viewBox="0 0 64 64" aria-hidden="true"><path fill="#e9a83f" d="M10 25c0-9 9-16 22-16s22 7 22 16v25H10z"/><path fill="#9a5b1e" d="M10 42h44v8H10z"/><path fill="#2b1b0d" d="M14 42h36c-4-7-11-10-18-10s-14 3-18 10Z"/><path fill="none" stroke="#9a5b1e" stroke-linecap="round" stroke-width="7" d="M21 25c2-5 8-5 10 0m2 0c2-5 8-5 10 0"/></svg>
       <span>Bread Client</span>
     </a>
-    <nav class="site-nav" aria-label="Primary navigation"><a href="download.html">Download</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="https://github.com/lucastieglbauer123-dev/Bread-client">Source code</a></nav>
+    <nav class="site-nav" aria-label="Primary navigation">
+      <a href="updates.html">Updates</a>
+      <a href="download.html">Download</a>
+      <a href="#support">Support</a>
+      <a href="https://github.com/lucastieglbauer123-dev/Bread-client">Source code</a>
+    </nav>
   </header>
   <main id="main" class="site-main">
     <section class="hero" aria-labelledby="hero-title">
       <div>
         <p class="eyebrow">Bread Client for Minecraft Java</p>
-        <h1 id="hero-title">Your instances, without the clutter.</h1>
-        <p class="hero-copy">A straightforward home for worlds, mods, resource packs, shaders, logs, and the small jobs that pile up around Minecraft.</p>
-        <div class="hero-actions"><a class="button" href="download.html">Download Bread Client</a><a class="button secondary" href="https://github.com/lucastieglbauer123-dev/Bread-client">Read the source</a></div>
-        <p class="hero-note">Minecraft is a trademark of Microsoft Corporation. Bread Client is an independent project.</p>
+        <h1 id="hero-title">Your instances, in one calm place.</h1>
+        <p class="hero-copy">A launcher for the things you actually manage: worlds, mods, packs, shaders, files, and logs.</p>
+        <div class="hero-actions">
+          <a class="button" href="download.html">Download Bread Client</a>
+          <a class="button secondary" href="updates.html">See what changed</a>
+        </div>
+        <p class="hero-note">Independent project. Minecraft is a trademark of Microsoft Corporation.</p>
       </div>
-      <aside class="hero-panel" aria-label="Current project status"><span class="panel-kicker">The short version</span><strong>Local first.</strong><p>Your files and settings remain useful when a service is having a bad day. Online services are only used when a feature needs one.</p></aside>
+      <aside class="hero-panel" aria-label="Bread Client overview">
+        <span class="panel-kicker">The workspace</span>
+        <strong>Your files first.</strong>
+        <p>Keep the useful things close to the instance they belong to, without adding another layer of noise.</p>
+      </aside>
     </section>
-    <section class="section" aria-labelledby="workspace-title"><p class="eyebrow">What is in the workspace</p><h2 id="workspace-title">The tools you reach for most.</h2><div class="grid"><article class="card"><span class="card-number">01</span><h3>Instance content</h3><p>Mods, packs, shaders, datapacks, files, worlds, and logs stay one click away from the instance they belong to.</p></article><article class="card"><span class="card-number">02</span><h3>Readable recovery</h3><p>Keep a log open while you move around the app, then open the crash report that explains what actually happened.</p></article><article class="card"><span class="card-number">03</span><h3>Your visual setup</h3><p>Pick a calmer palette, a darker workspace, or something brighter. The choice stays on this device.</p></article></div></section>
-    <section class="section note-grid" aria-labelledby="details-title"><div><p class="eyebrow">The useful details</p><h2 id="details-title">Less ceremony. More control.</h2></div><div class="note-list"><p><strong>Search when you mean it.</strong> Browse pages do not jump around while you are still typing.</p><p><strong>Offline means local.</strong> You can work with local files without pretending that it is online play.</p><p><strong>See the source.</strong> Builds, changes, and the boring legal bits stay close to the code.</p></div></section>
-    <section class="section split" aria-labelledby="open-title"><div><p class="eyebrow">Open source</p><h2 id="open-title">See how it works.</h2><p class="section-intro">Bread Client is developed in public. Issues, changes, and release files live alongside the source so you can inspect them before installing.</p><div class="action-row"><a class="button secondary" href="https://github.com/lucastieglbauer123-dev/Bread-client/issues">Browse issues</a><a class="button secondary" href="https://github.com/lucastieglbauer123-dev/Bread-client/releases">View releases</a></div></div><div class="card"><h3>Recent work</h3><ul class="release-list"><li><strong>Content tabs</strong><span>Reliable route filters</span></li><li><strong>Session safety</strong><span>No expired launch tokens</span></li><li><strong>Theme sync</strong><span>System changes are followed</span></li></ul></div></section>
+    <section class="section" aria-labelledby="workspace-title">
+      <p class="eyebrow">What is in the workspace</p>
+      <h2 id="workspace-title">The parts you use every day.</h2>
+      <div class="grid">
+        <article class="card"><span class="card-number">01</span><h3>Instance content</h3><p>Install and manage mods, resource packs, shaders, datapacks, worlds, and files without losing track of the instance they belong to.</p></article>
+        <article class="card"><span class="card-number">02</span><h3>Logs that stay put</h3><p>Keep a log open while you move around the app. When a game crashes, open the report that explains what happened.</p></article>
+        <article class="card"><span class="card-number">03</span><h3>Your setup</h3><p>Choose the colours, layout, and behaviour that suit you. Bread Client remembers those choices on this device.</p></article>
+      </div>
+    </section>
+    <section class="section note-grid" aria-labelledby="details-title">
+      <div><p class="eyebrow">The useful details</p><h2 id="details-title">Built around your machine.</h2></div>
+      <div class="note-list">
+        <p><strong>Local by default.</strong> Work with the files already on your computer. You do not need a Bread account to organise a local instance.</p>
+        <p><strong>Search with intention.</strong> Browse pages wait until you press Enter or stop typing before they refresh.</p>
+        <p><strong>Open source.</strong> Read the code, releases, and licence notices before you install.</p>
+      </div>
+    </section>
+    <section class="section split" aria-labelledby="updates-title">
+      <div>
+        <p class="eyebrow">Changes, kept separate</p>
+        <h2 id="updates-title">Want the details?</h2>
+        <p class="section-intro">The update log has its own page now, so the home page can stay about the launcher. It covers changes that have actually shipped and links back to the source where it matters.</p>
+        <div class="action-row">
+          <a class="button" href="updates.html">Open the update log</a>
+          <a class="button secondary" href="https://github.com/lucastieglbauer123-dev/Bread-client/releases">View releases</a>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Before you install</h3>
+        <p>Use the release page for the current installer and checksums. The site does not mirror executable files.</p>
+        <a class="button secondary" href="download.html">Go to downloads</a>
+      </div>
+    </section>
+    <section class="section" id="support" aria-labelledby="support-title">
+      <p class="eyebrow">Need a hand?</p>
+      <h2 id="support-title">Talk to a real person.</h2>
+      <p class="section-intro">Questions, bug reports, and suggestions are welcome. Pick the route that works for you.</p>
+      <div class="grid">
+        <article class="card"><h3>Bread Client community</h3><p>Join the main Bread Client Discord for project chat and support.</p><a href="https://discord.gg/yafehrds8C">Join the Bread Client Discord</a></article>
+        <article class="card"><h3>Minecraft server</h3><p>The server has its own Discord if that is what you are looking for.</p><a href="https://discord.gg/xthNfN45e">Open the server Discord</a></article>
+        <article class="card"><h3>Report privately</h3><p>If you would rather not join a server, message lzucas_ on Discord.</p><a href="https://discord.com/app">Open Discord</a></article>
+      </div>
+    </section>
   </main>
-  <footer class="site-footer"><span>© 2026 Bread Client contributors.</span><nav aria-label="Legal"><a href="privacy.html">Privacy</a><a href="cookies.html">Cookies</a><a href="terms.html">Terms</a><a href="refunds.html">Refunds</a><a href="licences.html">Licences</a></nav></footer>
+  <footer class="site-footer">
+    <span>© 2026 Bread Client contributors.</span>
+    <nav aria-label="Legal">
+      <a href="updates.html">Updates</a><a href="privacy.html">Privacy</a><a href="cookies.html">Cookies</a><a href="terms.html">Terms</a><a href="refunds.html">Refunds</a><a href="licences.html">Licences</a>
+    </nav>
+  </footer>
   <script src="app.js" defer></script>
 </body>
 </html>
