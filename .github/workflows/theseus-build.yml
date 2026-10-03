@@ -50,16 +50,16 @@ jobs:
       matrix:
         platform:
           [
-            namespace-profile-medium-amd64-macos,
+            macos-15-intel,
             windows-2022,
-            namespace-profile-medium-amd64,
+            ubuntu-24.04,
           ]
         include:
-          - platform: namespace-profile-medium-amd64-macos
+          - platform: macos-15-intel
             artifact-target-name: universal-apple-darwin
           - platform: windows-2022
             artifact-target-name: x86_64-pc-windows-msvc
-          - platform: namespace-profile-medium-amd64
+          - platform: ubuntu-24.04
             artifact-target-name: x86_64-unknown-linux-gnu
 
     runs-on: ${{ matrix.platform }}
@@ -90,18 +90,6 @@ jobs:
 
       - name: Enable Corepack
         run: corepack enable
-
-      - name: Set up caches
-        if: matrix.platform != 'windows-2022'
-        uses: namespacelabs/nscloud-cache-action@c5f8dab7560444c4bf8dbc64f1b203431873c547 # v1.6.1
-        with:
-          cache: |
-            rust
-            pnpm
-
-      - name: Configure sccache
-        if: matrix.platform != 'windows-2022'
-        run: nsc cache sccache setup --cache_name default >> "$GITHUB_ENV"
 
       - name: Generate tauri-dev.conf.json
         shell: bash
