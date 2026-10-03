@@ -35,9 +35,11 @@ on:
         type: string
         required: false
 
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: ${{ github.ref != 'refs/heads/main' && github.ref != 'refs/heads/prod' }}
+
 
 jobs:
   build:
@@ -51,18 +53,20 @@ jobs:
         platform:
           [
             namespace-profile-medium-amd64-macos,
-            namespace-profile-medium-amd64-windows,
+            windows-2022,
             namespace-profile-medium-amd64,
           ]
         include:
           - platform: namespace-profile-medium-amd64-macos
             artifact-target-name: universal-apple-darwin
-          - platform: namespace-profile-medium-amd64-windows
+          - platform: windows-2022
             artifact-target-name: x86_64-pc-windows-msvc
           - platform: namespace-profile-medium-amd64
             artifact-target-name: x86_64-unknown-linux-gnu
 
+
     runs-on: ${{ matrix.platform }}
+
 
     steps:
       - name: Check out code
@@ -70,36 +74,46 @@ jobs:
         with:
           fetch-depth: 0
 
+
       - name: Setup Rust toolchain
         uses: actions-rust-lang/setup-rust-toolchain@166cdcfd11aee3cb47222f9ddb555ce30ddb9659 # v1.17.0
         with:
           rustflags: ''
           target: ${{ contains(matrix.artifact-target-name, 'darwin') && 'x86_64-apple-darwin' || '' }}
 
+
       - name: Setup mold
         if: contains(matrix.artifact-target-name, 'linux')
         uses: rui314/setup-mold@9c9c13bf4c3f1adef0cc596abc155580bcb04444 # v1 / Mold 2.41.0
 
+
       - name: Setup sccache
         uses: mozilla-actions/sccache-action@9e7fa8a12102821edf02ca5dbea1acd0f89a2696 # v0.0.10
+
 
       - name: Setup Node
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
           node-version-file: .nvmrc
 
+
       - name: Enable Corepack
         run: corepack enable
 
+
       - name: Set up caches
+        if: matrix.platform != 'windows-2022'
         uses: namespacelabs/nscloud-cache-action@c5f8dab7560444c4bf8dbc64f1b203431873c547 # v1.6.1
         with:
           cache: |
             rust
             pnpm
 
+
       - name: Configure sccache
+        if: matrix.platform != 'windows-2022'
         run: nsc cache sccache setup --cache_name default >> "$GITHUB_ENV"
+
 
       - name: Generate tauri-dev.conf.json
         shell: bash
@@ -116,17 +130,20 @@ jobs:
           }
           EOF
 
+
       - name: Install Linux build dependencies
         if: contains(matrix.artifact-target-name, 'linux')
         run: |
           sudo apt-get update
           sudo apt-get install -y libwebkit2gtk-4.1-dev libayatana-appindicator3-dev librsvg2-dev
 
+
       - name: Setup Java
         uses: actions/setup-java@03ad4de0992f5dab5e18fcb136590ce7c4a0ac95 # v5.6.0
         with:
           distribution: temurin
           java-version: 17
+
 
       - name: Setup Dasel
         uses: jaxxstorm/action-install-gh-release@25e24d2d23ae098373794ef1d6faecb48ee52da8 # v3.0.0
@@ -137,6 +154,7 @@ jobs:
           rename-to: ${{ contains(matrix.artifact-target-name, 'windows') && 'dasel.exe' || 'dasel' }}
           chmod: 0755
 
+
       - name: Set application version and environment
         shell: bash
         run: |
@@ -144,17 +162,15 @@ jobs:
           if [ -z "$APP_VERSION" ]; then
             APP_VERSION="$(git describe --tags --always | sed -E 's/-([0-9]+)-(g[0-9a-fA-F]+)$/-canary+\1.\2/')"
           fi
-          BUILD_ENVIRONMENT="${{ inputs.environment || 'prod' }}"
-          echo "Setting application version to $APP_VERSION"
-          echo "Using environment $BUILD_ENVIRONMENT"
-          dasel put -f apps/app/Cargo.toml -t string -v "${APP_VERSION#v}" 'package.version'
-          dasel put -f packages/app-lib/Cargo.toml -t string -v "${APP_VERSION#v}" 'package.version'
           dasel put -f apps/app-frontend/package.json -t string -v "${APP_VERSION#v}" 'version'
+
 
           cp "packages/app-lib/.env.${BUILD_ENVIRONMENT}" packages/app-lib/.env
 
+
       - name: Install dependencies
         run: pnpm install
+
 
       - name: Set up Windows code signing
         if: contains(matrix.artifact-target-name, 'windows')
@@ -165,6 +181,7 @@ jobs:
           else
             dasel delete -f apps/app/tauri-release.conf.json 'bundle.windows.signCommand'
           fi
+
 
       - name: Build macOS app
         run: ${{ (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v') || inputs.app-version-override != '') && 'pnpm --filter=@modrinth/app run tauri build --target universal-apple-darwin --config tauri-release.conf.json' || 'pnpm --filter=@modrinth/app run tauri build --target universal-apple-darwin --config tauri-dev.conf.json' }}
@@ -181,6 +198,7 @@ jobs:
           TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_PRIVATE_KEY }}
           TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_KEY_PASSWORD }}
 
+
       - name: Build Linux app
         run: ${{ (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v') || inputs.app-version-override != '') && 'pnpm --filter=@modrinth/app run tauri build --config tauri-release.conf.json' || 'pnpm --filter=@modrinth/app run tauri build --config tauri-dev.conf.json' }}
         if: contains(matrix.artifact-target-name, 'linux')
@@ -188,10 +206,13 @@ jobs:
           TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_PRIVATE_KEY }}
           TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_KEY_PASSWORD }}
 
+
       - name: Build Windows app
         run: |
-          [System.Convert]::FromBase64String("$env:DIGICERT_ONE_SIGNER_CLIENT_CERTIFICATE_BASE64") | Set-Content -Path signer-client-cert.p12 -AsByteStream
-          $env:DIGICERT_ONE_SIGNER_CREDENTIALS = "$env:DIGICERT_ONE_SIGNER_API_KEY|$PWD\signer-client-cert.p12|$env:DIGICERT_ONE_SIGNER_CLIENT_CERTIFICATE_PASSWORD"
+          if ($env:DIGICERT_ONE_SIGNER_CLIENT_CERTIFICATE_BASE64) {
+            [System.Convert]::FromBase64String("$env:DIGICERT_ONE_SIGNER_CLIENT_CERTIFICATE_BASE64") | Set-Content -Path signer-client-cert.p12 -AsByteStream
+            $env:DIGICERT_ONE_SIGNER_CREDENTIALS = "$env:DIGICERT_ONE_SIGNER_API_KEY|$PWD\signer-client-cert.p12|$env:DIGICERT_ONE_SIGNER_CLIENT_CERTIFICATE_PASSWORD"
+          }
           $env:JAVA_HOME = "$env:JAVA_HOME_17_X64"
           ${{ (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v') || inputs.app-version-override != '') && 'pnpm --filter=@modrinth/app run tauri build --config tauri-release.conf.json --verbose --bundles "nsis,msi,updater"' || 'pnpm --filter=@modrinth/app run tauri build --config tauri-dev.conf.json --verbose --bundles "nsis,msi,updater"' }}
           Remove-Item -Path signer-client-cert.p12 -ErrorAction SilentlyContinue
@@ -202,6 +223,7 @@ jobs:
           DIGICERT_ONE_SIGNER_API_KEY: ${{ secrets.DIGICERT_ONE_SIGNER_API_KEY }}
           DIGICERT_ONE_SIGNER_CLIENT_CERTIFICATE_BASE64: ${{ secrets.DIGICERT_ONE_SIGNER_CLIENT_CERTIFICATE_BASE64 }}
           DIGICERT_ONE_SIGNER_CLIENT_CERTIFICATE_PASSWORD: ${{ secrets.DIGICERT_ONE_SIGNER_CLIENT_CERTIFICATE_PASSWORD }}
+
 
       - name: Upload app bundles
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
